@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veloxia — Agentes IA para tu negocio</title>
+<meta name="description" content="Cuéntanos tu problema. Te creamos el agente perfecto. Resultados en 2-7 días.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#2A2118;--bg2:#231C14;--bg3:#1E1810;
+  --ink:#F0E8D8;--ink2:#D4C8B0;--ink3:#9A8C78;--ink4:rgba(240,232,216,.4);
+  --g:#C4922A;--g2:#E8B84A;--ga:rgba(196,146,42,.1);
+  --border:rgba(196,146,42,.18);--ease:cubic-bezier(.16,1,.3,1)
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.page-section{display:none}
+.page-section.active{display:block}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:24px 72px;transition:all .4s var(--ease)}
+nav.s{background:rgba(42,33,24,.97);backdrop-filter:blur(20px);padding:18px 72px;border-bottom:1px solid var(--border)}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:7px;color:var(--ink);font-weight:400;transition:all .3s var(--ease);text-shadow:0 0 40px rgba(196,146,42,.15)}
+.logo:hover{letter-spacing:10px;text-shadow:0 0 50px rgba(196,146,42,.25)}
+.logo-dot{color:var(--g);filter:drop-shadow(0 0 10px var(--g))}
+.nav-links{display:flex;gap:0;list-style:none;margin-left:auto}
+.nav-links li a{font-size:13px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink3);font-weight:600;padding:12px 24px;display:block;transition:color .2s;border-bottom:2px solid transparent;cursor:pointer}
+.nav-links li a:hover{color:var(--g)}
+.nav-links li a.active{color:var(--g);border-bottom-color:var(--g)}
+.nav-cta{font-size:13px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;padding:13px 32px;background:var(--g);color:var(--bg3);transition:background .3s;cursor:pointer;border:none;font-family:'DM Sans',sans-serif}
+.nav-cta:hover{background:var(--g2)}
+
+/* SECTIONS */
+.sec{padding:100px 72px 80px 72px}
+.stag{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--g);font-weight:700;display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.stag::before{content:'';width:32px;height:1px;background:var(--g)}
+.h-xl{font-family:'Bebas Neue',sans-serif;font-size:clamp(62px,7.5vw,105px);letter-spacing:2px;line-height:.93;color:var(--ink);margin-bottom:36px}
+.h-xl .accent{color:var(--g)}
+.h-xl .serif{font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;color:var(--ink3);letter-spacing:0;font-size:.82em;line-height:1.1}
+.h-lg{font-family:'Bebas Neue',sans-serif;font-size:clamp(42px,5vw,68px);letter-spacing:2px;line-height:.97;color:var(--ink)}
+.body-lg{font-size:18px;line-height:1.8;color:var(--ink3)}
+.body-md{font-size:15px;line-height:1.75;color:var(--ink3)}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.on{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* HERO */
+.hero{min-height:95vh;padding:120px 72px 80px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;background:var(--bg)}
+.hero-glow{position:absolute;right:-200px;top:50%;transform:translateY(-50%);width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(196,146,42,.12) 0%,transparent 60%);pointer-events:none}
+.hero-inner{position:relative;z-index:2;max-width:1000px}
+.badge{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:3.5px;text-transform:uppercase;color:var(--g);margin-bottom:36px;font-weight:600;background:var(--ga);padding:10px 18px;border:1px solid var(--border);opacity:0;animation:up 1s var(--ease) .1s forwards}
+.bdot{width:5px;height:5px;border-radius:50%;background:var(--g);animation:gp 2s infinite}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(82px,11vw,160px);line-height:.88;letter-spacing:2px;color:var(--ink);opacity:0;animation:up 1s var(--ease) .2s forwards;margin-bottom:28px}
+.h1g{display:block;color:var(--g)}
+.h1s{display:block;font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:clamp(46px,6vw,84px);color:var(--ink3);letter-spacing:0;line-height:1.1}
+.hero-p{font-size:19px;line-height:1.75;color:var(--ink3);max-width:600px;margin:0 0 44px;opacity:0;animation:up 1s var(--ease) .32s forwards}
+.hero-p strong{color:var(--ink2);font-weight:400}
+.hero-btns{display:flex;gap:16px;align-items:center;opacity:0;animation:up 1s var(--ease) .46s forwards;flex-wrap:wrap;margin-bottom:56px}
+.btn-primary{padding:20px 52px;background:var(--g);color:var(--bg3);font-size:13px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;transition:all .3s cubic-bezier(0.34, 1.56, 0.64, 1);display:inline-block;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;position:relative}
+.btn-primary:hover{background:var(--g2);transform:translateY(-2px);box-shadow:0 8px 20px rgba(196,146,42,.3)}
+.btn-outline{font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:500;color:var(--ink3);display:inline-flex;align-items:center;gap:8px;transition:all .25s;border:1px solid var(--border);padding:20px 32px;cursor:pointer}
+.btn-outline:hover{color:var(--g);border-color:var(--g)}
+.hero-stats{display:flex;gap:0;border:1px solid var(--border);opacity:0;animation:up 1s var(--ease) .6s forwards;width:fit-content;flex-wrap:nowrap}
+.hst{padding:24px 36px;border-right:1px solid var(--border);text-align:center}
+.hst:last-child{border-right:none}
+.hstn{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--g);line-height:1}
+.hstl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-top:4px}
+
+/* TICKER */
+.ticker{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;overflow:hidden;background:var(--bg2);position:relative;z-index:1;box-shadow:0 2px 12px rgba(0,0,0,.2);margin-top:60px}
+.ttrack{display:flex;white-space:nowrap;animation:ticker 35s linear infinite}
+.ti{font-size:11px;letter-spacing:3.5px;text-transform:uppercase;color:var(--ink2);padding:0 28px;display:inline-flex;align-items:center;gap:28px;font-weight:600;background:var(--bg3);border:1px solid rgba(196,146,42,.12);margin-right:12px;padding:8px 24px;transition:all .3s}
+.ti:hover{border-color:var(--border);background:var(--bg)}
+.ti::after{content:'◆';color:var(--ink3);font-size:6px}
+
+/* PROBLEM */
+.problem{background:var(--bg);position:relative;z-index:1}
+.problem-g{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;margin-top:44px}
+.big-stat{font-family:'Bebas Neue',sans-serif;font-size:120px;color:var(--g);line-height:.85;margin-bottom:8px}
+.problem-kpi{background:var(--bg3);border:1px solid var(--border);border-left:4px solid var(--g);padding:44px 38px}
+.pkpi-label{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);font-weight:600;margin-bottom:20px}
+.pkpi-items{display:flex;flex-direction:column;gap:20px}
+.pkpi-item{display:flex;gap:14px;align-items:flex-start}
+.pkpi-dot{width:26px;height:26px;border-radius:50%;background:var(--ga);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.pkpi-dot span{width:9px;height:9px;border-radius:50%;background:var(--g);display:block}
+.pkpi-text{font-size:16px;color:var(--ink3);line-height:1.65}
+.pkpi-text strong{color:var(--ink2);font-weight:500}
+
+/* SERVICES */
+.svcs{background:var(--bg2)}
+.svcs-g{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(196,146,42,.07);margin-top:48px}
+.svc{background:var(--bg2);padding:48px 38px;position:relative;transition:background .3s}
+.svc:hover{background:var(--bg)}
+.svc-num{font-family:'Bebas Neue',sans-serif;font-size:92px;color:rgba(196,146,42,.07);line-height:1;margin-bottom:18px}
+.svc-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--g);margin-bottom:14px}
+.svc-desc{font-size:14px;color:var(--ink3);line-height:1.75}
+.svc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.svc:hover::after{transform:scaleX(1)}
+
+/* HOW */
+.how{background:var(--bg3)}
+.how-g{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(196,146,42,.07);margin-top:72px}
+.how-c{background:var(--bg3);padding:52px 36px;transition:background .3s;position:relative}
+.how-c:hover{background:var(--bg2)}
+.how-c::after{content:'';position:absolute;top:0;left:0;bottom:0;width:2px;background:var(--g);transform:scaleY(0);transform-origin:top;transition:transform .5s var(--ease)}
+.how-c:hover::after{transform:scaleY(1)}
+.how-n{font-family:'Bebas Neue',sans-serif;font-size:80px;color:rgba(196,146,42,.07);line-height:1;margin-bottom:20px}
+.how-ico{font-size:20px;color:var(--g);margin-bottom:14px}
+.how-t{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--ink);margin-bottom:12px}
+.how-d{font-size:13px;color:var(--ink3);line-height:1.85}
+
+/* FOUNDER */
+.founder-sec{background:var(--bg)}
+.founder-g{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.fquote-block{position:relative;padding:52px 48px;background:var(--bg3);border-left:4px solid var(--g)}
+.fquote-mark{font-family:'Cormorant Garamond',serif;font-size:96px;color:var(--g);line-height:.6;opacity:.2;position:absolute;top:32px;left:32px}
+.fquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;line-height:1.9;color:var(--ink2);position:relative;z-index:1;margin-bottom:32px}
+.fauthor{display:flex;align-items:center;gap:16px}
+.fav{width:52px;height:52px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--bg3);flex-shrink:0}
+.fname{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--ink)}
+.frole{font-size:10px;color:var(--g);letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-top:2px}
+.fstats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(196,146,42,.1);margin-top:32px}
+.fst{background:var(--bg2);padding:20px;text-align:center}
+.fstn{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--g)}
+.fstl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-top:2px}
+.fdiffs{display:flex;flex-direction:column;gap:0}
+.fdiff{padding:20px 0;border-bottom:1px solid rgba(196,146,42,.1);display:grid;grid-template-columns:32px 1fr;gap:16px;align-items:start}
+.fdiff:last-child{border-bottom:none}
+.fdiff-icon{width:32px;height:32px;background:var(--ga);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--g);font-size:12px;flex-shrink:0}
+.fdiff-t{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;color:var(--ink);margin-bottom:3px}
+.fdiff-d{font-size:12px;color:var(--ink3);line-height:1.65}
+
+/* PROOF */
+.proof{background:var(--bg2)}
+.pr-g{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(196,146,42,.07);margin-top:48px}
+.pr-c{background:var(--bg2);padding:40px 34px;position:relative;display:flex;flex-direction:column;min-height:440px}
+.pr-c::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:transparent;transition:background .3s}
+.pr-c:hover::before{background:var(--g)}
+.pr-stars{color:var(--g);font-size:14px;margin-bottom:18px;letter-spacing:4px}
+.pr-q{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.85;color:var(--ink2);margin-bottom:24px;flex:1}
+.pr-by{display:flex;align-items:flex-start;gap:12px;border-top:1px solid rgba(196,146,42,.1);padding-top:18px;margin-top:auto}
+.pr-av{width:38px;height:38px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--bg3);flex-shrink:0}
+.pr-n{font-size:14px;font-weight:500;color:var(--ink);line-height:1.4}
+.pr-r{font-size:11px;color:var(--ink3);margin-top:4px;line-height:1.4}
+
+/* ─── AGENTES PAGE ─────────────────────────────────────── */
+.catalog-page{padding:100px 72px 80px}
+.catalog-header{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:end;margin-bottom:32px}
+.cat-nav{display:flex;border-bottom:1px solid rgba(196,146,42,.15);margin-bottom:1px;overflow-x:auto}
+.cat-nav::-webkit-scrollbar{display:none}
+.cat-btn{padding:13px 24px;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:var(--ink3);border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;white-space:nowrap;cursor:pointer;font-family:'DM Sans',sans-serif}
+.cat-btn:hover{color:var(--g)}
+.cat-btn.act{color:var(--g);border-bottom-color:var(--g)}
+.ags-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(196,146,42,.07);margin-bottom:80px}
+.ag{background:var(--bg);padding:40px 32px;position:relative;transition:background .3s}
+.ag:hover{background:var(--bg2)}
+.ag::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.ag:hover::after{transform:scaleX(1)}
+.ag-name{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:2px;line-height:1;color:var(--ink);margin-bottom:4px}
+.ag-acc{color:var(--g)}
+.ag-role{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);font-weight:600;margin-bottom:10px}
+.ag-live{display:flex;align-items:center;gap:6px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:12px}
+.ag-dot{width:4px;height:4px;border-radius:50%;background:var(--g);animation:gp 2s infinite}
+.ag-desc{font-size:12px;color:var(--ink3);line-height:1.8;margin-bottom:14px}
+.ag-link{display:inline-flex;align-items:center;gap:6px;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:var(--g);transition:opacity .2s}
+.ag-link:hover{opacity:.7}
+.ag-toggle{display:none}
+.ag-collapsed{display:block}
+.ag-header{display:block}
+
+/* PLANS */
+.plans-section{background:var(--bg2);padding:80px 72px}
+.pri-g{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(196,146,42,.07);margin-top:56px}
+.plan{background:var(--bg2);padding:56px 44px;position:relative}
+.plan.feat{background:var(--bg);border-top:3px solid var(--g)}
+.plan-tag{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--g);font-weight:700;margin-bottom:14px}
+.plan-name{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:3px;color:var(--ink);margin-bottom:10px}
+.plan-desc{font-size:13px;color:var(--ink3);line-height:1.7;margin-bottom:32px;min-height:52px}
+.plan-price{font-family:'Bebas Neue',sans-serif;font-size:72px;color:var(--ink);line-height:1}
+.plan-price .cur{font-size:28px;color:var(--g);vertical-align:top;margin-top:10px;display:inline-block}
+.plan-per{font-size:11px;color:var(--ink3);letter-spacing:1px;margin-bottom:32px;margin-top:4px}
+.plan-div{width:100%;height:1px;background:rgba(196,146,42,.1);margin-bottom:24px}
+.plan-fs{display:flex;flex-direction:column;gap:12px;margin-bottom:36px}
+.plan-f{display:flex;gap:12px;font-size:13px;color:var(--ink2)}
+.fok{color:var(--g);flex-shrink:0;font-weight:700}
+.plan-cta{display:block;width:100%;padding:17px;text-align:center;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;transition:all .3s;cursor:pointer;font-family:'DM Sans',sans-serif}
+.plan .plan-cta{background:none;border:1px solid rgba(196,146,42,.2);color:var(--ink3)}
+.plan .plan-cta:hover{border-color:var(--g);color:var(--g)}
+.plan.feat .plan-cta{background:var(--g);color:var(--bg3);border:1px solid var(--g)}
+.plan.feat .plan-cta:hover{background:var(--g2)}
+.plan-custom{background:var(--bg3);padding:52px 60px;display:flex;justify-content:center;align-items:center;gap:80px;margin-top:2px;border-left:4px solid var(--g)}
+.pcrt{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:var(--ink);margin-bottom:12px}
+.pcrd{font-size:17px;color:var(--ink3);line-height:1.7;max-width:600px}
+.pcrb{padding:18px 48px;background:var(--g);color:var(--bg3);font-size:13px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;white-space:nowrap;transition:background .3s;cursor:pointer;font-family:'DM Sans',sans-serif;border:none}
+.pcrb:hover{background:var(--g2)}
+
+/* ─── CONTACTANOS PAGE ─────────────────────────────────── */
+.contact-page{padding:120px 72px 120px}
+.contact-g{display:flex;justify-content:center}
+.contact-info .c-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--g);font-weight:700;margin-bottom:16px;display:block}
+.contact-info .c-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,5.5vw,72px);letter-spacing:2px;line-height:.93;margin-bottom:28px}
+.contact-info .c-title span{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;color:var(--ink3);font-size:.8em}
+.contact-info .c-body{font-size:15px;line-height:1.9;color:var(--ink3);margin-bottom:40px}
+.contact-channels{display:flex;flex-direction:column;gap:12px}
+.channel{display:flex;align-items:center;gap:16px;padding:20px 24px;background:var(--bg2);border:1px solid var(--border);transition:all .3s;cursor:pointer}
+.channel:hover{border-color:var(--g);background:var(--bg3)}
+.ch-icon{width:44px;height:44px;background:var(--ga);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ch-title{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--ink);margin-bottom:3px}
+.ch-sub{font-size:12px;color:var(--ink3)}
+.ch-arrow{margin-left:auto;color:var(--g);font-size:18px;transition:transform .3s}
+.channel:hover .ch-arrow{transform:translateX(4px)}
+
+.contact-form-wrap{background:var(--bg2);border:1px solid var(--border);padding:64px 60px;position:relative}
+.contact-form-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--g),var(--g2))}
+.form-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--g);font-weight:700;margin-bottom:8px;display:block}
+.form-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--ink);margin-bottom:6px}
+.form-sub{font-size:13px;color:var(--ink3);margin-bottom:32px;line-height:1.7}
+.form-field{margin-bottom:20px}
+.form-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);font-weight:600;display:block;margin-bottom:8px}
+.form-input{width:100%;padding:14px 16px;background:var(--bg3);border:1px solid rgba(196,146,42,.15);color:var(--ink);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .25s}
+.form-input::placeholder{color:var(--ink4)}
+.form-input:focus{border-color:var(--g)}
+.form-select{width:100%;padding:14px 16px;background:var(--bg3);border:1px solid rgba(196,146,42,.15);color:var(--ink);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none}
+.form-select option{background:var(--bg3)}
+.form-textarea{width:100%;padding:14px 16px;background:var(--bg3);border:1px solid rgba(196,146,42,.15);color:var(--ink);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;min-height:120px;transition:border-color .25s;line-height:1.7}
+.form-textarea::placeholder{color:var(--ink4)}
+.form-textarea:focus{border-color:var(--g)}
+.form-submit{width:100%;padding:18px;background:var(--g);color:var(--bg3);font-size:12px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .3s;margin-top:8px}
+.form-submit:hover{background:var(--g2)}
+.form-note{font-size:10px;color:var(--ink3);text-align:center;margin-top:14px;letter-spacing:1px}
+
+/* CTA FINAL */
+.final-cta{background:var(--bg3);padding:120px 72px;text-align:center;position:relative;overflow:hidden}
+.final-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Bebas Neue',sans-serif;font-size:clamp(80px,18vw,260px);letter-spacing:5px;color:rgba(196,146,42,.04);pointer-events:none;white-space:nowrap}
+.final-tag{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:28px;display:block}
+.final-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,6.5vw,80px);letter-spacing:2px;line-height:.95;color:var(--ink);max-width:800px;margin:0 auto 20px;position:relative;z-index:1}
+.final-h span{color:var(--g)}
+.final-sub{font-size:16px;color:var(--ink3);line-height:1.8;max-width:520px;margin:0 auto 48px;position:relative;z-index:1}
+
+
+/* CONTACT STEPS */
+.csteps{display:flex;flex-direction:column}
+.cst{display:grid;grid-template-columns:52px 1fr;gap:16px;padding:22px 0;border-bottom:1px solid rgba(196,146,42,.08)}
+.cstn{font-family:'Bebas Neue',sans-serif;font-size:40px;color:rgba(196,146,42,.18);line-height:1;transition:color .3s}
+.cst:hover .cstn{color:rgba(196,146,42,.4)}
+.cstt{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;margin-bottom:5px;color:var(--ink)}
+.cstd{font-size:12px;color:var(--ink3);line-height:1.7}
+
+/* TYPEFORM STYLE */
+.tf-prog{height:2px;background:rgba(196,146,42,.15)}
+.tf-bar{height:100%;background:linear-gradient(90deg,var(--g),var(--g2));transition:width .5s}
+.tf-head{padding:20px 28px 0;display:flex;align-items:center;justify-content:space-between}
+.tf-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--g);font-weight:600}
+.tf-cnt{font-size:11px;color:var(--ink3)}
+.tf-body{padding:22px 28px}
+.tf-step{display:none}
+.tf-step.act{display:block}
+.tf-q{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;line-height:1.1;margin-bottom:8px;color:var(--ink)}
+.tf-hint{font-size:14px;color:var(--ink3);margin-bottom:24px;line-height:1.6}
+.tf-opts{display:flex;flex-direction:column;gap:7px}
+.tf-opt{padding:14px 18px;border:1px solid rgba(196,146,42,.15);background:none;color:var(--ink3);font-size:14px;text-align:left;display:flex;align-items:center;gap:12px;transition:all .2s;cursor:pointer;font-family:'DM Sans',sans-serif}
+.tf-opt:hover{border-color:rgba(196,146,42,.4);color:var(--ink);background:var(--ga)}
+.tf-opt.sel{border-color:var(--g);color:var(--g);background:rgba(196,146,42,.08)}
+.tf-k{width:26px;height:26px;border:1px solid rgba(196,146,42,.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--g);flex-shrink:0;font-weight:700;transition:all .2s}
+.tf-opt.sel .tf-k{background:var(--g);color:var(--bg3);border-color:var(--g)}
+.tf-og{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.tf-og-btn{padding:10px 12px;border:1px solid rgba(196,146,42,.15);background:none;color:var(--ink3);font-size:11px;text-align:left;transition:all .2s;cursor:pointer;font-family:'DM Sans',sans-serif}
+.tf-og-btn:hover{border-color:rgba(196,146,42,.4);color:var(--ink);background:var(--ga)}
+.tf-og-btn.sel{border-color:var(--g);color:var(--g);background:rgba(196,146,42,.08)}
+.tf-inp{width:100%;padding:12px 0;border:none;border-bottom:1px solid rgba(196,146,42,.25);background:none;color:var(--ink);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .25s}
+.tf-inp::placeholder{color:var(--ink4)}
+.tf-inp:focus{border-bottom-color:var(--g)}
+.tf-fl{font-size:11px;color:var(--ink3);letter-spacing:1px;margin-bottom:7px}
+.tf-ta{width:100%;padding:12px;border:1px solid rgba(196,146,42,.2);background:var(--bg3);color:var(--ink);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;resize:none;transition:border-color .25s;line-height:1.7}
+.tf-ta::placeholder{color:var(--ink4)}
+.tf-ta:focus{border-color:rgba(196,146,42,.45)}
+.tf-foot{padding:0 28px 22px;display:flex;align-items:center;justify-content:space-between;margin-top:16px}
+.tf-back{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);background:none;border:none;display:flex;align-items:center;gap:6px;transition:color .2s;cursor:pointer;font-family:'DM Sans',sans-serif}
+.tf-back:hover{color:var(--g)}
+.tf-next{padding:16px 40px;background:var(--g);color:var(--bg3);font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:700;border:none;transition:background .3s;cursor:pointer;font-family:'DM Sans',sans-serif}
+.tf-next:hover{background:var(--g2)}
+.tf-ok{display:none;padding:36px 28px;text-align:center}
+.tf-ok.show{display:block}
+.tf-ok-ico{font-size:36px;margin-bottom:12px}
+.tf-ok-t{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:var(--g);margin-bottom:10px}
+.tf-ok-d{font-size:13px;color:var(--ink3);line-height:1.85;margin-bottom:20px}
+
+.f-legal{display:flex;align-items:center;flex-wrap:wrap;gap:0;justify-content:center}
+.f-legal a{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);transition:color .2s}
+.f-legal a:hover{color:var(--g)}
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 72px;display:flex;flex-direction:column;align-items:center;gap:20px}
+.f-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:4px;color:var(--ink)}
+.f-dot{color:var(--g)}
+.f-links{display:flex;gap:24px}
+.f-links a{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);transition:color .2s;cursor:pointer}
+.f-links a:hover{color:var(--g)}
+.f-soc{display:flex;gap:8px}
+.fsi{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .3s}
+.fsi:hover{border-color:var(--g);background:var(--ga)}
+.f-copy{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);text-align:center}
+
+/* WA FLOAT */
+.wa-float{position:fixed;bottom:28px;right:28px;z-index:500;width:54px;height:54px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 8px 28px rgba(37,211,102,.35);transition:transform .3s;animation:wapulse 3s infinite}
+.wa-float:hover{transform:scale(1.08)}
+
+
+/* FAQ */
+.faq-g{display:grid;grid-template-columns:380px 1fr;gap:100px;align-items:start}
+.faq-items{display:flex;flex-direction:column}
+.fi{border-bottom:1px solid rgba(196,146,42,.12)}
+.fi-q{display:flex;justify-content:space-between;align-items:center;padding:28px 0;cursor:pointer;gap:24px;transition:color .2s}
+.fi-q:hover{color:var(--g)}
+.fi-q span:first-child{font-size:18px;font-weight:500;line-height:1.4;letter-spacing:.3px}
+.fi-plus{font-size:26px;color:var(--g);flex-shrink:0;transition:transform .3s;line-height:1;font-weight:300}
+.fi.open .fi-plus{transform:rotate(45deg)}
+.fi-a{font-size:16px;color:var(--ink3);line-height:1.75;padding:0 0 28px;display:none;max-width:640px}
+.fi.open .fi-a{display:block}
+
+.soc-pill{width:48px;height:48px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s;text-decoration:none}
+.soc-pill:hover{border-color:var(--g);background:var(--ga);transform:translateY(-3px)}
+/* KEYFRAMES */
+@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes gp{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes wapulse{0%,100%{box-shadow:0 8px 28px rgba(37,211,102,.35)}50%{box-shadow:0 8px 40px rgba(37,211,102,.6)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 8px var(--g))}50%{filter:drop-shadow(0 0 16px var(--g))}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  nav,nav.s{padding:18px 24px}
+  .nav-links li a{padding:10px 12px;font-size:10px}
+  .hero,.sec,.svcs,.how,.founder-sec,.proof,.catalog-page,.plans-section,.contact-page,.final-cta{padding:80px 24px}
+  .problem-g,.catalog-header,.contact-g,.founder-g,.faq-g{grid-template-columns:1fr;gap:40px}
+  .svcs-g,.how-g,.pr-g{grid-template-columns:1fr 1fr}
+  .pri-g{grid-template-columns:1fr;gap:1px}
+  .hero-stats{flex-wrap:nowrap;overflow-x:auto}
+  .plan-custom{flex-direction:column;align-items:flex-start}
+  footer{padding:28px 24px;flex-direction:column;text-align:center}
+  .f-links{display:none}
+}
+@media(max-width:600px){
+  nav,nav.s{padding:14px 16px}
+  .nav-links li a{padding:8px 8px;font-size:9px;letter-spacing:1px}
+  .hero,.sec,.svcs,.how,.founder-sec,.proof,.catalog-page,.plans-section,.contact-page,.final-cta{padding:64px 20px}
+  .hero h1{font-size:clamp(52px,13vw,80px) !important}
+  .h1s{font-size:clamp(30px,8vw,44px) !important}
+  .hero-p{font-size:14px}
+  .btn-primary{width:100%;text-align:center}
+  .hero-btns{flex-direction:column;gap:12px}
+  .hero-stats{display:none}
+  .svcs-g,.how-g,.ags-grid{grid-template-columns:1fr}
+  .pr-g{grid-template-columns:repeat(2,1fr)}
+@media(max-width:600px){
+  .pr-g{grid-template-columns:1fr !important}
+  .pri-g{grid-template-columns:1fr}
+  .ag-toggle{display:block;color:var(--g);font-size:20px;transition:transform .3s;flex-shrink:0}
+  .ag-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+  .ag-collapsed{display:none}
+  .ag.open .ag-toggle{transform:rotate(45deg)}
+  .ag.open .ag-collapsed{display:block}
+  .ag{padding:18px 20px}
+  .ag-name{font-size:28px;margin-bottom:0}
+  .contact-form-wrap{padding:32px 24px}
+  .fquote-block{padding:36px 28px}
+  .fquote{font-size:15px}
+  footer{flex-direction:column;text-align:center;gap:14px}
+  .f-links{display:none}
+  .plan{padding:40px 24px}
+}
+
+/* MAGNETIC BUTTONS */
+.final-btn, .pcrb, .tf-next {
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+
+/* SHIMMER EFFECT en números */
+.hstn, .kpi-n {
+  position: relative;
+  overflow: hidden;
+}
+
+.hstn::before, .kpi-n::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(196,146,42,0.3), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+
+/* HOVER TILT en agentes */
+.ag {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ag:hover {
+  transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) scale(1.02);
+}
+
+
+/* SMOOTH SCROLL mejorado */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+}
+
+
+/* GLOW EFFECT en CTAs */
+.final-btn, .pcrb, .tf-next {
+  position: relative;
+  overflow: hidden;
+}
+
+.final-btn::before, .pcrb::before, .tf-next::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.final-btn:hover::before, .pcrb:hover::before, .tf-next:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+
+/* ========== EFECTOS PREMIUM 21ST.DEV ========== */
+
+/* 1. MAGNETIC BUTTONS */
+.final-btn, .pcrb, .tf-next, .form-submit {
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+/* 2. SHIMMER en números */
+.hstn, .kpi-n {
+  position: relative;
+  overflow: hidden;
+}
+
+.hstn::after, .kpi-n::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(196,146,42,0.4), transparent);
+  animation: shimmer 4s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+  0% { left: -150%; }
+  50% { left: 150%; }
+  100% { left: 150%; }
+}
+
+/* 3. HOVER TILT en agentes */
+.ag {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.ag:hover {
+  transform: perspective(1000px) rotateX(3deg) rotateY(-3deg) translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+}
+
+/* 4. SMOOTH SCROLL mejorado */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+}
+
+/* 5. GLOW en CTAs */
+.final-btn, .pcrb, .tf-next, .form-submit {
+  overflow: hidden;
+}
+
+.final-btn::before, .pcrb::before, .tf-next::before, .form-submit::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.final-btn:hover::before, .pcrb:hover::before, .tf-next:hover::before, .form-submit:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+/* Testimonial cards hover */
+.pr-c {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pr-c:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+}
+
+/* ========== FIN EFECTOS ========== */
+
+</style>
+</head>
+<body>
+
+<a href="javascript:void(0)" class="wa-float" onclick="showPage('contactanos',null);setTimeout(()=>{const el=document.getElementById('final-cta-section');if(el)el.scrollIntoView({behavior:'smooth'})},200)" aria-label="Hablar con nosotros"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#1E1810"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></a>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="logo">VELOXIA</div>
+  <ul class="nav-links">
+    <li><a href="#" class="active" onclick="showPage('inicio',this);return false">Inicio</a></li>
+    <li><a href="#" onclick="showPage('agentes',this);return false">Agentes</a></li>
+    <li><a href="#" onclick="showPage('contactanos',this);return false">Contáctanos</a></li>
+  </ul>
+
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     PÁGINA: INICIO
+════════════════════════════════════════════════════════ -->
+<div id="page-inicio" class="page-section active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <div class="badge"><span class="bdot"></span>Automatización inteligente de procesos</div>
+      <h1>
+        <span class="h1g">CUÉNTANOS</span>
+        TU PROBLEMA.
+        <span class="h1s">Te creamos el agente perfecto.</span>
+      </h1>
+      <p class="hero-p">Veloxia diseña, implanta y supervisa agentes de inteligencia artificial para empresas con <strong>procesos repetitivos</strong>. Tú nos dices el problema. <strong>Nosotros lo resolvemos.</strong></p>
+        <div class="hero-stats">
+        <div class="hst"><div class="hstn">24</div><div class="hstl">Agentes activos</div></div>
+        <div class="hst"><div class="hstn">2-7</div><div class="hstl">Días implantación</div></div>
+        <div class="hst"><div class="hstn">30×</div><div class="hstl">ROI máximo</div></div>
+        <div class="hst"><div class="hstn">24/7</div><div class="hstl">Sin descanso</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ttrack">
+      <span class="ti">Inmobiliarias</span><span class="ti">Gimnasios</span><span class="ti">Peluquerías</span><span class="ti">Clínicas</span><span class="ti">Fruterías</span><span class="ti">Restaurantes</span><span class="ti">Brokers hipotecarios</span><span class="ti">Asesores financieros</span><span class="ti">Autoescuelas</span><span class="ti">Academias</span><span class="ti">Gestorías</span><span class="ti">Consultoras</span><span class="ti">Despachos legales</span><span class="ti">Dentistas</span><span class="ti">Veterinarios</span><span class="ti">Ópticas</span>
+      <span class="ti">Inmobiliarias</span><span class="ti">Gimnasios</span><span class="ti">Peluquerías</span><span class="ti">Clínicas</span><span class="ti">Fruterías</span><span class="ti">Restaurantes</span><span class="ti">Brokers hipotecarios</span><span class="ti">Asesores financieros</span><span class="ti">Autoescuelas</span><span class="ti">Academias</span><span class="ti">Gestorías</span><span class="ti">Consultoras</span><span class="ti">Despachos legales</span><span class="ti">Dentistas</span><span class="ti">Veterinarios</span><span class="ti">Ópticas</span>
+    </div>
+  </div>
+
+  <!-- EL PROBLEMA -->
+  <section class="sec problem">
+    <div class="stag rv">El problema</div>
+    <h2 class="h-xl rv">EL 73% DE LOS LEADS SE<br>PIERDEN SIN RESPUESTA A TIEMPO.</h2>
+    <div class="problem-g">
+      <div>
+        <p class="body-lg rv d1" style="margin-bottom:28px">No es falta de ganas. Es que los procesos manuales no escalan. Mientras tú duermes, comes o estás en otra reunión, tu competencia ya respondió.</p>
+        <p class="body-md rv d2" style="margin-bottom:32px">Cada lead que no responde en menos de 5 minutos tiene un 80% menos de probabilidades de convertirse. Eso es dinero que se va — cada día, sin que nadie lo vea.</p>
+        <button class="btn-primary rv d3" onclick="showPage('agentes',null);setTimeout(()=>{const b=document.querySelector('.cat-btn.act');if(b)filtAg(b.textContent.trim().toLowerCase()==='captación'?'cap':'all',b)},100)">Ver cómo lo resolvemos →</button>
+      </div>
+      <div class="problem-kpi rv d1">
+        <div class="pkpi-label">Lo que pierdes cada mes sin agentes IA</div>
+        <div class="pkpi-items">
+          <div class="pkpi-item"><div class="pkpi-dot"><span></span></div><div class="pkpi-text"><strong>Leads respondidos tarde</strong> — el cliente ya habló con otro mientras tú dormías</div></div>
+          <div class="pkpi-item"><div class="pkpi-dot"><span></span></div><div class="pkpi-text"><strong>Seguimiento inconsistente</strong> — cada persona del equipo lo hace diferente, sin datos</div></div>
+          <div class="pkpi-item"><div class="pkpi-dot"><span></span></div><div class="pkpi-text"><strong>Documentación manual</strong> — horas perdidas en tareas que no aportan valor</div></div>
+          <div class="pkpi-item"><div class="pkpi-dot"><span></span></div><div class="pkpi-text"><strong>Sin métricas reales</strong> — no sabes dónde se rompe el proceso ni cuánto te cuesta</div></div>
+          <div class="pkpi-item"><div class="pkpi-dot"><span></span></div><div class="pkpi-text"><strong>Visitas sin seguimiento</strong> — compradores con intención real que desaparecen</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="sec proof">
+    <div class="stag rv">Resultados reales</div>
+    <h2 class="h-xl rv">LO QUE DICEN LOS NEGOCIOS<br>CON AGENTES ACTIVOS.</h2>
+    <div class="pr-g">
+      <div class="pr-c rv"><div class="pr-stars">★★★★★ <span style="margin-left:8px;font-size:15px;font-weight:500;color:var(--g);font-family:'DM Sans',sans-serif;letter-spacing:0">5.0</span></div><p class="pr-q">"ARIA responde cada lead de Idealista en menos de 2 minutos. Antes perdíamos el 60% porque contestábamos tarde. Ahora cerramos visitas mientras dormimos. ROI brutal."</p><div class="pr-by"><div class="pr-av">M</div><div><div class="pr-n">María González</div><div class="pr-r">Directora · Inmobiliaria Levante</div></div></div></div>
+      <div class="pr-c rv d2"><div class="pr-stars">★★★★★ <span style="margin-left:8px;font-size:15px;font-weight:500;color:var(--g);font-family:'DM Sans',sans-serif;letter-spacing:0">5.0</span></div><p class="pr-q">"FLUX hace seguimiento automático de cada lead durante 7 días. Antes se nos escapaban porque no teníamos tiempo. Ahora cerramos el 40% más de operaciones."</p><div class="pr-by"><div class="pr-av">J</div><div><div class="pr-n">Javier Moreno</div><div class="pr-r">Broker · FinanHogar Madrid</div></div></div></div>
+      <div class="pr-c rv d3"><div class="pr-stars">★★★★★ <span style="margin-left:8px;font-size:15px;font-weight:500;color:var(--g);font-family:'DM Sans',sans-serif;letter-spacing:0">4.7</span></div><p class="pr-q">"DRIVE gestiona reservas de clases, recuerda exámenes teóricos y prácticos automáticamente. Los alumnos reciben recordatorios puntuales y nosotros reducimos llamadas un 70%. Funciona solo."</p><div class="pr-by"><div class="pr-av">L</div><div><div class="pr-n">Laura Sánchez</div><div class="pr-r">Directora · Autoescuela Vial</div></div></div></div>
+      <div class="pr-c rv d4"><div class="pr-stars">★★★★★ <span style="margin-left:8px;font-size:15px;font-weight:500;color:var(--g);font-family:'DM Sans',sans-serif;letter-spacing:0">4.8</span></div><p class="pr-q">"DOCS pide documentación a clientes, hace seguimiento cada 48h si falta algo y me alerta cuando está todo completo. Antes perdía semanas persiguiendo papeles. Ahora el agente lo hace solo."</p><div class="pr-by"><div class="pr-av">R</div><div><div class="pr-n">Roberto Campos</div><div class="pr-r">Asesor · Gestoría Campos</div></div></div></div>
+      <div class="pr-c rv" style="transition-delay:.5s"><div class="pr-stars">★★★★★ <span style="margin-left:8px;font-size:15px;font-weight:500;color:var(--g);font-family:'DM Sans',sans-serif;letter-spacing:0">4.9</span></div><p class="pr-q">"ARIA responde a los leads de nuevos alumnos en menos de 2 minutos, 24/7. Antes perdíamos el 60% porque contestábamos al día siguiente. Ahora cerramos matrículas mientras dormimos."</p><div class="pr-by"><div class="pr-av">P</div><div><div class="pr-n">Patricia Gómez</div><div class="pr-r">Directora · Academia English Plus</div></div></div></div>
+    </div>
+  </section>
+
+
+
+  <!-- FAQ -->
+  <section class="sec faq" style="background:var(--bg3)">
+    <div class="faq-g">
+      <div class="faq-left">
+        <div class="stag rv">FAQ</div>
+        <h2 class="h-xl rv">PREGUNTAS<br>FRECUENTES</h2>
+      </div>
+      <div class="faq-items rv d1">
+        <div class="fi"><div class="fi-q" onclick="toggleFaq(this)"><span>¿En qué se diferencia de una automatización?</span><span class="fi-plus">+</span></div><div class="fi-a">Una automatización sigue reglas fijas. Nuestros agentes razonan con IA, entienden el contexto y se adaptan. La diferencia es como entre un semáforo y un conductor experimentado.</div></div>
+        <div class="fi"><div class="fi-q" onclick="toggleFaq(this)"><span>¿Cuánto tarda la implantación?</span><span class="fi-plus">+</span></div><div class="fi-a">Los agentes del catálogo se implantan en 2-7 días. Los agentes a medida tardan 2-3 semanas. En ningún caso tienes que parar tu operativa actual.</div></div>
+        <div class="fi"><div class="fi-q" onclick="toggleFaq(this)"><span>¿Los agentes suenan como bots?</span><span class="fi-plus">+</span></div><div class="fi-a">No. Los mensajes están generados por IA y entrenados para sonar completamente humanos, mencionando el contexto específico de cada conversación. El 95% de los clientes no saben que es IA.</div></div>
+        <div class="fi"><div class="fi-q" onclick="toggleFaq(this)"><span>¿Qué pasa si tengo un proceso muy específico?</span><span class="fi-plus">+</span></div><div class="fi-a">Es el caso ideal para un agente a medida. Cuéntanos el proceso, lo diseñamos exactamente para tu negocio. Muchos de nuestros mejores agentes nacieron de esa conversación.</div></div>
+        <div class="fi"><div class="fi-q" onclick="toggleFaq(this)"><span>¿Puedo cancelar cuando quiera?</span><span class="fi-plus">+</span></div><div class="fi-a">Sí, sin permanencia. Mes a mes sin compromiso. Si cancelas, te entregamos todos tus datos y configuraciones.</div></div>
+        <div class="fi"><div class="fi-q" onclick="toggleFaq(this)"><span>¿Cómo mido si los agentes funcionan?</span><span class="fi-plus">+</span></div><div class="fi-a">Cada mes recibes un informe con métricas reales: leads respondidos, tiempo de respuesta, tasa de conversión y ROI estimado. Sin humo, sin datos inventados.</div></div>
+        <div class="fi"><div class="fi-q" onclick="toggleFaq(this)"><span>¿Con qué herramientas son compatibles?</span><span class="fi-plus">+</span></div><div class="fi-a">Compatible con WhatsApp Business, Gmail, Outlook, Idealista, Fotocasa, Inmovilla, Google Calendar, Airtable, Notion, cualquier CRM y más. Si tienes dudas sobre tu stack, pregúntanos.</div></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- fin inicio -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PÁGINA: AGENTES
+════════════════════════════════════════════════════════ -->
+<div id="page-agentes" class="page-section">
+
+  <section class="catalog-page">
+    <div class="catalog-header">
+      <div>
+        <div class="stag rv">Catálogo de agentes</div>
+        <h2 class="h-xl rv">24 AGENTES.<br>LISTOS PARA ACTIVAR.</h2>
+        <p class="body-lg rv" style="margin-top:24px">Cada agente hace una sola cosa y la hace perfecta. Entrenados, probados y activos en 2-7 días sin cambiar nada de tu operativa.</p>
+      </div>
+    </div>
+
+    <div class="cat-nav rv">
+      <button class="cat-btn act" onclick="filtAg('cap',this)">CAPTACIÓN</button>
+      <button class="cat-btn" onclick="filtAg('seg',this)">SEGUIMIENTO</button>
+      <button class="cat-btn" onclick="filtAg('cua',this)">CUALIFICACIÓN</button>
+      <button class="cat-btn" onclick="filtAg('ope',this)">OPERACIONES</button>
+      <button class="cat-btn" onclick="filtAg('ana',this)">ANÁLISIS</button>
+    </div>
+
+    <div class="ags-grid rv">
+      <div class="ag" data-c="cap" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">AR</span>IA</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Respuesta instantánea</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Responde cada lead en menos de 2 minutos con mensaje personalizado que menciona el producto exacto que preguntaron.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20ARIA." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="cap" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">NO</span>VA</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Captación proactiva</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Detecta oportunidades en zonas objetivo y envía primer contacto personalizado automáticamente. Pipeline siempre activo.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20NOVA." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="cap" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">MA</span>TCH</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Matching automático</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Cuando entra un nuevo producto cruza con toda la base y manda WhatsApp personalizado a los mejores matches.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20MATCH." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="cap" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">CO</span>NTENT</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Contenido IA</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Analiza las fotos de la propiedad y genera en 60 segundos: descripción para Idealista, caption para Instagram/TikTok y guión de vídeo.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20CONTENT." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="cap" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">BO</span>OK</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Citas automáticas 24/7</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Gestiona reservas y citas por WhatsApp automáticamente. Confirma, recuerda y reagenda sin intervención humana.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20BOOK." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="cap" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">PI</span>XEL</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Creación de páginas web</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Diseña y crea páginas web profesionales optimizadas para conversión. Landing pages, portfolios y webs corporativas en 48 horas.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20PIXEL." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="cap" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">BR</span>AND</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Identidad de marca IA</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Crea identidad visual completa: logo, paleta de colores, tipografías y guía de marca. Branding profesional en 3 días.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20BRAND." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="cap" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">CH</span>AT</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Chatbot web inteligente</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Chatbot en tu web que responde, cualifica y agenda citas automáticamente. Captura leads mientras duermes y deriva solo los calificados.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20CHAT." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="seg" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">FL</span>UX</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Seguimiento 7 días</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Secuencia automática de 7 días si el lead no responde. Mensajes adaptativos en cada etapa. Para cuando responde.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20FLUX." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="seg" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">RE</span>TAIN</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Reactivación post-visita</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Sigue a quienes visitaron pero no compraron durante 60 días. Convierte visitas perdidas en leads financieros.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20RETAIN." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="seg" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">RE</span>FER</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Activación de referidos</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Convierte clientes satisfechos en nuevas oportunidades mediante secuencia de recomendación en el momento perfecto.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20REFER." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="seg" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">TR</span>AIN</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Captación y retención gym</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Responde leads de gimnasios y entrenadores, hace seguimiento de bajas, reactiva socios inactivos y gestiona renovaciones.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20TRAIN." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="cua" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">QU</span>ALIF</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Pre-cualificación</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Pre-cualifica clientes por WhatsApp antes de la visita. Analiza viabilidad y devuelve informe completo al asesor.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20QUALIF." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="cua" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">SC</span>OUT</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Inteligencia de mercado</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Monitoriza precios y movimientos de la competencia en tiempo real. Informe semanal de oportunidades al director.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20SCOUT." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="cua" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">RA</span>TE</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Monitorización tipos</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Vigila Euríbor y ofertas bancarias. Alerta a clientes existentes cuando conviene revisar o cambiar condiciones.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20RATE." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="cua" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">CO</span>MPETE</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Análisis de competencia</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Analiza estrategias, precios y movimientos de la competencia. Identifica oportunidades y amenazas con informes accionables semanales.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20COMPETE." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="ope" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">CA</span>LL</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Briefing de llamadas</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Cada mañana a las 8:30 dice exactamente a quién llamar, por qué y qué decir. Briefing completo con contexto del expediente.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20CALL." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="ope" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">DO</span>CS</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Gestión documental</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Pide documentación, hace seguimiento cada 48h si falta algo y alerta cuando está todo completo para el cierre.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20DOCS." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="ope" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">DR</span>IVE</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Gestión autoescuela IA</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Gestiona reservas de clases, recuerda exámenes, hace seguimiento de alumnos y responde dudas frecuentes. Reduce llamadas un 70%.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20DRIVE." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="ope" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">IN</span>VOICE</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Facturación automática</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Genera facturas al cerrar una operación, rastrea comisiones pendientes y prepara resumen mensual para el gestor.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20INVOICE." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="ana" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">RE</span>PORT</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Informes ejecutivos</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Cada lunes el director recibe el informe completo: KPIs, leads, conversión, riesgos y recomendaciones de la IA.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20REPORT." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="ana" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">AL</span>ERT</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Alertas críticas</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Detecta bloqueos, caídas de KPIs o riesgos antes de que se conviertan en un problema grave para el negocio.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20ALERT." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="ana" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">RE</span>VIEW</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Reseñas automáticas</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Detecta el momento perfecto tras cada servicio y pide reseña automáticamente. Alerta interna si llega valoración negativa.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20REVIEW." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+      <div class="ag" data-c="ana" onclick="toggleAg(this)"><div class="ag-header"><div class="ag-name"><span class="ag-acc">MO</span>NTHLY</div><span class="ag-toggle">+</span></div><div class="ag-collapsed"><div class="ag-role">Revisión mensual ejecutiva</div><div class="ag-live"><span class="ag-dot"></span>Activo 24/7</div><p class="ag-desc">Genera informe ejecutivo mensual completo: performance, tendencias, predicciones y recomendaciones estratégicas para el siguiente mes.</p><a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20info%20sobre%20el%20agente%20MONTHLY." target="_blank" class="ag-link">Solicitar info →</a></div></div>
+    </div>
+  </section>
+
+
+  <!-- A MEDIDA -->
+  <section class="plans-section">
+    <div class="plan-custom rv">
+      <div><div class="pcrt">¿Necesitas un agente a medida?</div><p class="pcrd">Si tu proceso no encaja en ningún plan estándar, diseñamos el agente exacto para ti.</p></div>
+      <button class="pcrb" onclick="showPage('contactanos',null);setTimeout(()=>{document.querySelector('.contact-form-wrap').scrollIntoView({behavior:'smooth'})},200)">Cuéntanos tu problema →</button>
+    </div>
+  </section>
+
+</div><!-- fin agentes -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PÁGINA: CONTÁCTANOS
+════════════════════════════════════════════════════════ -->
+<div id="page-contactanos" class="page-section">
+
+  <section class="contact-page">
+
+    <!-- ENCABEZADO CENTRADO -->
+    <div style="text-align:center;max-width:700px;margin:0 auto 64px;" class="rv">
+      <h2 class="h-xl" style="margin-bottom:20px">¿NO ENCUENTRAS<br>LO QUE BUSCAS?<br><span class="serif">Lo creamos.</span></h2>
+      <p class="body-md" style="max-width:500px;margin:0 auto">Si tienes un proceso específico que quieres automatizar, cuéntanoslo. Diseñamos el agente perfecto para ese problema y lo supervisamos cada mes.</p>
+    </div>
+
+    <!-- FORMULARIO CENTRADO EN GRANDE -->
+    <div style="max-width:760px;margin:0 auto;" class="rv d1">
+      <div class="contact-form-wrap">
+        <div class="tf-prog"><div class="tf-bar" id="tfBar" style="width:12.5%"></div></div>
+        <div class="tf-head">
+          <span class="tf-lbl">CUÉNTANOS TU PROBLEMA</span>
+          <span class="tf-cnt" id="tfCnt">1 / 8</span>
+        </div>
+        <div class="tf-body" id="tfBody">
+
+          <div class="tf-step act" data-s="1">
+            <div class="tf-q">¿QUÉ TIPO DE NEGOCIO TIENES?</div>
+            <div class="tf-hint">Selecciona el que mejor describe tu empresa</div>
+            <div class="tf-opts">
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">A</span><span>Inmobiliaria</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">B</span><span>Broker hipotecario / financiera</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">C</span><span>Clínica / salud / estética</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">D</span><span>Asesoría / despacho</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">E</span><span>Academia / formación</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">F</span><span>Otro tipo de negocio</span></button>
+            </div>
+          </div>
+
+          <div class="tf-step" data-s="2">
+            <div class="tf-q">¿CUÁL ES TU MAYOR PROBLEMA?</div>
+            <div class="tf-hint">El proceso que más tiempo o dinero te roba</div>
+            <div class="tf-opts">
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">A</span><span>Leads sin responder a tiempo</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">B</span><span>Seguimiento manual e inconsistente</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">C</span><span>Gestión de documentación tediosa</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">D</span><span>Coordinación de citas y visitas</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">E</span><span>Captación de nuevos clientes</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">F</span><span>Otro proceso repetitivo</span></button>
+            </div>
+          </div>
+
+          <div class="tf-step" data-s="3">
+            <div class="tf-q">¿CUÁNTAS PERSONAS AFECTADAS?</div>
+            <div class="tf-hint">El equipo que realiza ese proceso actualmente</div>
+            <div class="tf-opts">
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">A</span><span>Solo yo (1 persona)</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">B</span><span>2-5 personas</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">C</span><span>6-15 personas</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">D</span><span>Más de 15 personas</span></button>
+            </div>
+          </div>
+
+          <div class="tf-step" data-s="4">
+            <div class="tf-q">¿QUÉ HERRAMIENTAS USÁIS?</div>
+            <div class="tf-hint">Puedes seleccionar varias</div>
+            <div class="tf-og">
+              <button class="tf-og-btn" onclick="sm(this)">Gmail / Outlook</button>
+              <button class="tf-og-btn" onclick="sm(this)">WhatsApp Business</button>
+              <button class="tf-og-btn" onclick="sm(this)">Inmovilla / CRM</button>
+              <button class="tf-og-btn" onclick="sm(this)">Idealista / Fotocasa</button>
+              <button class="tf-og-btn" onclick="sm(this)">Google Calendar</button>
+              <button class="tf-og-btn" onclick="sm(this)">Excel / Sheets</button>
+              <button class="tf-og-btn" onclick="sm(this)">Notion / Airtable</button>
+              <button class="tf-og-btn" onclick="sm(this)">Otro CRM</button>
+            </div>
+          </div>
+
+          <div class="tf-step" data-s="5">
+            <div class="tf-q">¿CUÁNTO TE CUESTA ESTE PROBLEMA?</div>
+            <div class="tf-hint">Estima el impacto mensual aproximado</div>
+            <div class="tf-opts">
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">A</span><span>Tiempo perdido sin impacto económico claro</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">B</span><span>Pierdo 1-2 oportunidades/mes (1.000-5.000€)</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">C</span><span>Pierdo 3-5 oportunidades/mes (5.000-15.000€)</span></button>
+              <button class="tf-opt" onclick="so(this)"><span class="tf-k">D</span><span>El impacto es mayor o difícil de cuantificar</span></button>
+            </div>
+          </div>
+
+          <div class="tf-step" data-s="6">
+            <div class="tf-q">DESCRÍBENOS EL PROCESO</div>
+            <div class="tf-hint">Cómo funciona hoy. Cuanto más detalle, mejor agente diseñamos.</div>
+            <textarea class="tf-ta" rows="5" id="tf-proc" placeholder="Ej: Cuando llega un lead de Idealista, alguien del equipo tiene que verlo, llamar al cliente, apuntarlo en Excel..."></textarea>
+          </div>
+
+          <div class="tf-step" data-s="7">
+            <div class="tf-q">¿QUÉ RESULTADO ESPERAS?</div>
+            <div class="tf-hint">¿Qué debería hacer el agente perfecto para ti?</div>
+            <textarea class="tf-ta" rows="4" id="tf-res" placeholder="Ej: Que responda automáticamente a cada lead en menos de 2 minutos con un mensaje personalizado..."></textarea>
+          </div>
+
+          <div class="tf-step" data-s="8">
+            <div class="tf-q">¿CÓMO TE CONTACTAMOS?</div>
+            <div class="tf-hint">Te enviamos el análisis gratuito en menos de 24 horas</div>
+            <div style="display:flex;flex-direction:column;gap:18px">
+              <div><div class="tf-fl">Nombre</div><input class="tf-inp" type="text" id="tf-name" placeholder="Tu nombre"></div>
+              <div><div class="tf-fl">Email profesional</div><input class="tf-inp" type="email" id="tf-email" placeholder="hola@tuempresa.com"></div>
+              <div><div class="tf-fl">WhatsApp (opcional)</div><input class="tf-inp" type="tel" id="tf-phone" placeholder="+34 600 000 000"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="tf-ok" id="tfOk">
+          <div class="tf-ok-ico">⚡</div>
+          <div class="tf-ok-t">¡PERFECTO!</div>
+          <p class="tf-ok-d">Hemos recibido tu solicitud. Ahora te abrimos WhatsApp para hablar directamente y diseñar tu agente perfecto.</p>
+          <a id="tfWa" href="#" target="_blank" class="form-submit" style="display:inline-block;text-decoration:none;text-align:center;padding:16px 32px">Abrir WhatsApp →</a>
+        </div>
+
+        <div class="tf-foot" id="tfFoot">
+          <button class="tf-back" id="tfBack" onclick="tprev()" style="visibility:hidden">← Anterior</button>
+          <button class="tf-next" id="tfNext" onclick="tnext()">SIGUIENTE →</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="final-cta" id="final-cta-section">
+    <div class="final-bg">VELOXIA</div>
+    <span class="final-tag rv">Demo gratuita · 15 minutos · Sin compromiso</span>
+    <h2 class="final-h rv">¿LISTO PARA AUTOMATIZAR<br><span>TU NEGOCIO?</span></h2>
+    <p class="final-sub rv">Una llamada de 15 minutos puede ahorrarte miles de euros al mes. Cuéntanos el problema, nosotros traemos la solución.</p>
+    <a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20una%20demo%20gratuita%20de%20Veloxia." target="_blank" class="btn-primary rv" style="display:inline-block">Hablar con nosotros →</a>
+  </section>
+
+</div><!-- fin contactanos -->
+
+
+<!-- FOOTER (siempre visible) -->
+<footer>
+  <div class="f-logo">VELOXIA</div>
+  <div class="f-soc">
+    <a href="https://www.instagram.com/veloxai.agency" target="_blank" class="fsi" title="Instagram" aria-label="Instagram">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    </a>
+    <a href="https://www.tiktok.com/@veloxia.agentes.ia?_r=1&_t=ZN-95lAnOo2jP4" target="_blank" class="fsi" title="TikTok" aria-label="TikTok">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/veloxia-469630405/?skipRedirect=true" target="_blank" class="fsi" title="LinkedIn" aria-label="LinkedIn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+    </a>
+  </div>
+  <div class="f-copy">
+    <div>Aviso legal · Política de privacidad · Política de cookies</div>
+    <div style="margin-top:8px">© 2026 Veloxia · hola@veloxia.agency</div>
+  </div>
+</footer>
+
+<script>
+function showPage(id, clickedLink) {
+  document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  document.querySelectorAll('.nav-links li a').forEach(a => a.classList.remove('active'));
+  if (clickedLink) {
+    clickedLink.classList.add('active');
+  } else {
+    document.querySelectorAll('.nav-links li a').forEach(a => {
+      const map = {inicio:'Inicio',agentes:'Agentes',contactanos:'Contáctanos'};
+      if (a.textContent.trim() === map[id]) a.classList.add('active');
+    });
+  }
+  setTimeout(() => {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+    }, {threshold:.1, rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('#page-' + id + ' .rv:not(.on)').forEach(el => obs.observe(el));
+    if (id === 'agentes') {
+      filtAg('cap', document.querySelector('.cat-btn.act'));
+    }
+  }, 60);
+}
+
+
+let tfStep = 1;
+const tfTot = 8;
+function tfUpdate() {
+  document.getElementById('tfBar').style.width = (tfStep/tfTot*100) + '%';
+  document.getElementById('tfCnt').textContent = tfStep + ' / ' + tfTot;
+  document.getElementById('tfBack').style.visibility = tfStep > 1 ? 'visible' : 'hidden';
+  document.getElementById('tfNext').textContent = tfStep === tfTot ? 'Enviar ✓' : 'SIGUIENTE →';
+  document.querySelectorAll('.tf-step').forEach(s => s.classList.remove('act'));
+  const a = document.querySelector('[data-s="' + tfStep + '"]');
+  if (a) a.classList.add('act');
+}
+function tnext() {
+  if (tfStep === tfTot) {
+    const n = document.getElementById('tf-name') ? document.getElementById('tf-name').value : '';
+    const e = document.getElementById('tf-email') ? document.getElementById('tf-email').value : '';
+    const ph = document.getElementById('tf-phone') ? document.getElementById('tf-phone').value : '';
+    const p = document.getElementById('tf-proc') ? document.getElementById('tf-proc').value : '';
+    const r = document.getElementById('tf-res') ? document.getElementById('tf-res').value : '';
+    
+    // Send email notification to hayuk10@gmail.com via FormSubmit
+    const formData = new FormData();
+    formData.append('_to', 'hayuk10@gmail.com');
+    formData.append('_subject', 'Nuevo formulario agente a medida - Veloxia');
+    formData.append('_template', 'table');
+    formData.append('_captcha', 'false');
+    formData.append('Nombre', n);
+    formData.append('Email', e);
+    formData.append('Teléfono', ph);
+    formData.append('Proceso', p);
+    formData.append('Resultado esperado', r);
+    formData.append('Fecha', new Date().toLocaleString('es-ES'));
+    
+    fetch('https://formsubmit.co/ajax/hayuk10@gmail.com', {
+      method: 'POST',
+      body: formData
+    }).catch(err => console.log('Email send error:', err));
+    
+    // WhatsApp message
+    let m = 'Hola%2C%20vengo%20desde%20veloxia.agency%20y%20quiero%20un%20agente%20a%20medida.';
+    if (n) m += '%0ANombre%3A%20' + encodeURIComponent(n);
+    if (e) m += '%0AEmail%3A%20' + encodeURIComponent(e);
+    if (ph) m += '%0ATeléfono%3A%20' + encodeURIComponent(ph);
+    if (p) m += '%0AProceso%3A%20' + encodeURIComponent(p.substring(0,200));
+    if (r) m += '%0AResultado%3A%20' + encodeURIComponent(r.substring(0,150));
+    const wa = 'https://wa.me/34684376021?text=' + m;
+    document.getElementById('tfWa').href = wa;
+    document.getElementById('tfBody').style.display = 'none';
+    document.getElementById('tfFoot').style.display = 'none';
+    document.querySelector('.tf-head').style.display = 'none';
+    document.querySelector('.tf-prog').style.display = 'none';
+    document.getElementById('tfOk').classList.add('show');
+    setTimeout(() => window.open(wa, '_blank'), 1500);
+    return;
+  }
+  tfStep++; tfUpdate();
+}
+function tprev() { if (tfStep > 1) { tfStep--; tfUpdate(); } }
+function so(btn) {
+  const s = btn.closest('.tf-step');
+  s.querySelectorAll('.tf-opt').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  setTimeout(() => tnext(), 320);
+}
+function sm(btn) { btn.classList.toggle('sel'); }
+
+function toggleFaq(el) {
+  const fi = el.parentElement;
+  const wasOpen = fi.classList.contains('open');
+  document.querySelectorAll('.fi.open').forEach(f => f.classList.remove('open'));
+  if (!wasOpen) fi.classList.add('open');
+}
+
+function filtAg(cat, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('act'));
+  btn.classList.add('act');
+  document.querySelectorAll('.ag').forEach(a => {
+    a.style.display = (cat === 'all' || a.dataset.c === cat) ? 'block' : 'none';
+  });
+}
+
+function toggleAg(el) {
+  const was = el.classList.contains('open');
+  document.querySelectorAll('.ag.open').forEach(a => a.classList.remove('open'));
+  if (!was) el.classList.add('open');
+}
+
+function enviarFormulario() {
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const sector = document.getElementById('f-sector').value;
+  const problema = document.getElementById('f-problema').value.trim();
+  if (!nombre || !problema) { alert('Por favor rellena al menos tu nombre y el problema.'); return; }
+  let msg = 'Hola%2C%20vengo%20desde%20veloxia.agency.';
+  if (nombre) msg += '%0ANombre%3A%20' + encodeURIComponent(nombre);
+  if (email) msg += '%0AEmail%3A%20' + encodeURIComponent(email);
+  if (sector) msg += '%0ASector%3A%20' + encodeURIComponent(sector);
+  if (problema) msg += '%0AProblema%3A%20' + encodeURIComponent(problema.substring(0, 300));
+  window.open('https://wa.me/34684376021?text=' + msg, '_blank');
+}
+
+window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('s', scrollY > 60), {passive: true});
+
+setTimeout(() => {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+  }, {threshold:.1, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('#page-inicio .rv').forEach(el => obs.observe(el));
+}, 60);
+
+// MAGNETIC BUTTON EFFECT
+document.querySelectorAll('.final-btn, .pcrb, .tf-next').forEach(btn => {
+  btn.addEventListener('mousemove', (e) => {
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+  });
+  
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = 'translate(0, 0)';
+  });
+});
+
+
+
+// ========== EFECTOS PREMIUM 21ST.DEV ==========
+
+// 1. MAGNETIC BUTTONS con elasticidad
+function initMagneticButtons() {
+  const buttons = document.querySelectorAll('.btn-primary, .pcrb, .tf-next, .form-submit, .nav-cta');
+  
+  buttons.forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      const moveX = x * 0.4;
+      const moveY = y * 0.4;
+      
+      btn.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
+      btn.style.transition = 'transform 0.1s ease-out';
+    });
+    
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = 'translate(0, 0) scale(1)';
+      btn.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    });
+  });
+}
+
+// 2. 3D TILT CARDS (tarjetas de servicios, testimonios, agentes)
+function init3DTilt() {
+  const cards = document.querySelectorAll('.svc, .pr-c, .ag, .how-c');
+  
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = (y - centerY) / 15;
+      const rotateY = (centerX - x) / 15;
+      
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+      card.style.transition = 'transform 0.1s ease-out';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+      card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    });
+  });
+}
+
+// 3. SMOOTH SCROLL REVEALS con blur
+function initSmoothReveals() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0) scale(1)';
+        entry.target.style.filter = 'blur(0px)';
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+  
+  document.querySelectorAll('.rv').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px) scale(0.95)';
+    el.style.filter = 'blur(5px)';
+    el.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+    observer.observe(el);
+  });
+}
+
+// 4. PARALLAX MÚLTIPLE en diferentes velocidades
+function initAdvancedParallax() {
+  const parallaxElements = [
+    { selector: '.hero-glow', speed: 0.15 }
+  ];
+  
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    
+    parallaxElements.forEach(({ selector, speed }) => {
+      const elements = document.querySelectorAll(selector);
+      elements.forEach(el => {
+        const offset = scrolled * speed;
+        el.style.transform = `translate3d(0, ${offset}px, 0)`;
+      });
+    });
+  }, { passive: true });
+}
+
+// 5. GRADIENT ANIMADO en hover de secciones importantes
+function initAnimatedGradients() {
+  const sections = document.querySelectorAll('.hero, .final-cta');
+  
+  sections.forEach(section => {
+    section.addEventListener('mousemove', (e) => {
+      const rect = section.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      
+      section.style.background = `
+        radial-gradient(circle at ${x}% ${y}%, 
+          rgba(196, 146, 42, 0.08) 0%, 
+          transparent 50%),
+        var(--bg)
+      `;
+    });
+    
+    section.addEventListener('mouseleave', () => {
+      section.style.background = 'var(--bg)';
+    });
+  });
+}
+
+// 6. STAGGER ANIMATION para elementos en grid
+function initStaggerAnimations() {
+  const grids = document.querySelectorAll('.svcs-g, .how-g, .pr-g');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const items = entry.target.children;
+        Array.from(items).forEach((item, index) => {
+          setTimeout(() => {
+            item.style.opacity = '1';
+            item.style.transform = 'translateY(0)';
+          }, index * 100);
+        });
+      }
+    });
+  }, { threshold: 0.2 });
+  
+  grids.forEach(grid => {
+    Array.from(grid.children).forEach(item => {
+      item.style.opacity = '0';
+      item.style.transform = 'translateY(20px)';
+      item.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+    });
+    observer.observe(grid);
+  });
+}
+
+// 7. SMOOTH NAVBAR BLUR
+function initNavbarEffects() {
+  const nav = document.getElementById('nav');
+  
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 60) {
+      nav.style.background = 'rgba(42, 33, 24, 0.95)';
+      nav.style.backdropFilter = 'blur(20px) saturate(180%)';
+      nav.style.boxShadow = '0 4px 24px rgba(0, 0, 0, 0.1)';
+    } else {
+      nav.style.background = 'transparent';
+      nav.style.backdropFilter = 'none';
+      nav.style.boxShadow = 'none';
+    }
+  }, { passive: true });
+}
+
+// 8. COUNTER ANIMATION para estadísticas
+function initCounterAnimations() {
+  const counters = document.querySelectorAll('.hstn, .big-stat, .pr-stars span');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.counted) {
+        const target = entry.target;
+        const text = target.textContent;
+        const hasNumber = /\d+/.test(text);
+        
+        if (hasNumber) {
+          target.dataset.counted = 'true';
+          target.style.transform = 'scale(1.2)';
+          setTimeout(() => {
+            target.style.transform = 'scale(1)';
+          }, 300);
+        }
+      }
+    });
+  }, { threshold: 0.5 });
+  
+  counters.forEach(counter => {
+    counter.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    observer.observe(counter);
+  });
+}
+
+// 9. RIPPLE EFFECT en clicks
+function initRippleEffect() {
+  document.querySelectorAll('.btn-primary, .nav-cta, .pcrb').forEach(button => {
+    button.addEventListener('click', function(e) {
+      const ripple = document.createElement('span');
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+      
+      ripple.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        left: ${x}px;
+        top: ${y}px;
+        pointer-events: none;
+        transform: scale(0);
+        animation: ripple 0.6s ease-out;
+      `;
+      
+      this.style.position = 'relative';
+      this.style.overflow = 'hidden';
+      this.appendChild(ripple);
+      
+      setTimeout(() => ripple.remove(), 600);
+    });
+  });
+}
+
+// Añadir animación de ripple al CSS
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes ripple {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(style);
+
+// Inicializar todos los efectos premium
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    initMagneticButtons();
+    init3DTilt();
+    initSmoothReveals();
+    initAdvancedParallax();
+    initAnimatedGradients();
+    initStaggerAnimations();
+    initNavbarEffects();
+    initCounterAnimations();
+    initRippleEffect();
+    
+    console.log('✨ Efectos premium 21st.dev activados');
+  }, 100);
+});
+
+// Re-inicializar efectos cuando cambias de página
+function reinitEffects() {
+  setTimeout(() => {
+    initMagneticButtons();
+    init3DTilt();
+    initSmoothReveals();
+    initStaggerAnimations();
+  }, 300);
+}
+
+// ========== FIN EFECTOS ==========
+
+
+</script>
+</body>
+</html>
