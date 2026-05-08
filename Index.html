@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VELOXIA. — Agentes IA y sistemas digitales para convertir leads en clientes</title>
+<meta name="description" content="Agentes IA y sistemas digitales premium para convertir leads en clientes. VELOXIA Setter, Studio y Content: el ecosistema completo para tu negocio.">
+<meta property="og:title" content="VELOXIA. — Agentes IA para tu negocio">
+<meta property="og:description" content="Convierte leads en clientes con agentes IA y sistemas digitales premium.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --obsidian: #2A2118;
+  --dusk: #231C14;
+  --noir: #1E1810;
+  --gold: #C4922A;
+  --gold-light: #E8B84A;
+  --cream: #F0E8D8;
+  --cream2: #D4C8B0;
+  --muted: #9A8C78;
+  --faint: #6B5F4E;
+  --orange: #FF6A00;
+  --border: rgba(196,146,42,0.15);
+  --border-hover: rgba(196,146,42,0.35);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--obsidian);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.5;
+}
+
+/* ── UTILITY ── */
+.container { max-width: 1120px; margin: 0 auto; padding: 0 40px; }
+.label {
+  font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--gold); font-weight: 600;
+  display: flex; align-items: center; gap: 14px;
+}
+.label::before { content: ''; width: 28px; height: 1px; background: var(--gold); flex-shrink: 0; }
+.serif { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 40px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(42,33,24,0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: all 0.3s ease;
+}
+.nav-inner {
+  max-width: 1120px; margin: 0 auto;
+  height: 68px; display: flex; align-items: center; justify-content: space-between;
+}
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 8px;
+  color: var(--cream); text-decoration: none;
+}
+.logo .v, .logo .dot { color: var(--gold); }
+.nav-links { display: flex; align-items: center; gap: 32px; }
+.nav-links a {
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--muted); text-decoration: none; font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--cream); }
+.nav-cta {
+  background: var(--gold); color: var(--noir) !important;
+  padding: 10px 22px; font-weight: 600 !important;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover { background: var(--gold-light) !important; color: var(--noir) !important; }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 120px 40px 80px;
+  position: relative; overflow: hidden;
+}
+.hero-lines { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.hero-lines svg { position: absolute; right: 0; top: 0; width: 60%; height: 100%; opacity: 0.06; }
+.hero-glow {
+  position: absolute; right: -100px; top: 50%; transform: translateY(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(196,146,42,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 1120px; margin: 0 auto; width: 100%; }
+.hero-tag { margin-bottom: 32px; }
+.hero-h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 11vw, 148px);
+  letter-spacing: 3px; line-height: 0.9;
+  color: var(--cream); margin-bottom: 8px;
+}
+.hero-h1 .gold { color: var(--gold); }
+.hero-serif {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: clamp(28px, 4vw, 52px);
+  color: var(--muted); line-height: 1.2; margin-bottom: 40px;
+}
+.hero-desc {
+  font-size: 17px; color: var(--muted); line-height: 1.8;
+  max-width: 560px; margin-bottom: 52px; font-weight: 300;
+}
+.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.btn-primary {
+  background: var(--gold); color: var(--noir);
+  padding: 16px 36px; font-size: 11px; letter-spacing: 3px;
+  text-transform: uppercase; font-weight: 700;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+.btn-outline {
+  border: 1px solid var(--border-hover); color: var(--cream2);
+  padding: 16px 36px; font-size: 11px; letter-spacing: 3px;
+  text-transform: uppercase; font-weight: 600;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
+  transition: border-color 0.2s, color 0.2s, transform 0.15s;
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-1px); }
+.hero-stats {
+  margin-top: 80px; display: flex; gap: 0;
+  border: 1px solid var(--border); max-width: 560px;
+}
+.stat { padding: 24px 28px; flex: 1; border-right: 1px solid var(--border); }
+.stat:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px; letter-spacing: 2px; color: var(--gold);
+  display: block; line-height: 1;
+}
+.stat-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-top: 6px; display: block; font-weight: 600; }
+
+/* ── PROBLEMA ── */
+#problema {
+  padding: 120px 40px;
+  background: var(--dusk);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.problema-inner { max-width: 1120px; margin: 0 auto; }
+.problema-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-top: 60px; }
+.problema-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 6vw, 80px);
+  letter-spacing: 2px; line-height: 0.95; color: var(--cream);
+}
+.problema-h2 .gold { color: var(--gold); }
+.problema-body { font-size: 16px; color: var(--muted); line-height: 1.85; margin-top: 28px; font-weight: 300; }
+.problema-body strong { color: var(--cream2); font-weight: 500; }
+.problema-items { display: flex; flex-direction: column; gap: 1px; }
+.problema-item {
+  background: var(--obsidian); padding: 28px 32px;
+  border-left: 2px solid var(--border);
+  transition: border-color 0.2s;
+}
+.problema-item:hover { border-color: var(--gold); }
+.pi-num { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 4px; color: var(--gold); margin-bottom: 10px; display: block; }
+.pi-text { font-size: 15px; color: var(--cream2); line-height: 1.6; font-weight: 300; }
+
+/* ── PRODUCTOS ── */
+#productos { padding: 140px 40px; position: relative; }
+.productos-inner { max-width: 1120px; margin: 0 auto; }
+.productos-header { text-align: center; margin-bottom: 80px; }
+.productos-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 7vw, 96px);
+  letter-spacing: 3px; line-height: 0.92; color: var(--cream);
+  margin-top: 20px;
+}
+.productos-serif {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: 26px; color: var(--muted); margin-top: 16px;
+}
+
+/* Grid 3 productos */
+.productos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+.productos-grid-bottom {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+}
+
+/* Card producto */
+.prod-card {
+  background: var(--dusk);
+  border: 1px solid var(--border);
+  padding: 56px 48px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s;
+}
+.prod-card:hover { border-color: var(--border-hover); }
+.prod-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.prod-card:hover::before { opacity: 1; }
+.prod-badge {
+  font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); font-weight: 700;
+  border: 1px solid var(--border-hover); padding: 6px 14px;
+  display: inline-block; margin-bottom: 32px;
+}
+.prod-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 54px; letter-spacing: 3px; line-height: 0.9;
+  color: var(--cream); margin-bottom: 8px;
+}
+.prod-name span { color: var(--gold); }
+.prod-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: 22px; color: var(--muted); margin-bottom: 32px; line-height: 1.3;
+}
+.prod-desc { font-size: 15px; color: var(--muted); line-height: 1.8; font-weight: 300; margin-bottom: 40px; }
+.prod-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 44px; }
+.prod-features li { font-size: 14px; color: var(--cream2); display: flex; align-items: flex-start; gap: 12px; font-weight: 300; }
+.prod-features li::before { content: '→'; color: var(--gold); flex-shrink: 0; margin-top: 1px; font-size: 12px; }
+.prod-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  font-weight: 700; text-decoration: none;
+  transition: gap 0.2s;
+}
+.prod-cta-primary { color: var(--noir); background: var(--gold); padding: 14px 28px; }
+.prod-cta-primary:hover { background: var(--gold-light); }
+.prod-cta-outline { color: var(--gold); border-bottom: 1px solid var(--gold); padding-bottom: 2px; }
+.prod-cta-outline:hover { gap: 16px; }
+.prod-card.featured { background: var(--noir); border-color: rgba(196,146,42,0.3); }
+.prod-card.featured::after {
+  content: 'MÁS VENDIDO';
+  position: absolute; top: 24px; right: 24px;
+  font-size: 8px; letter-spacing: 3px; font-weight: 700;
+  color: var(--noir); background: var(--gold); padding: 5px 10px;
+}
+
+/* Content card — full width especial */
+.prod-card.content-card {
+  background: var(--noir);
+  border-color: rgba(255,106,0,0.25);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+.prod-card.content-card::before {
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+}
+.prod-card.content-card:hover { border-color: rgba(255,106,0,0.5); }
+.prod-card.content-card .prod-badge { color: var(--orange); border-color: rgba(255,106,0,0.35); }
+.prod-card.content-card .prod-features li::before { color: var(--orange); }
+.prod-card.content-card .content-badge-new {
+  position: absolute; top: 24px; right: 24px;
+  font-size: 8px; letter-spacing: 3px; font-weight: 700;
+  color: #fff; background: var(--orange); padding: 5px 10px;
+}
+.content-right { display: flex; flex-direction: column; gap: 0; }
+.content-formats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-bottom: 32px; }
+.content-format {
+  background: rgba(255,106,0,0.04);
+  border: 1px solid rgba(255,106,0,0.12);
+  padding: 20px 20px;
+  transition: border-color 0.2s;
+}
+.content-format:hover { border-color: rgba(255,106,0,0.3); }
+.cf-icon { font-size: 22px; margin-bottom: 10px; display: block; }
+.cf-title { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; color: var(--cream); margin-bottom: 6px; }
+.cf-desc { font-size: 12px; color: var(--muted); line-height: 1.5; font-weight: 300; }
+.prod-cta-orange { color: #fff; background: var(--orange); padding: 14px 28px; }
+.prod-cta-orange:hover { background: #ff8533; }
+
+/* ── ECOSISTEMA ── */
+#ecosistema {
+  padding: 120px 40px;
+  background: var(--dusk);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.ecosistema-inner { max-width: 1120px; margin: 0 auto; }
+.ecosistema-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 6vw, 80px);
+  letter-spacing: 3px; line-height: 0.92; color: var(--cream);
+  margin-top: 20px; margin-bottom: 60px;
+}
+.ecosistema-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 60px;
+}
+.eco-node {
+  background: var(--obsidian);
+  border: 1px solid var(--border);
+  padding: 36px 28px;
+  text-align: center;
+  transition: border-color 0.3s;
+}
+.eco-node:hover { border-color: var(--gold); }
+.eco-node.orange-node { border-color: rgba(255,106,0,0.2); }
+.eco-node.orange-node:hover { border-color: var(--orange); }
+.eco-label {
+  font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); font-weight: 700; margin-bottom: 10px; display: block;
+}
+.eco-label.orange { color: var(--orange); }
+.eco-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 2px; color: var(--cream);
+  margin-bottom: 8px;
+}
+.eco-desc { font-size: 12px; color: var(--muted); line-height: 1.5; font-weight: 300; }
+.eco-arrow {
+  font-size: 24px; color: var(--gold); padding: 0 16px;
+  opacity: 0.5;
+}
+.ecosistema-bottom {
+  background: var(--obsidian);
+  border: 1px solid var(--border);
+  padding: 40px 48px;
+  display: flex; align-items: center; justify-content: space-between; gap: 40px;
+}
+.eco-insight { font-size: 15px; color: var(--cream2); line-height: 1.7; font-weight: 300; max-width: 640px; }
+.eco-insight strong { color: var(--gold); font-weight: 500; }
+
+/* ── PROCESO ── */
+#proceso {
+  padding: 140px 40px;
+  border-top: 1px solid var(--border);
+}
+.proceso-inner { max-width: 1120px; margin: 0 auto; }
+.proceso-header { margin-bottom: 80px; }
+.proceso-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 6vw, 88px);
+  letter-spacing: 3px; line-height: 0.92; color: var(--cream);
+  margin-top: 20px;
+}
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 60px; }
+.step {
+  background: var(--dusk); padding: 44px 36px;
+  border: 1px solid var(--border);
+  position: relative;
+}
+.step-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 88px; letter-spacing: 2px; color: var(--border);
+  line-height: 1; margin-bottom: 24px; display: block;
+  transition: color 0.3s;
+}
+.step:hover .step-num { color: rgba(196,146,42,0.2); }
+.step-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--cream); margin-bottom: 16px; }
+.step-desc { font-size: 14px; color: var(--muted); line-height: 1.75; font-weight: 300; }
+
+/* ── CONTACTO / INVERSIÓN ── */
+#contacto {
+  padding: 140px 40px;
+  background: var(--dusk);
+  border-top: 1px solid var(--border);
+}
+.contacto-inner { max-width: 1120px; margin: 0 auto; }
+.contacto-header { text-align: center; margin-bottom: 80px; }
+.contacto-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 7vw, 100px);
+  letter-spacing: 3px; line-height: 0.92; color: var(--cream);
+  margin-top: 20px; margin-bottom: 12px;
+}
+.contacto-serif {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: 28px; color: var(--muted); margin-bottom: 24px;
+}
+.contacto-desc {
+  font-size: 16px; color: var(--muted); line-height: 1.85;
+  max-width: 640px; margin: 0 auto; font-weight: 300;
+}
+.contacto-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2px; margin-bottom: 2px;
+}
+.contacto-card {
+  background: var(--obsidian);
+  border: 1px solid var(--border);
+  padding: 48px 40px;
+  transition: border-color 0.3s;
+  position: relative; overflow: hidden;
+}
+.contacto-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.contacto-card:hover { border-color: var(--border-hover); }
+.contacto-card:hover::before { opacity: 1; }
+.cc-icon {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 72px; letter-spacing: 2px;
+  color: var(--border); line-height: 1;
+  margin-bottom: 24px; display: block;
+  transition: color 0.3s;
+}
+.contacto-card:hover .cc-icon { color: rgba(196,146,42,0.2); }
+.cc-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 2px; color: var(--cream);
+  margin-bottom: 16px;
+}
+.cc-desc { font-size: 14px; color: var(--muted); line-height: 1.8; font-weight: 300; }
+
+.contacto-cta-block {
+  background: var(--noir);
+  border: 1px solid var(--border-hover);
+  padding: 52px 56px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 48px;
+  position: relative; overflow: hidden;
+}
+.contacto-cta-block::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.contacto-cta-left { flex: 1; }
+.contacto-cta-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(24px, 3vw, 38px);
+  letter-spacing: 2px; color: var(--cream); line-height: 1.1;
+  margin-bottom: 12px;
+}
+.contacto-cta-sub {
+  font-size: 14px; color: var(--muted); font-weight: 300; letter-spacing: 0.5px;
+}
+.contacto-cta-right { flex-shrink: 0; }
+.btn-wa-large {
+  background: #25D366; color: #fff;
+  padding: 20px 44px; font-size: 11px; letter-spacing: 3px;
+  text-transform: uppercase; font-weight: 700;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 12px;
+  transition: background 0.2s, transform 0.15s; white-space: nowrap;
+}
+.btn-wa-large:hover { background: #1fb855; transform: translateY(-2px); }
+
+/* ── FAQ ── */
+#faq {
+  padding: 140px 40px;
+  background: var(--dusk);
+  border-top: 1px solid var(--border);
+}
+.faq-inner { max-width: 800px; margin: 0 auto; }
+.faq-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 6vw, 80px);
+  letter-spacing: 3px; color: var(--cream);
+  margin-top: 20px; margin-bottom: 60px;
+}
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-q {
+  width: 100%; background: none; border: none; cursor: pointer;
+  text-align: left; padding: 28px 0;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px; color: var(--cream2); font-weight: 400;
+  display: flex; justify-content: space-between; align-items: center; gap: 20px;
+}
+.faq-q .icon { font-size: 20px; color: var(--gold); flex-shrink: 0; transition: transform 0.3s; line-height: 1; }
+.faq-item.open .faq-q .icon { transform: rotate(45deg); }
+.faq-a {
+  font-size: 14px; color: var(--muted); line-height: 1.8; font-weight: 300;
+  max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s;
+  padding-bottom: 0;
+}
+.faq-item.open .faq-a { max-height: 300px; padding-bottom: 28px; }
+
+/* ── CTA FINAL ── */
+#cta-final {
+  padding: 140px 40px;
+  text-align: center; position: relative; overflow: hidden;
+}
+#cta-final::before {
+  content: '';
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(196,146,42,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+.cta-inner { max-width: 800px; margin: 0 auto; position: relative; }
+.cta-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 8vw, 112px);
+  letter-spacing: 3px; line-height: 0.9; color: var(--cream);
+  margin-top: 24px; margin-bottom: 16px;
+}
+.cta-h2 .gold { color: var(--gold); }
+.cta-serif {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: 28px; color: var(--muted); margin-bottom: 48px;
+}
+.cta-buttons { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+.btn-wa {
+  background: #25D366; color: #fff;
+  padding: 16px 36px; font-size: 11px; letter-spacing: 3px;
+  text-transform: uppercase; font-weight: 700;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
+  transition: background 0.2s;
+}
+.btn-wa:hover { background: #1fb855; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 48px 40px;
+  background: var(--noir);
+}
+.footer-inner {
+  max-width: 1120px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+}
+.footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 7px; color: var(--cream); }
+.footer-logo span { color: var(--gold); }
+.footer-copy { font-size: 11px; color: var(--faint); letter-spacing: 2px; }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 11px; color: var(--faint); text-decoration: none; letter-spacing: 2px; transition: color 0.2s; }
+.footer-links a:hover { color: var(--gold); }
+
+/* ── ANIMACIONES ── */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .ecosistema-flow { grid-template-columns: 1fr; gap: 2px; }
+  .eco-arrow { display: none; }
+  .prod-card.content-card { grid-template-columns: 1fr; }
+  .content-formats { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  nav, #hero, #problema, #productos, #ecosistema, #proceso, #contacto, #faq, #cta-final, footer { padding-left: 24px; padding-right: 24px; }
+  .nav-links { display: none; }
+  .problema-grid, .productos-grid, .steps, .contacto-grid { grid-template-columns: 1fr; }
+  .hero-stats { max-width: 100%; }
+  .ecosistema-bottom { flex-direction: column; }
+  .content-formats { grid-template-columns: 1fr; }
+  .prod-card { padding: 40px 28px; }
+  .prod-card.content-card { grid-template-columns: 1fr; gap: 40px; }
+  .contacto-cta-block { flex-direction: column; padding: 40px 28px; text-align: center; }
+  .contacto-cta-right { width: 100%; }
+  .btn-wa-large { justify-content: center; width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo"><span class="v">V</span>ELOXIA<span class="dot">.</span></a>
+    <div class="nav-links">
+      <a href="#setter">Setter IA</a>
+      <a href="#studio">Studio</a>
+      <a href="#content">Content</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20saber%20m%C3%A1s%20sobre%20VELOXIA" class="nav-cta">Hablar con nosotros →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-lines">
+    <svg viewBox="0 0 600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="600" y1="0" x2="0" y2="900" stroke="#C4922A" stroke-width="0.5"/>
+      <line x1="500" y1="0" x2="0" y2="700" stroke="#C4922A" stroke-width="0.5"/>
+      <line x1="400" y1="0" x2="0" y2="500" stroke="#C4922A" stroke-width="0.5"/>
+      <line x1="300" y1="0" x2="0" y2="300" stroke="#C4922A" stroke-width="0.5"/>
+      <rect x="420" y="200" width="100" height="100" fill="none" stroke="#C4922A" stroke-width="0.8"/>
+      <rect x="445" y="225" width="50" height="50" fill="#C4922A" opacity="0.05"/>
+    </svg>
+  </div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-inner">
+    <div class="hero-tag label reveal">Agentes IA · Sistemas digitales premium</div>
+    <h1 class="hero-h1 reveal" style="transition-delay:0.1s">
+      CONVIERTE<br>LEADS EN<br><span class="gold">CLIENTES.</span>
+    </h1>
+    <p class="hero-serif reveal" style="transition-delay:0.2s">sin esfuerzo manual, sin perder oportunidades</p>
+    <p class="hero-desc reveal" style="transition-delay:0.3s">
+      VELOXIA construye agentes IA, sistemas digitales y contenido con IA para que tu negocio atraiga más, responda más rápido y cierre mejor. Tres productos. Un ecosistema.
+    </p>
+    <div class="hero-ctas reveal" style="transition-delay:0.4s">
+      <a href="https://wa.me/34684376021?text=Quiero%20una%20sesi%C3%B3n%20de%20diagn%C3%B3stico%20gratuita%20con%20VELOXIA" class="btn-primary">Quiero una sesión gratuita →</a>
+      <a href="#productos" class="btn-outline">Ver los productos</a>
+    </div>
+    <div class="hero-stats reveal" style="transition-delay:0.5s">
+      <div class="stat">
+        <span class="stat-num">&lt;90s</span>
+        <span class="stat-label">Respuesta media</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">24/7</span>
+        <span class="stat-label">Sin parar</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">3</span>
+        <span class="stat-label">Productos</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">A medida</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section id="problema">
+  <div class="problema-inner">
+    <div class="label reveal">El problema</div>
+    <div class="problema-grid">
+      <div>
+        <h2 class="problema-h2 reveal">
+          TU NEGOCIO<br>PIERDE LEADS<br><span class="gold">CADA DÍA.</span>
+        </h2>
+        <p class="problema-body reveal" style="transition-delay:0.15s">
+          No porque tu producto sea malo.<br>
+          No porque tu precio sea alto.<br><br>
+          <strong>Porque respondes tarde. Porque no haces seguimiento. Porque no tienes contenido que atraiga. Porque no tienes un sistema.</strong><br><br>
+          El 78% de los leads que no reciben respuesta en menos de 5 minutos eligen a otro. Tu competencia no es mejor. Solo es más rápida y más visible.
+        </p>
+      </div>
+      <div class="problema-items">
+        <div class="problema-item reveal">
+          <span class="pi-num">01 — Problema</span>
+          <p class="pi-text">Formularios que nadie responde en horas. Oportunidades perdidas por falta de seguimiento automático.</p>
+        </div>
+        <div class="problema-item reveal" style="transition-delay:0.1s">
+          <span class="pi-num">02 — Problema</span>
+          <p class="pi-text">Tu web no genera confianza suficiente. El lead llega, mira y se va. Sin convertir, sin datos, sin oportunidad.</p>
+        </div>
+        <div class="problema-item reveal" style="transition-delay:0.2s">
+          <span class="pi-num">03 — Problema</span>
+          <p class="pi-text">Sin contenido que atraiga tráfico, el embudo no se llena. Sin visibilidad, no hay leads que convertir.</p>
+        </div>
+        <div class="problema-item reveal" style="transition-delay:0.3s">
+          <span class="pi-num">04 — Problema</span>
+          <p class="pi-text">Tu equipo persigue manualmente. Horas perdidas en tareas que un sistema puede hacer en segundos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTOS -->
+<section id="productos">
+  <div class="productos-inner">
+    <div class="productos-header">
+      <div class="label reveal" style="justify-content:center">La solución VELOXIA</div>
+      <h2 class="productos-h2 reveal" style="transition-delay:0.1s">TRES SISTEMAS.<br>UN OBJETIVO.</h2>
+      <p class="productos-serif reveal" style="transition-delay:0.2s">Atraer, convertir y cerrar más clientes.</p>
+    </div>
+
+    <!-- TOP ROW: Setter + Studio -->
+    <div class="productos-grid">
+
+      <!-- SETTER -->
+      <div class="prod-card featured reveal" id="setter">
+        <div class="prod-badge">Producto principal</div>
+        <h3 class="prod-name"><span>V</span>ELOXIA<br>SETTER</h3>
+        <p class="prod-tagline">Tu comercial IA que nunca duerme.</p>
+        <p class="prod-desc">
+          Responde leads en WhatsApp, Instagram y formularios en menos de 90 segundos. Cualifica automáticamente. Agenda llamadas. Resume cada conversación para tu closer. Sin intervención humana hasta que el lead está listo.
+        </p>
+        <ul class="prod-features">
+          <li>Respuesta automática en WhatsApp, IG DM y web</li>
+          <li>Cualificación inteligente con IA (ARIA)</li>
+          <li>Seguimiento automático en 2h, 24h y 72h</li>
+          <li>Agenda en Calendly sin fricción</li>
+          <li>Resumen del lead para tu closer</li>
+          <li>CRM actualizado en tiempo real (Airtable)</li>
+          <li>Avisos internos por Telegram</li>
+        </ul>
+        <a href="https://wa.me/34684376021?text=Quiero%20ver%20c%C3%B3mo%20funciona%20VELOXIA%20Setter" class="prod-cta prod-cta-primary">Quiero una demo →</a>
+      </div>
+
+      <!-- STUDIO -->
+      <div class="prod-card reveal" style="transition-delay:0.15s" id="studio">
+        <div class="prod-badge">Presencia + captación</div>
+        <h3 class="prod-name"><span>V</span>ELOXIA<br>STUDIO</h3>
+        <p class="prod-tagline">Webs premium para negocios que quieren parecer líderes.</p>
+        <p class="prod-desc">
+          No hacemos webs bonitas. Construimos presencia digital premium preparada para captar leads y convertirlos en oportunidades. Web, branding y sistema de captación integrado.
+        </p>
+        <ul class="prod-features">
+          <li>Web premium (home + servicios + contacto)</li>
+          <li>Branding: logo, paleta y tipografía</li>
+          <li>Sistema de captación con formulario activo</li>
+          <li>CRM básico conectado (Airtable)</li>
+          <li>Automatización de primer contacto</li>
+          <li>Deploy en Cloudflare / Vercel</li>
+          <li>Compatible con VELOXIA Setter (upsell natural)</li>
+        </ul>
+        <a href="https://wa.me/34684376021?text=Quiero%20saber%20m%C3%A1s%20de%20VELOXIA%20Studio" class="prod-cta prod-cta-outline">Ver planes de Studio →</a>
+      </div>
+    </div>
+
+    <!-- BOTTOM ROW: Content — full width -->
+    <div class="productos-grid-bottom" style="margin-top:2px;">
+      <div class="prod-card content-card reveal" id="content">
+        <span class="content-badge-new">NUEVO</span>
+
+        <!-- Left column -->
+        <div>
+          <div class="prod-badge">Vídeo IA + Contenido</div>
+          <h3 class="prod-name" style="color:var(--cream)"><span style="color:var(--orange)">V</span>ELOXIA<br>CONTENT</h3>
+          <p class="prod-tagline" style="color:var(--muted)">Convertimos tu producto en vídeo premium con IA.</p>
+          <p class="prod-desc">
+            No necesitas equipo de producción. No necesitas grabar. Generamos vídeos cinemáticos de tu producto, anuncios listos para Meta y TikTok, y contenido de autoridad con IA — en días, no en semanas.
+          </p>
+          <ul class="prod-features">
+            <li>Vídeos de producto con IA cinemática (Higgsfield)</li>
+            <li>Ads en vídeo para Meta, TikTok e Instagram</li>
+            <li>Guiones y copy incluidos (Claude)</li>
+            <li>Voz en off profesional IA (ElevenLabs)</li>
+            <li>Avatar IA del fundador o presentador (HeyGen)</li>
+            <li>Reels, TikToks y Shorts listos para publicar</li>
+            <li>Entrega en 48–72h por vídeo</li>
+          </ul>
+          <a href="https://wa.me/34684376021?text=Me%20interesa%20VELOXIA%20Content%2C%20quiero%20ver%20ejemplos" class="prod-cta prod-cta-orange">Ver ejemplos y precios →</a>
+        </div>
+
+        <!-- Right column: formatos -->
+        <div class="content-right">
+          <div style="margin-bottom:20px;">
+            <span class="label" style="color:var(--orange);"><span style="background:var(--orange);width:20px;height:1px;display:inline-block;margin-right:12px;flex-shrink:0;"></span>Qué producimos con IA</span>
+          </div>
+          <div class="content-formats">
+            <div class="content-format">
+              <span class="cf-icon">🎬</span>
+              <div class="cf-title">Vídeo de producto</div>
+              <div class="cf-desc">Tu producto en escenas cinemáticas sin grabarlo. Listo para web, tienda o ads.</div>
+            </div>
+            <div class="content-format">
+              <span class="cf-icon">📱</span>
+              <div class="cf-title">Ads en vídeo</div>
+              <div class="cf-desc">Anuncios de 15–45s para Meta y TikTok. Variaciones A/B incluidas.</div>
+            </div>
+            <div class="content-format">
+              <span class="cf-icon">🤖</span>
+              <div class="cf-title">Avatar IA</div>
+              <div class="cf-desc">El fundador o presentador habla a cámara sin grabar nada. Voz clonada.</div>
+            </div>
+            <div class="content-format">
+              <span class="cf-icon">🎥</span>
+              <div class="cf-title">Reels & Shorts</div>
+              <div class="cf-desc">Contenido de autoridad para redes. Guion, vídeo y subtítulos incluidos.</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,106,0,0.06); border:1px solid rgba(255,106,0,0.15); padding:20px 24px;">
+            <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--orange);margin-bottom:8px;font-weight:700;">Stack de producción</div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;">Higgsfield · ElevenLabs · HeyGen · Claude · CapCut Pro</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ECOSISTEMA -->
+<section id="ecosistema">
+  <div class="ecosistema-inner">
+    <div class="label reveal">El ecosistema completo</div>
+    <h2 class="ecosistema-h2 reveal" style="transition-delay:0.1s">TRES PRODUCTOS.<br>UN CICLO QUE<br><span style="color:var(--gold)">NO SE ROMPE.</span></h2>
+
+    <div class="ecosistema-flow reveal" style="transition-delay:0.2s">
+      <div class="eco-node orange-node">
+        <span class="eco-label orange">Paso 1</span>
+        <div class="eco-name">CONTENT</div>
+        <div class="eco-desc">Genera visibilidad, tráfico y atrae leads con vídeos IA y contenido premium.</div>
+      </div>
+      <div class="eco-arrow">→</div>
+      <div class="eco-node">
+        <span class="eco-label">Paso 2</span>
+        <div class="eco-name">STUDIO</div>
+        <div class="eco-desc">Convierte ese tráfico en confianza real y formularios completados.</div>
+      </div>
+      <div class="eco-arrow">→</div>
+      <div class="eco-node">
+        <span class="eco-label">Paso 3</span>
+        <div class="eco-name">SETTER</div>
+        <div class="eco-desc">Convierte cada lead en una llamada cualificada. Sin fricción. Sin demora.</div>
+      </div>
+    </div>
+
+    <div class="ecosistema-bottom reveal" style="transition-delay:0.3s">
+      <p class="eco-insight">
+        Cada producto de VELOXIA funciona solo. Pero juntos forman <strong>el sistema más completo para convertir desconocidos en clientes</strong>: contenido que atrae, web que convence, IA que cualifica. El ciclo completo, sin fugas.
+      </p>
+      <a href="https://wa.me/34684376021?text=Quiero%20ver%20c%C3%B3mo%20funciona%20el%20ecosistema%20completo%20de%20VELOXIA" class="btn-primary" style="white-space:nowrap;flex-shrink:0;">Quiero el sistema completo →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso">
+  <div class="proceso-inner">
+    <div class="proceso-header">
+      <div class="label reveal">Cómo funciona</div>
+      <h2 class="proceso-h2 reveal" style="transition-delay:0.1s">TRES PASOS<br>PARA EMPEZAR.</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <span class="step-num">01</span>
+        <h3 class="step-title">Sesión de diagnóstico</h3>
+        <p class="step-desc">30 minutos para entender tu negocio, tu proceso de venta actual y dónde se pierden los leads. Sin compromiso. Con mapa claro al final.</p>
+      </div>
+      <div class="step reveal" style="transition-delay:0.15s">
+        <span class="step-num">02</span>
+        <h3 class="step-title">Diseño del sistema</h3>
+        <p class="step-desc">Configuramos el producto o productos que necesitas: tu agente IA, tu web, tu contenido. Todo a medida, todo integrado.</p>
+      </div>
+      <div class="step reveal" style="transition-delay:0.3s">
+        <span class="step-num">03</span>
+        <h3 class="step-title">Activación y resultados</h3>
+        <p class="step-desc">El sistema entra en producción. Recibes avisos, clientes y resultados. Nosotros monitorizamos y ajustamos. Tú te centras en cerrar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO / INVERSIÓN -->
+<section id="contacto">
+  <div class="contacto-inner">
+
+    <div class="contacto-header">
+      <div class="label reveal" style="justify-content:center">Inversión</div>
+      <h2 class="contacto-h2 reveal" style="transition-delay:0.1s">CADA NEGOCIO<br>ES DIFERENTE.</h2>
+      <p class="contacto-serif reveal" style="transition-delay:0.2s">Por eso no publicamos tarifas fijas.</p>
+      <p class="contacto-desc reveal" style="transition-delay:0.25s">
+        El precio depende de lo que necesitas, de tu punto de partida y de qué sistema tiene más sentido para tu negocio ahora mismo. Hablamos 30 minutos, entendemos tu situación y te proponemos exactamente lo que necesitas — sin más, sin menos.
+      </p>
+    </div>
+
+    <div class="contacto-grid reveal" style="transition-delay:0.3s">
+
+      <div class="contacto-card">
+        <div class="cc-icon">01</div>
+        <h3 class="cc-title">Diagnóstico gratuito</h3>
+        <p class="cc-desc">30 minutos para entender tu negocio, tu proceso de venta y dónde se pierden los leads. Sin compromiso. Con mapa claro al final.</p>
+      </div>
+
+      <div class="contacto-card">
+        <div class="cc-icon">02</div>
+        <h3 class="cc-title">Propuesta a medida</h3>
+        <p class="cc-desc">Te enviamos una propuesta con el sistema exacto que necesitas: qué producto, qué entregables, qué resultado esperar y qué inversión implica.</p>
+      </div>
+
+      <div class="contacto-card">
+        <div class="cc-icon">03</div>
+        <h3 class="cc-title">Activación rápida</h3>
+        <p class="cc-desc">Si hay encaje, arrancamos en días. No en semanas. El sistema entra en producción y tú empiezas a ver resultados desde el primer momento.</p>
+      </div>
+
+    </div>
+
+    <div class="contacto-cta-block reveal" style="transition-delay:0.4s">
+      <div class="contacto-cta-left">
+        <p class="contacto-cta-text">¿Quieres saber qué sistema necesita tu negocio y cuánto invertiría?</p>
+        <p class="contacto-cta-sub">Escríbenos por WhatsApp. Respondemos en menos de 24h.</p>
+      </div>
+      <div class="contacto-cta-right">
+        <a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20una%20sesi%C3%B3n%20de%20diagn%C3%B3stico%20gratuita%20con%20VELOXIA" class="btn-wa-large">
+          💬 Hablar por WhatsApp →
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="faq-inner">
+    <div class="label reveal">Preguntas frecuentes</div>
+    <h2 class="faq-h2 reveal" style="transition-delay:0.1s">LO QUE MÁS<br>NOS PREGUNTAN.</h2>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿La IA cierra ventas automáticamente?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-a">No. ARIA cualifica, hace seguimiento y agenda. El cierre lo hace una persona de tu equipo. Lo que conseguimos es que tu closer solo hable con leads que ya quieren comprar. Eso sí cambia los números.</div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Los vídeos con IA se notan como artificiales?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-a">Con el stack que usamos (Higgsfield, ElevenLabs, HeyGen), la calidad es indistinguible de producción profesional en la mayoría de casos. Además, si el cliente quiere aparecer en cámara, grabamos con él y la IA se encarga de la edición, adaptación y múltiples formatos.</div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Cuánto tiempo tarda en estar funcionando?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-a">El plan Setter Starter puede estar activo en 48–72 horas. El plan Pro en 5–7 días. Los vídeos de Content se entregan en 48–72h por pieza. El Growth System completo en 10–14 días. Dependemos de tu velocidad de respuesta en la configuración inicial.</div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Para qué tipo de negocio funciona mejor?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-a">Coaches, consultores, entrenadores personales, clínicas, inmobiliarias, e-commerce, tiendas de producto y cualquier negocio de servicios con ticket medio o alto. Si tienes leads que no se convierten o un producto que necesita visibilidad, VELOXIA funciona.</div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Necesito saber de tecnología para usarlo?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-a">No. Nosotros montamos todo el sistema. Tú recibes los avisos en Telegram, ves el CRM actualizado, recibes los vídeos en Drive y hablas con los leads que ya están cualificados. La tecnología es nuestra, los clientes son tuyos.</div>
+    </div>
+
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Puedo empezar con un producto y añadir más después?
+        <span class="icon">+</span>
+      </button>
+      <div class="faq-a">Sí. De hecho es uno de los caminos más habituales. Primero Studio para tener presencia, luego Content para generar tráfico, luego Setter para no perder ningún lead. Los precios de integración son preferenciales para clientes existentes de VELOXIA.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="cta-final">
+  <div class="cta-inner">
+    <div class="label reveal" style="justify-content:center">Empieza hoy</div>
+    <h2 class="cta-h2 reveal" style="transition-delay:0.1s">
+      CADA DÍA SIN<br>SISTEMA ES UN<br><span class="gold">DÍA PERDIDO.</span>
+    </h2>
+    <p class="cta-serif reveal" style="transition-delay:0.2s">30 minutos de diagnóstico. Sin compromiso. Con mapa claro.</p>
+    <div class="cta-buttons reveal" style="transition-delay:0.3s">
+      <a href="https://wa.me/34684376021?text=Quiero%20una%20sesi%C3%B3n%20de%20diagn%C3%B3stico%20gratuita%20con%20VELOXIA" class="btn-wa">
+        💬 Hablar por WhatsApp →
+      </a>
+      <a href="#contacto" class="btn-outline">¿Cómo funciona? →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo"><span>V</span>ELOXIA<span style="color:var(--gold)">.</span></div>
+    <div class="footer-copy">© 2025 VELOXIA. Todos los derechos reservados.</div>
+    <div class="footer-links">
+      <a href="#">Privacidad</a>
+      <a href="#">Aviso legal</a>
+      <a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20contactar%20con%20VELOXIA">Contacto</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// Hero immediate reveal
+setTimeout(() => {
+  document.querySelectorAll('#hero .reveal').forEach(el => el.classList.add('visible'));
+}, 100);
+
+// FAQ accordion
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').style.borderBottomColor =
+    window.scrollY > 40 ? 'rgba(196,146,42,0.25)' : 'rgba(196,146,42,0.15)';
+});
+</script>
+</body>
+</html>
