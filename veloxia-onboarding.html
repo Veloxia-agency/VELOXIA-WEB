@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VELOXIA — Configura tu Setter IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --noir: #1E1810;
+  --dusk: #231C14;
+  --obsidian: #2A2118;
+  --gold: #C4922A;
+  --gold-light: #E8B84A;
+  --gold-dim: rgba(196,146,42,0.07);
+  --cream: #F0E8D8;
+  --cream2: #D4C8B0;
+  --muted: #9A8C78;
+  --faint: #6B5F4E;
+  --border: rgba(196,146,42,0.15);
+  --border-act: rgba(196,146,42,0.45);
+  --err: #ff6b6b;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--noir);color:var(--cream);font-family:'DM Sans',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.6}
+body::after{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(196,146,42,.06) 0%,transparent 65%);pointer-events:none;z-index:0}
+
+/* HEADER */
+.hdr{position:relative;z-index:10;padding:28px 40px;border-bottom:1px solid var(--border);background:rgba(30,24,16,.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:8px;color:var(--cream);text-decoration:none}
+.logo span{color:var(--gold)}
+.hdr-badge{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:700;border:1px solid var(--border-act);padding:6px 14px}
+
+/* HERO */
+.hero{position:relative;z-index:1;padding:64px 40px 48px;max-width:740px;margin:0 auto;text-align:center}
+.hero-tag{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:12px}
+.hero-tag::before,.hero-tag::after{content:'';width:18px;height:1px;background:var(--gold)}
+.hero-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(42px,7vw,78px);letter-spacing:3px;line-height:.92;color:var(--cream);margin-bottom:10px}
+.hero-h1 span{color:var(--gold)}
+.hero-serif{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:21px;color:var(--muted);margin-bottom:24px}
+.hero-desc{font-size:15px;color:var(--muted);line-height:1.8;font-weight:300;max-width:500px;margin:0 auto 32px}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--faint);font-weight:600;border:1px solid var(--border);padding:10px 20px}
+
+/* PROGRESS */
+.prog-wrap{position:relative;z-index:1;max-width:740px;margin:0 auto;padding:0 40px 44px}
+.prog-row{display:flex;align-items:center;margin-bottom:10px}
+.prog-step{flex:1;display:flex;align-items:center}
+.p-dot{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;color:var(--faint);flex-shrink:0;transition:all .3s;background:var(--noir);position:relative;z-index:1}
+.p-dot.active{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
+.p-dot.done{border-color:var(--gold);background:var(--gold);color:var(--noir)}
+.p-line{flex:1;height:1px;background:var(--border);transition:background .3s}
+.p-line.done{background:var(--gold)}
+.prog-labels{display:flex;justify-content:space-between}
+.p-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--faint);font-weight:600;flex:1;text-align:center;transition:color .3s}
+.p-lbl.active{color:var(--gold)}
+.p-lbl.done{color:var(--cream2)}
+
+/* FORM WRAP */
+.form-wrap{position:relative;z-index:1;max-width:740px;margin:0 auto;padding:0 40px 80px}
+
+/* PANELS */
+.panel{display:none;animation:fadeUp .35s ease}
+.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+.panel-head{margin-bottom:36px}
+.panel-num{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px;display:block}
+.panel-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,5vw,50px);letter-spacing:2px;color:var(--cream);line-height:.95;margin-bottom:8px}
+.panel-sub{font-size:14px;color:var(--muted);line-height:1.7;font-weight:300}
+
+/* FIELDS */
+.fg{margin-bottom:26px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:26px}
+.flabel{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px;display:block}
+.fhint{font-size:12px;color:var(--faint);font-weight:300;margin-bottom:8px;line-height:1.5}
+.req{opacity:.6}
+
+input[type=text],input[type=email],input[type=tel],input[type=url],textarea,select{width:100%;background:var(--dusk);border:1px solid var(--border);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:300;padding:15px 18px;outline:none;transition:border-color .2s,background .2s;-webkit-appearance:none;appearance:none}
+input::placeholder,textarea::placeholder{color:var(--faint)}
+input:focus,textarea:focus,select:focus{border-color:var(--border-act);background:rgba(35,28,20,.95)}
+input.err,textarea.err,select.err{border-color:var(--err)}
+textarea{resize:vertical;min-height:110px;line-height:1.7}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C4922A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px;cursor:pointer}
+select option{background:var(--noir);color:var(--cream)}
+
+/* SECTOR CARDS */
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:6px}
+.sc-card{background:var(--dusk);border:1px solid var(--border);padding:22px;cursor:pointer;transition:all .2s;position:relative}
+.sc-card:hover{border-color:var(--border-act)}
+.sc-card.sel{border-color:var(--gold);background:var(--gold-dim)}
+.sc-card.sel::after{content:'✓';position:absolute;top:12px;right:14px;font-size:11px;color:var(--gold);font-weight:700}
+.sc-icon{font-size:26px;margin-bottom:10px;display:block}
+.sc-name{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:2px;color:var(--cream);margin-bottom:4px}
+.sc-desc{font-size:12px;color:var(--muted);line-height:1.5;font-weight:300}
+
+/* CANAL TOGGLES */
+.cn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:6px}
+.cn-tog{background:var(--dusk);border:1px solid var(--border);padding:18px 14px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.cn-tog:hover{border-color:var(--border-act)}
+.cn-tog.sel{border-color:var(--gold);background:var(--gold-dim)}
+.cn-tog.sel::after{content:'✓';position:absolute;top:8px;right:10px;font-size:9px;color:var(--gold);font-weight:700}
+.cn-icon{font-size:22px;margin-bottom:6px;display:block}
+.cn-name{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--cream2);font-weight:600}
+
+/* URGENCIA */
+.urg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:6px}
+.urg-opt{background:var(--dusk);border:1px solid var(--border);padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.urg-opt:hover{border-color:var(--border-act)}
+.urg-opt.sel{border-color:var(--gold);background:var(--gold-dim)}
+.urg-opt.sel::after{content:'◆';position:absolute;top:8px;right:10px;font-size:8px;color:var(--gold)}
+.urg-tit{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;color:var(--cream);margin-bottom:4px}
+.urg-sub{font-size:11px;color:var(--muted);font-weight:300;line-height:1.4}
+
+/* INFOBOX */
+.infobox{background:rgba(196,146,42,.05);border:1px solid var(--border);border-left:2px solid var(--gold);padding:18px 22px;margin-bottom:26px}
+.infobox p{font-size:13px;color:var(--cream2);line-height:1.7;font-weight:300}
+.infobox strong{color:var(--gold);font-weight:500}
+
+/* CONDITIONAL */
+.cond{overflow:hidden;max-height:0;transition:max-height .4s ease,opacity .3s;opacity:0}
+.cond.vis{max-height:500px;opacity:1}
+
+/* CHAR COUNT */
+.cc{text-align:right;font-size:11px;color:var(--faint);margin-top:5px;letter-spacing:1px}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:14px;margin:28px 0}
+.divider span{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--faint);font-weight:600;white-space:nowrap}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ERRORS */
+.ferr{font-size:11px;color:var(--err);margin-top:5px;letter-spacing:1px;display:none}
+.ferr.vis{display:block}
+
+/* NAV */
+.fnav{display:flex;justify-content:space-between;align-items:center;margin-top:44px;padding-top:28px;border-top:1px solid var(--border)}
+.btn-back{font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:600;color:var(--muted);background:none;border:none;cursor:pointer;padding:14px 0;transition:color .2s;font-family:'DM Sans',sans-serif}
+.btn-back:hover{color:var(--cream)}
+.btn-back:disabled{opacity:0;pointer-events:none}
+.btn-next{background:var(--gold);color:var(--noir);border:none;cursor:pointer;padding:15px 36px;font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700;font-family:'DM Sans',sans-serif;transition:background .2s,transform .15s;display:flex;align-items:center;gap:8px}
+.btn-next:hover{background:var(--gold-light);transform:translateY(-1px)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* SUCCESS */
+.success{display:none;text-align:center;padding:72px 40px;animation:fadeUp .5s ease;position:relative;z-index:1}
+.success.active{display:block}
+.s-icon{width:72px;height:72px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 36px;background:var(--gold-dim)}
+.s-h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,70px);letter-spacing:3px;color:var(--cream);line-height:.92;margin-bottom:10px}
+.s-h2 span{color:var(--gold)}
+.s-serif{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;color:var(--muted);margin-bottom:20px}
+.s-desc{font-size:15px;color:var(--muted);line-height:1.8;max-width:460px;margin:0 auto 44px;font-weight:300}
+.s-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:560px;margin:0 auto 44px}
+.s-step{background:var(--dusk);border:1px solid var(--border);padding:22px 16px;text-align:center}
+.s-num{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold);display:block;margin-bottom:6px}
+.s-txt{font-size:12px;color:var(--muted);line-height:1.5;font-weight:300}
+.s-wa{display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:15px 34px;font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700;text-decoration:none;transition:background .2s}
+.s-wa:hover{background:#1fb855}
+
+@media(max-width:640px){
+  .hdr,.hero,.prog-wrap,.form-wrap{padding-left:24px;padding-right:24px}
+  .frow,.sc-grid,.cn-grid,.urg-grid,.s-steps{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <a href="https://veloxia.agency" class="logo"><span>V</span>ELOXIA<span>.</span></a>
+  <div class="hdr-badge">Setter IA — Onboarding</div>
+</header>
+
+<div class="hero" id="hero-block">
+  <div class="hero-tag">Bienvenido al sistema</div>
+  <h1 class="hero-h1">CONFIGURA<br>TU <span>SETTER IA</span></h1>
+  <p class="hero-serif">en menos de 10 minutos</p>
+  <p class="hero-desc">Rellena este formulario con los datos de tu negocio. Con esta información configuramos a ARIA exactamente para tu caso — tu tono, tus clientes, tu proceso de venta.</p>
+  <div class="hero-chip">⏱ Tiempo estimado: 8–10 minutos</div>
+</div>
+
+<div class="prog-wrap" id="prog-block">
+  <div class="prog-row">
+    <div class="prog-step"><div class="p-dot active" id="d1">1</div><div class="p-line" id="l1"></div></div>
+    <div class="prog-step"><div class="p-dot" id="d2">2</div><div class="p-line" id="l2"></div></div>
+    <div class="prog-step"><div class="p-dot" id="d3">3</div><div class="p-line" id="l3"></div></div>
+    <div class="prog-step"><div class="p-dot" id="d4">4</div><div class="p-line" style="background:transparent"></div></div>
+  </div>
+  <div class="prog-labels">
+    <div class="p-lbl active" id="lb1">Tu negocio</div>
+    <div class="p-lbl" id="lb2">Tu cliente</div>
+    <div class="p-lbl" id="lb3">Tu sistema</div>
+    <div class="p-lbl" id="lb4">Detalles</div>
+  </div>
+</div>
+
+<div class="form-wrap">
+
+<!-- PASO 1 -->
+<div class="panel active" id="p1">
+  <div class="panel-head">
+    <span class="panel-num">Paso 01 de 04</span>
+    <h2 class="panel-title">TU NEGOCIO</h2>
+    <p class="panel-sub">Cuéntanos quién eres. Con esto ARIA sabrá de dónde viene y cómo hablar en tu nombre.</p>
+  </div>
+
+  <div class="frow">
+    <div>
+      <span class="flabel">Nombre del negocio o marca <span class="req">*</span></span>
+      <input type="text" id="f_negocio" placeholder="Ej: Carlos Pérez Coaching">
+      <div class="ferr" id="e_negocio">Campo obligatorio</div>
+    </div>
+    <div>
+      <span class="flabel">Tu nombre <span class="req">*</span></span>
+      <input type="text" id="f_nombre" placeholder="Ej: Carlos Pérez">
+      <div class="ferr" id="e_nombre">Campo obligatorio</div>
+    </div>
+  </div>
+
+  <div class="frow">
+    <div>
+      <span class="flabel">Email de contacto <span class="req">*</span></span>
+      <input type="email" id="f_email" placeholder="tu@email.com">
+      <div class="ferr" id="e_email">Introduce un email válido</div>
+    </div>
+    <div>
+      <span class="flabel">Tu WhatsApp personal <span class="req">*</span></span>
+      <input type="tel" id="f_wa_personal" placeholder="+34 600 000 000">
+      <div class="ferr" id="e_wa_personal">Campo obligatorio</div>
+    </div>
+  </div>
+
+  <div class="fg">
+    <span class="flabel">Tu sector <span class="req">*</span></span>
+    <div class="fhint">Esto determina qué setter usamos: Sara, Laura, Diego o Marta.</div>
+    <div class="sc-grid">
+      <div class="sc-card" data-val="coaches" onclick="selSector(this)">
+        <span class="sc-icon">🎯</span>
+        <div class="sc-name">Coach o Consultor</div>
+        <div class="sc-desc">Coaching, consultoría, mentoría, formación, infoproductos.</div>
+      </div>
+      <div class="sc-card" data-val="clinicas" onclick="selSector(this)">
+        <span class="sc-icon">🏥</span>
+        <div class="sc-name">Clínica o Salud</div>
+        <div class="sc-desc">Clínicas médicas, estéticas, psicología, fisioterapia, nutrición.</div>
+      </div>
+      <div class="sc-card" data-val="entrenadores" onclick="selSector(this)">
+        <span class="sc-icon">💪</span>
+        <div class="sc-name">Entrenador Personal</div>
+        <div class="sc-desc">Entrenamiento personal, online, presencial o híbrido.</div>
+      </div>
+      <div class="sc-card" data-val="inmobiliaria" onclick="selSector(this)">
+        <span class="sc-icon">🏢</span>
+        <div class="sc-name">Inmobiliaria / Servicios</div>
+        <div class="sc-desc">Inmobiliarias, agencias, servicios premium B2B o B2C.</div>
+      </div>
+    </div>
+    <div class="ferr" id="e_sector">Selecciona tu sector</div>
+  </div>
+
+  <div class="fg">
+    <span class="flabel">¿Qué haces y a quién ayudas? <span class="req">*</span></span>
+    <div class="fhint">2-3 líneas concretas. ARIA usará esto para presentar tu negocio con precisión.</div>
+    <textarea id="f_desc" maxlength="400" placeholder="Ej: Ayudo a coaches y consultores a conseguir sus primeros 5.000€/mes de facturación recurrente mediante un sistema de captación y cierre probado." oninput="cc(this,'c_desc')"></textarea>
+    <div class="cc"><span id="c_desc">0</span>/400</div>
+    <div class="ferr" id="e_desc">Describe tu negocio (mínimo 30 caracteres)</div>
+  </div>
+
+  <div class="cond" id="cf_modal">
+    <div class="fg">
+      <span class="flabel">Modalidad de entrenamiento</span>
+      <select id="f_modal">
+        <option value="">Selecciona...</option>
+        <option value="online">Solo online</option>
+        <option value="presencial">Solo presencial</option>
+        <option value="ambas">Online y presencial</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="cond" id="cf_clinica">
+    <div class="fg">
+      <span class="flabel">Especialidades o tratamientos principales</span>
+      <div class="fhint">Ej: Botox, rellenos, medicina estética, nutrición clínica...</div>
+      <input type="text" id="f_espec" placeholder="Lista tus especialidades separadas por comas">
+    </div>
+    <div class="fg">
+      <span class="flabel">Teléfono de la clínica (para urgencias reales)</span>
+      <input type="tel" id="f_tel_cli" placeholder="+34 900 000 000">
+    </div>
+  </div>
+
+  <div class="fnav">
+    <button class="btn-back" disabled>← Anterior</button>
+    <button class="btn-next" onclick="next(1)">Siguiente →</button>
+  </div>
+</div>
+
+<!-- PASO 2 -->
+<div class="panel" id="p2">
+  <div class="panel-head">
+    <span class="panel-num">Paso 02 de 04</span>
+    <h2 class="panel-title">TU CLIENTE<br>IDEAL</h2>
+    <p class="panel-sub">Cuanto mejor entienda ARIA a tu cliente, más natural y efectiva será la conversación.</p>
+  </div>
+
+  <div class="infobox">
+    <p>ARIA adaptará sus preguntas y argumentos según el perfil que nos indiques. <strong>Esta es la parte más importante para que suene humana y relevante.</strong></p>
+  </div>
+
+  <div class="fg">
+    <span class="flabel">¿A quién va dirigido tu servicio? <span class="req">*</span></span>
+    <div class="fhint">Describe a tu cliente ideal: qué le preocupa, dónde está, qué busca exactamente.</div>
+    <textarea id="f_cli" maxlength="400" placeholder="Ej: Emprendedores de 30-45 años que llevan 1-3 años con su negocio, facturan menos de 3.000€/mes y sienten que trabajan mucho sin ver resultados proporcionales. Dispuestos a invertir si ven claridad." oninput="cc(this,'c_cli')"></textarea>
+    <div class="cc"><span id="c_cli">0</span>/400</div>
+    <div class="ferr" id="e_cli">Describe a tu cliente ideal</div>
+  </div>
+
+  <div class="fg">
+    <span class="flabel">¿Cuál es el principal problema que resuelves? <span class="req">*</span></span>
+    <div class="fhint">En una frase. El dolor concreto que tu cliente tiene antes de encontrarte.</div>
+    <input type="text" id="f_prob" placeholder="Ej: No saber cómo conseguir clientes de forma constante sin depender del boca a boca">
+    <div class="ferr" id="e_prob">Campo obligatorio</div>
+  </div>
+
+  <div class="fg">
+    <span class="flabel">¿Qué resultado concreto obtienen tus clientes?</span>
+    <div class="fhint">El resultado real y tangible. Lo que ya has conseguido con clientes reales.</div>
+    <input type="text" id="f_res" placeholder="Ej: Pasar de 1.500€ a 5.000€/mes en 90 días con un sistema de ventas repetible">
+  </div>
+
+  <div class="divider"><span>Objeciones frecuentes</span></div>
+
+  <div class="fg">
+    <span class="flabel">¿Cuáles son las 2-3 objeciones más frecuentes de tus leads?</span>
+    <div class="fhint">ARIA las manejará de forma natural en la conversación.</div>
+    <textarea id="f_obj" maxlength="300" placeholder="Ej:&#10;1. No tengo dinero ahora mismo&#10;2. Ya lo intenté antes y no funcionó&#10;3. Tengo que consultarlo" oninput="cc(this,'c_obj')"></textarea>
+    <div class="cc"><span id="c_obj">0</span>/300</div>
+  </div>
+
+  <div class="fnav">
+    <button class="btn-back" onclick="back(2)">← Anterior</button>
+    <button class="btn-next" onclick="next(2)">Siguiente →</button>
+  </div>
+</div>
+
+<!-- PASO 3 -->
+<div class="panel" id="p3">
+  <div class="panel-head">
+    <span class="panel-num">Paso 03 de 04</span>
+    <h2 class="panel-title">TU SISTEMA<br>DE VENTA</h2>
+    <p class="panel-sub">Dónde llegan tus leads y cómo los conectamos con ARIA.</p>
+  </div>
+
+  <div class="fg">
+    <span class="flabel">¿Por qué canales recibes leads? <span class="req">*</span></span>
+    <div class="fhint">Selecciona todos los que aplican. ARIA estará activa en cada uno.</div>
+    <div class="cn-grid">
+      <div class="cn-tog" data-val="whatsapp" onclick="togCanal(this)">
+        <span class="cn-icon">💬</span>
+        <div class="cn-name">WhatsApp</div>
+      </div>
+      <div class="cn-tog" data-val="instagram" onclick="togCanal(this)">
+        <span class="cn-icon">📸</span>
+        <div class="cn-name">Instagram DM</div>
+      </div>
+      <div class="cn-tog" data-val="formulario" onclick="togCanal(this)">
+        <span class="cn-icon">📋</span>
+        <div class="cn-name">Formulario web</div>
+      </div>
+    </div>
+    <div class="ferr" id="e_canales">Selecciona al menos un canal</div>
+  </div>
+
+  <div class="cond" id="cf_wa">
+    <div class="fg">
+      <span class="flabel">Número de WhatsApp Business</span>
+      <div class="fhint">El número al que llegan los leads. Necesitaremos acceso para conectarlo.</div>
+      <input type="tel" id="f_wa_neg" placeholder="+34 600 000 000">
+    </div>
+  </div>
+
+  <div class="cond" id="cf_ig">
+    <div class="fg">
+      <span class="flabel">Usuario de Instagram</span>
+      <input type="text" id="f_ig" placeholder="@tunegocio">
+    </div>
+  </div>
+
+  <div class="fg">
+    <span class="flabel">Link de tu Calendly <span class="req">*</span></span>
+    <div class="fhint">ARIA enviará este link cuando el lead esté listo para agendar. Si no tienes Calendly, te ayudamos a crearlo.</div>
+    <input type="url" id="f_cal" placeholder="https://calendly.com/tunombre/30min">
+    <div class="ferr" id="e_cal">Introduce tu link de Calendly</div>
+  </div>
+
+  <div class="fg">
+    <span class="flabel">¿Cómo se llama la sesión que ofreces? <span class="req">*</span></span>
+    <div class="fhint">ARIA usará este nombre exacto. Ej: "sesión de diagnóstico gratuita", "valoración gratuita", "consulta inicial"...</div>
+    <input type="text" id="f_sesion" placeholder="Ej: sesión de diagnóstico gratuita de 30 minutos">
+    <div class="ferr" id="e_sesion">Campo obligatorio</div>
+  </div>
+
+  <div class="divider"><span>Tu equipo</span></div>
+
+  <div class="frow">
+    <div>
+      <span class="flabel">Telegram del closer <span class="req">*</span></span>
+      <div class="fhint">Aquí llegará el aviso cuando un lead esté listo. Puede ser tu Telegram o el de tu equipo.</div>
+      <input type="text" id="f_tg" placeholder="@tuusuario">
+      <div class="ferr" id="e_tg">Campo obligatorio</div>
+    </div>
+    <div>
+      <span class="flabel">¿Tienes equipo de ventas?</span>
+      <select id="f_equipo">
+        <option value="no">No, cierro yo solo</option>
+        <option value="si">Sí, tengo closer/comercial</option>
+        <option value="futuro">No ahora, pero planeo tenerlo</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="fnav">
+    <button class="btn-back" onclick="back(3)">← Anterior</button>
+    <button class="btn-next" onclick="next(3)">Siguiente →</button>
+  </div>
+</div>
+
+<!-- PASO 4 -->
+<div class="panel" id="p4">
+  <div class="panel-head">
+    <span class="panel-num">Paso 04 de 04</span>
+    <h2 class="panel-title">DETALLES<br>FINALES</h2>
+    <p class="panel-sub">Últimas preguntas para que ARIA suene exactamente como tú quieres.</p>
+  </div>
+
+  <div class="fg">
+    <span class="flabel">¿Con qué urgencia quieres activar tu Setter? <span class="req">*</span></span>
+    <div class="urg-grid">
+      <div class="urg-opt" data-val="ya" onclick="selUrg(this)">
+        <div class="urg-tit">Ya mismo</div>
+        <div class="urg-sub">Tengo leads ahora, necesito activarlo cuanto antes</div>
+      </div>
+      <div class="urg-opt" data-val="semana" onclick="selUrg(this)">
+        <div class="urg-tit">Esta semana</div>
+        <div class="urg-sub">Quiero tenerlo listo en los próximos días</div>
+      </div>
+      <div class="urg-opt" data-val="sin_prisa" onclick="selUrg(this)">
+        <div class="urg-tit">Sin prisa</div>
+        <div class="urg-sub">Me estoy organizando, sin urgencia inmediata</div>
+      </div>
+    </div>
+    <div class="ferr" id="e_urg">Selecciona una opción</div>
+  </div>
+
+  <div class="fg">
+    <span class="flabel">Tono de comunicación de tu marca</span>
+    <div class="fhint">¿Cómo hablas tú con tus clientes? ARIA adoptará ese tono.</div>
+    <select id="f_tono">
+      <option value="">Selecciona el más cercano...</option>
+      <option value="cercano">Cercano e informal — tuteo, natural, con emojis puntuales</option>
+      <option value="profesional">Profesional y cálido — serio pero accesible</option>
+      <option value="formal">Formal — tratamiento de usted, muy corporativo</option>
+      <option value="energetico">Enérgico y motivador — directo, con punch</option>
+      <option value="empatico">Empático y suave — escucha activa, mucha comprensión</option>
+    </select>
+  </div>
+
+  <div class="fg">
+    <span class="flabel">¿Hay algo que ARIA nunca debería decir o prometer?</span>
+    <div class="fhint">Restricciones de tu sector, cosas que quieres evitar, líneas rojas...</div>
+    <textarea id="f_rest" maxlength="300" placeholder="Ej: Nunca prometer resultados en plazos concretos. No mencionar precios sin antes agendar. No comparar con la competencia." oninput="cc(this,'c_rest')"></textarea>
+    <div class="cc"><span id="c_rest">0</span>/300</div>
+  </div>
+
+  <div class="fg">
+    <span class="flabel">¿Algo más que quieras contarnos?</span>
+    <textarea id="f_notas" maxlength="500" placeholder="Cualquier detalle sobre tu negocio, tu proceso de venta actual, o algo que quieras que tengamos en cuenta al configurar tu Setter..." oninput="cc(this,'c_notas')"></textarea>
+    <div class="cc"><span id="c_notas">0</span>/500</div>
+  </div>
+
+  <div class="fnav">
+    <button class="btn-back" onclick="back(4)">← Anterior</button>
+    <button class="btn-next" onclick="submit()" id="btn-sub">Enviar configuración ✓</button>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="success" id="s-screen">
+  <div class="s-icon">✓</div>
+  <h2 class="s-h2">TODO<br><span>RECIBIDO.</span></h2>
+  <p class="s-serif">Tu Setter está en configuración.</p>
+  <p class="s-desc">Hemos recibido toda la información. En 24-48h configuramos ARIA con los datos de tu negocio y te avisamos cuando esté lista para activarse.</p>
+  <div class="s-steps">
+    <div class="s-step"><span class="s-num">24h</span><div class="s-txt">Configuramos ARIA con tu tono y tu negocio</div></div>
+    <div class="s-step"><span class="s-num">48h</span><div class="s-txt">Test interno y revisión contigo por WhatsApp</div></div>
+    <div class="s-step"><span class="s-num">72h</span><div class="s-txt">Activación en tus canales y primeros leads</div></div>
+  </div>
+  <a href="https://wa.me/34684376021?text=Acabo%20de%20enviar%20mi%20formulario%20de%20onboarding%20de%20VELOXIA%20Setter%20%F0%9F%9A%80" class="s-wa">💬 Confirmar por WhatsApp →</a>
+</div>
+
+</div><!-- /form-wrap -->
+
+<script>
+var step=1, sector='', canales=[], urgencia='';
+
+function selSector(el){
+  document.querySelectorAll('.sc-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel'); sector=el.dataset.val;
+  document.getElementById('e_sector').classList.remove('vis');
+  document.getElementById('cf_modal').classList.toggle('vis', sector==='entrenadores');
+  document.getElementById('cf_clinica').classList.toggle('vis', sector==='clinicas');
+}
+
+function togCanal(el){
+  el.classList.toggle('sel');
+  var v=el.dataset.val;
+  if(el.classList.contains('sel')) canales.push(v);
+  else canales=canales.filter(c=>c!==v);
+  document.getElementById('e_canales').classList.remove('vis');
+  document.getElementById('cf_wa').classList.toggle('vis', canales.includes('whatsapp'));
+  document.getElementById('cf_ig').classList.toggle('vis', canales.includes('instagram'));
+}
+
+function selUrg(el){
+  document.querySelectorAll('.urg-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel'); urgencia=el.dataset.val;
+  document.getElementById('e_urg').classList.remove('vis');
+}
+
+function cc(el,id){ document.getElementById(id).textContent=el.value.length; }
+
+function v(id){ var e=document.getElementById(id); return e?e.value.trim():''; }
+
+function req(id,eid,fn){
+  var el=document.getElementById(id),er=document.getElementById(eid);
+  if(!el)return true;
+  var ok=fn?fn(el.value):el.value.trim();
+  if(!ok){el.classList.add('err');if(er)er.classList.add('vis');return false;}
+  el.classList.remove('err');if(er)er.classList.remove('vis');return true;
+}
+
+function validate(s){
+  var ok=true;
+  if(s===1){
+    if(!req('f_negocio','e_negocio'))ok=false;
+    if(!req('f_nombre','e_nombre'))ok=false;
+    if(!req('f_email','e_email',v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)))ok=false;
+    if(!req('f_wa_personal','e_wa_personal'))ok=false;
+    if(!req('f_desc','e_desc',v=>v.trim().length>=30))ok=false;
+    if(!sector){document.getElementById('e_sector').classList.add('vis');ok=false;}
+  }
+  if(s===2){
+    if(!req('f_cli','e_cli',v=>v.trim().length>=20))ok=false;
+    if(!req('f_prob','e_prob'))ok=false;
+  }
+  if(s===3){
+    if(!canales.length){document.getElementById('e_canales').classList.add('vis');ok=false;}
+    if(!req('f_cal','e_cal'))ok=false;
+    if(!req('f_sesion','e_sesion'))ok=false;
+    if(!req('f_tg','e_tg'))ok=false;
+  }
+  if(s===4){
+    if(!urgencia){document.getElementById('e_urg').classList.add('vis');ok=false;}
+  }
+  return ok;
+}
+
+function setStep(s){
+  document.getElementById('p'+step).classList.remove('active');
+  for(var i=1;i<=4;i++){
+    var d=document.getElementById('d'+i),lb=document.getElementById('lb'+i),ln=document.getElementById('l'+i);
+    d.classList.remove('active','done'); lb.classList.remove('active','done');
+    if(ln) ln.classList.remove('done');
+    if(i<s){d.classList.add('done');d.innerHTML='✓';lb.classList.add('done');if(ln)ln.classList.add('done');}
+    else if(i===s){d.classList.add('active');d.innerHTML=i;lb.classList.add('active');}
+    else{d.innerHTML=i;}
+  }
+  step=s;
+  document.getElementById('p'+step).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function next(s){
+  if(!validate(s))return;
+  setStep(s+1);
+}
+function back(s){ setStep(s-1); }
+
+function submit(){
+  if(!validate(4))return;
+  var btn=document.getElementById('btn-sub');
+  btn.textContent='Enviando...'; btn.disabled=true;
+
+  var data={
+    negocio:v('f_negocio'), nombre:v('f_nombre'), email:v('f_email'),
+    wa_personal:v('f_wa_personal'), sector:sector, descripcion:v('f_desc'),
+    modalidades:v('f_modal'), especialidades:v('f_espec'), tel_clinica:v('f_tel_cli'),
+    cliente_ideal:v('f_cli'), problema:v('f_prob'), resultado:v('f_res'),
+    objeciones:v('f_obj'), canales:canales.join(', '),
+    wa_negocio:v('f_wa_neg'), instagram:v('f_ig'),
+    calendly:v('f_cal'), nombre_sesion:v('f_sesion'),
+    telegram_closer:v('f_tg'), equipo:v('f_equipo'),
+    urgencia:urgencia, tono:v('f_tono'),
+    restricciones:v('f_rest'), notas:v('f_notas'),
+    timestamp:new Date().toISOString()
+  };
+
+  // 👇 REEMPLAZA CON TU WEBHOOK DE N8N
+  var WEBHOOK='https://TU-N8N.app.n8n.cloud/webhook/veloxia-onboarding';
+
+  fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+    .then(function(){showOk();}).catch(function(){showOk();});
+
+  function showOk(){
+    document.getElementById('hero-block').style.display='none';
+    document.getElementById('prog-block').style.display='none';
+    document.getElementById('p'+step).classList.remove('active');
+    document.getElementById('s-screen').classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+</script>
+</body>
+</html>
