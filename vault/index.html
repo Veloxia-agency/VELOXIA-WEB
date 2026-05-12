@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VELOXIA VAULT · Acceso Privado</title>
+  <meta name="description" content="Recursos privados para mejorar tu presencia digital, crear contenido que posiciona y no perder oportunidades.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:       #040404;
+      --black-2:     #060606;
+      --black-3:     #080808;
+      --gold:        #C4922A;
+      --gold-light:  #E8B84A;
+      --gold-border: rgba(196,146,42,0.25);
+      --gold-glow:   rgba(196,146,42,0.08);
+      --text:        #F0E8D8;
+      --text-muted:  #9A8C78;
+      --text-dim:    #6B5F4E;
+      --green:       #4AFF8A;
+      --red:         #FF6666;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--black);
+      color: var(--text);
+      font-family: 'DM Mono', 'Courier New', monospace;
+      overflow-x: hidden;
+      padding-top: 40px;
+    }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(196,146,42,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(196,146,42,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ===================== TOP BAR ===================== */
+    .top-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 40px;
+      background: #000;
+      border-bottom: 1px solid rgba(196,146,42,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      z-index: 1000;
+      padding: 0 20px;
+    }
+
+    .blink-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #ff3333;
+      flex-shrink: 0;
+      animation: blinkDot 1s ease-in-out infinite;
+    }
+    .blink-dot:last-child { animation-delay: 0.5s; }
+
+    @keyframes blinkDot {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.1; }
+    }
+
+    .top-bar-text {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      animation: topTextPulse 4s ease-in-out infinite;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @keyframes topTextPulse {
+      0%, 85%, 100% { opacity: 1; }
+      92%            { opacity: 0.25; }
+    }
+
+    /* ===================== LAYOUT ===================== */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===================== HERO ===================== */
+    .hero {
+      padding: 96px 0 72px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      opacity: 0.75;
+      border: 1px solid var(--gold-border);
+      padding: 6px 16px;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(46px, 7.5vw, 92px);
+      line-height: 0.95;
+      letter-spacing: 2px;
+      color: var(--text);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .hero h1 em {
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    .hero-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 580px;
+      margin: 0 auto 28px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .hero-body {
+      font-size: 12px;
+      color: var(--text-dim);
+      max-width: 660px;
+      margin: 0 auto;
+      line-height: 1.9;
+      border-left: 2px solid var(--gold-border);
+      padding-left: 20px;
+      text-align: left;
+    }
+
+    /* ===================== ACCESS PANEL ===================== */
+    .access-section {
+      padding: 48px 0 80px;
+    }
+
+    .access-panel {
+      max-width: 580px;
+      margin: 0 auto;
+      border: 1px solid var(--gold);
+      background: var(--black-3);
+      padding: 52px 48px;
+      position: relative;
+    }
+
+    .access-panel::before {
+      content: 'VX—01 // MADRID NODE';
+      position: absolute;
+      top: -11px; right: 28px;
+      background: var(--black-3);
+      padding: 0 12px;
+      font-size: 9px;
+      color: var(--gold);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .access-panel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: 0 0 60px rgba(196,146,42,0.04);
+      pointer-events: none;
+    }
+
+    .panel-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 30px;
+      letter-spacing: 5px;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .panel-subtitle {
+      text-align: center;
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: var(--text-dim);
+      margin-bottom: 40px;
+      text-transform: uppercase;
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 9px;
+      opacity: 0.65;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--gold-border);
+      color: var(--text);
+      padding: 12px 16px;
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .form-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C4922A' stroke-width='1.5' fill='none' stroke-linecap='square'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      cursor: pointer;
+    }
+
+    .form-select option {
+      background: #0a0a0a;
+      color: var(--text);
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 20px rgba(196,146,42,0.06);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-dim);
+      font-size: 12px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      padding: 17px 24px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 4px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 8px;
+      text-transform: uppercase;
+    }
+
+    .submit-btn:hover  { background: var(--gold-light); }
+    .submit-btn:active { transform: scale(0.99); }
+    .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    .microcopy {
+      text-align: center;
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      margin-top: 20px;
+      text-transform: uppercase;
+    }
+
+    .microcopy span { margin: 0 8px; }
+
+    .form-message {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px solid;
+      margin-top: 20px;
+      line-height: 1.7;
+    }
+
+    .form-message.success {
+      color: var(--green);
+      border-color: rgba(74,255,138,0.25);
+      background: rgba(74,255,138,0.04);
+    }
+
+    .form-message.error {
+      color: var(--red);
+      border-color: rgba(255,102,102,0.25);
+      background: rgba(255,102,102,0.04);
+    }
+
+    .form-message a {
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    /* ===================== MARQUEE ===================== */
+    .marquee-section {
+      overflow: hidden;
+      border-top: 1px solid var(--gold-border);
+      border-bottom: 1px solid var(--gold-border);
+      background: rgba(196,146,42,0.025);
+      padding: 14px 0;
+    }
+
+    .marquee-track {
+      display: flex;
+      animation: marquee 28s linear infinite;
+      width: max-content;
+    }
+
+    .marquee-item {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 5px;
+      color: var(--gold);
+      padding: 0 36px;
+      white-space: nowrap;
+      opacity: 0.65;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ===================== RESOURCES ===================== */
+    .resources-section {
+      padding: 80px 0 88px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-tag {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      opacity: 0.55;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 5vw, 58px);
+      letter-spacing: 4px;
+      color: var(--text);
+    }
+
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .resource-card {
+      border: 1px solid var(--gold-border);
+      background: var(--black-2);
+      padding: 28px 30px;
+      position: relative;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .resource-card:hover {
+      border-color: rgba(196,146,42,0.55);
+      box-shadow: 0 0 40px rgba(196,146,42,0.07);
+    }
+
+    .resource-card.locked { opacity: 0.65; }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .card-id {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--gold);
+      opacity: 0.45;
+    }
+
+    .badge {
+      font-size: 9px;
+      letter-spacing: 2px;
+      padding: 4px 10px;
+      text-transform: uppercase;
+    }
+
+    .badge-open {
+      background: rgba(42,122,74,0.15);
+      color: var(--green);
+      border: 1px solid rgba(74,255,138,0.25);
+    }
+
+    .badge-locked {
+      background: rgba(122,42,42,0.15);
+      color: var(--red);
+      border: 1px solid rgba(255,102,102,0.25);
+    }
+
+    .card-category {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      opacity: 0.55;
+    }
+
+    .card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 23px;
+      letter-spacing: 2px;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.1;
+    }
+
+    .card-desc {
+      font-size: 11px;
+      color: var(--text-dim);
+      line-height: 1.8;
+    }
+
+    .unlock-btn {
+      display: block;
+      width: 100%;
+      margin-top: 22px;
+      padding: 13px 16px;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 14px;
+      letter-spacing: 3px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      text-transform: uppercase;
+    }
+
+    .unlock-btn:hover {
+      background: var(--gold);
+      color: #000;
+    }
+
+    /* ===================== REFERRALS ===================== */
+    .referrals-section {
+      padding: 80px 0 88px;
+      border-top: 1px solid var(--gold-border);
+    }
+
+    .referral-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .referral-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px, 5vw, 54px);
+      letter-spacing: 3px;
+      color: var(--text);
+      margin-bottom: 20px;
+      line-height: 1.05;
+    }
+
+    .referral-body {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.9;
+      margin-bottom: 52px;
+      font-weight: 300;
+    }
+
+    .counter-widget {
+      border: 1px solid var(--gold-border);
+      background: var(--black-2);
+      padding: 44px 52px;
+      display: inline-block;
+      min-width: 380px;
+      position: relative;
+    }
+
+    .counter-widget::before {
+      content: 'CLASIFICADO';
+      position: absolute;
+      top: -11px; left: 24px;
+      background: var(--black-2);
+      padding: 0 10px;
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 3px;
+    }
+
+    .counter-label {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      opacity: 0.55;
+    }
+
+    .counter-numbers {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 80px;
+      color: var(--text);
+      letter-spacing: 4px;
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+
+    .counter-numbers span { color: var(--text-dim); }
+
+    .progress-bar {
+      width: 100%;
+      height: 2px;
+      background: rgba(196,146,42,0.1);
+      position: relative;
+      overflow: visible;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--gold);
+      transition: width 1s ease;
+      position: relative;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      right: -4px; top: -3px;
+      width: 8px; height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: block;
+    }
+
+    .counter-status {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      margin-top: 14px;
+      text-transform: uppercase;
+    }
+
+    /* ===================== FOOTER ===================== */
+    .footer {
+      padding: 56px 0 40px;
+      border-top: 1px solid var(--gold-border);
+      text-align: center;
+    }
+
+    .footer-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 7px;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .footer-sub {
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .footer-hash {
+      font-size: 9px;
+      color: rgba(196,146,42,0.18);
+      letter-spacing: 2px;
+      margin-top: 36px;
+    }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 768px) {
+      .resources-grid          { grid-template-columns: 1fr; }
+      .access-panel            { padding: 36px 24px; }
+      .counter-widget          { min-width: auto; width: 100%; padding: 36px 24px; }
+      .top-bar-text            { font-size: 8px; letter-spacing: 1.5px; }
+      .hero                    { padding: 72px 0 56px; }
+      .hero-body               { border-left: none; padding-left: 0; }
+    }
+
+    @media (max-width: 480px) {
+      .top-bar-text { display: none; }
+      .top-bar      { gap: 0; justify-content: space-between; }
+      .top-bar::after {
+        content: 'SISTEMA ACTIVO · VX—01';
+        font-size: 9px;
+        letter-spacing: 2px;
+        color: var(--gold);
+        text-transform: uppercase;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====== TOP BAR ====== -->
+  <div class="top-bar">
+    <span class="blink-dot"></span>
+    <span class="top-bar-text">REC · SISTEMA PRIVADO ACTIVO · VX—01 / MADRID NODE · CANAL SEGURO</span>
+    <span class="blink-dot"></span>
+  </div>
+
+  <!-- ====== HERO ====== -->
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">[ VAULT // VELOXIA · LVL 01 ]</p>
+      <h1>El sistema que tu negocio<br><em>debería tener</em> por dentro.</h1>
+      <p class="hero-sub">Recursos privados para mejorar tu presencia digital, crear contenido que posiciona y no perder oportunidades.</p>
+      <p class="hero-body">Cada checklist, prompt y framework que usamos para transformar negocios premium está aquí dentro. No es un PDF. No es una newsletter. Es la bóveda de Veloxia.</p>
+    </div>
+  </section>
+
+  <!-- ====== ACCESS PANEL ====== -->
+  <section class="access-section">
+    <div class="container">
+      <div class="access-panel">
+        <p class="panel-title">AUTHORIZATION REQUIRED</p>
+        <p class="panel-subtitle">// IDENTIFICACIÓN DE OPERADOR //</p>
+
+        <form id="vaultForm">
+          <div class="form-group">
+            <label class="form-label" for="vName">// NOMBRE</label>
+            <input class="form-input" type="text" id="vName" name="name" placeholder="Tu nombre" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="vEmail">// EMAIL</label>
+            <input class="form-input" type="email" id="vEmail" name="email" placeholder="tu@email.com" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="vType">// TIPO DE NEGOCIO</label>
+            <select class="form-select" id="vType" name="business_type" required>
+              <option value="" disabled selected>Selecciona tu tipo de negocio</option>
+              <option value="clinica_estetica">Clínica estética</option>
+              <option value="despacho_abogados">Despacho de abogados</option>
+              <option value="coach_consultor">Coach o consultor</option>
+              <option value="inmobiliaria">Inmobiliaria</option>
+              <option value="centro_salud">Centro de salud</option>
+              <option value="otro">Otro negocio de servicios</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="vWeb">// WEB O INSTAGRAM</label>
+            <input class="form-input" type="text" id="vWeb" name="website_or_instagram" placeholder="tudominio.com o @tuinstagram">
+          </div>
+          <button type="submit" class="submit-btn" id="submitBtn">SOLICITAR ACCESO →</button>
+        </form>
+
+        <div class="form-message" id="formMessage"></div>
+
+        <p class="microcopy">
+          <span>Sin spam</span>·<span>Acceso privado</span>·<span>Recursos actualizados semanalmente</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== MARQUEE ====== -->
+  <div class="marquee-section" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="marquee-item">— VELOXIA VAULT</span>
+      <span class="marquee-item">— PRESENCIA QUE VENDE</span>
+      <span class="marquee-item">— NINGÚN LEAD SIN ATENDER</span>
+      <span class="marquee-item">— CONTENIDO QUE POSICIONA</span>
+      <span class="marquee-item">— VELOXIA VAULT</span>
+      <span class="marquee-item">— PRESENCIA QUE VENDE</span>
+      <span class="marquee-item">— NINGÚN LEAD SIN ATENDER</span>
+      <span class="marquee-item">— CONTENIDO QUE POSICIONA</span>
+      <span class="marquee-item">— VELOXIA VAULT</span>
+      <span class="marquee-item">— PRESENCIA QUE VENDE</span>
+      <span class="marquee-item">— NINGÚN LEAD SIN ATENDER</span>
+      <span class="marquee-item">— CONTENIDO QUE POSICIONA</span>
+      <span class="marquee-item">— VELOXIA VAULT</span>
+      <span class="marquee-item">— PRESENCIA QUE VENDE</span>
+      <span class="marquee-item">— NINGÚN LEAD SIN ATENDER</span>
+      <span class="marquee-item">— CONTENIDO QUE POSICIONA</span>
+    </div>
+  </div>
+
+  <!-- ====== RECURSOS ====== -->
+  <section class="resources-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">// ARCHIVOS CLASIFICADOS //</span>
+        <h2 class="section-title">RECURSOS DISPONIBLES</h2>
+      </div>
+
+      <div class="resources-grid">
+
+        <div class="resource-card">
+          <div class="card-top">
+            <span class="card-id">EXP.001</span>
+            <span class="badge badge-open">OPEN</span>
+          </div>
+          <p class="card-category">STUDIO // CHECKLIST</p>
+          <h3 class="card-title">Checklist de presencia que vende</h3>
+          <p class="card-desc">Detecta en 10 minutos por qué tu web no genera contactos.</p>
+        </div>
+
+        <div class="resource-card">
+          <div class="card-top">
+            <span class="card-id">EXP.002</span>
+            <span class="badge badge-open">OPEN</span>
+          </div>
+          <p class="card-category">SETTER // FRAMEWORK</p>
+          <h3 class="card-title">Cómo no perder leads por responder tarde</h3>
+          <p class="card-desc">El sistema para responder y filtrar antes de que el cliente llame a otro.</p>
+        </div>
+
+        <div class="resource-card">
+          <div class="card-top">
+            <span class="card-id">EXP.003</span>
+            <span class="badge badge-open">OPEN</span>
+          </div>
+          <p class="card-category">CONTENT // PROMPTS</p>
+          <h3 class="card-title">30 ideas de contenido para negocios premium</h3>
+          <p class="card-desc">Prompts listos para clínicas, despachos, coaches e inmobiliarias.</p>
+        </div>
+
+        <div class="resource-card">
+          <div class="card-top">
+            <span class="card-id">EXP.004</span>
+            <span class="badge badge-open">OPEN</span>
+          </div>
+          <p class="card-category">AUDIT // TEMPLATE</p>
+          <h3 class="card-title">Plantilla de mini auditoría digital</h3>
+          <p class="card-desc">El esquema que usamos para revisar web, contenido, captación y seguimiento.</p>
+        </div>
+
+        <div class="resource-card">
+          <div class="card-top">
+            <span class="card-id">EXP.005</span>
+            <span class="badge badge-open">OPEN</span>
+          </div>
+          <p class="card-category">CRM // DASHBOARD</p>
+          <h3 class="card-title">Cómo debería verse tu sistema de oportunidades</h3>
+          <p class="card-desc">Guía visual para entender leads, citas, propuestas y clientes.</p>
+        </div>
+
+        <div class="resource-card locked">
+          <div class="card-top">
+            <span class="card-id">EXP.006</span>
+            <span class="badge badge-locked">LOCKED</span>
+          </div>
+          <p class="card-category">GROWTH SYSTEM // 3 INVITES</p>
+          <h3 class="card-title">Sistema completo Veloxia</h3>
+          <p class="card-desc">El flujo completo para convertir visitas, DMs y formularios en oportunidades.</p>
+          <button class="unlock-btn" onclick="scrollToForm()">DESBLOQUEA CON 3 INVITACIONES</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== REFERIDOS ====== -->
+  <section class="referrals-section">
+    <div class="container">
+      <div class="referral-inner">
+        <span class="section-tag">// PROTOCOLO DE ACCESO EXTENDIDO //</span>
+        <h2 class="referral-title">Desbloquea el recurso premium<br>invitando a 3 personas.</h2>
+        <p class="referral-body">
+          Cuando accedas recibirás tu link personal.<br>
+          Si 3 personas entran con tu link, desbloqueas el sistema completo.
+        </p>
+
+        <div class="counter-widget">
+          <p class="counter-label">// PROGRESO DE INVITACIONES //</p>
+          <div class="counter-numbers">0 <span>/ 3</span></div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <p class="counter-status">ESTADO: EN ESPERA DE ACCESO</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-title">VELOXIA VAULT · ACCESO PRIVADO · MADRID</p>
+      <p class="footer-sub">Presencia · Automatización · Contenido</p>
+      <p class="footer-hash">VX.VAULT.v1.0 // NODE:MDR-01 // ENCRYPTED // #2025</p>
+    </div>
+  </footer>
+
+  <script>
+    const VAULT_WEBHOOK = 'https://veloxiasetter.app.n8n.cloud/webhook/vault-register';
+
+    function getRef() {
+      return new URLSearchParams(window.location.search).get('ref') || '';
+    }
+
+    function scrollToForm() {
+      document.querySelector('.access-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => document.getElementById('vName').focus(), 600);
+    }
+
+    document.getElementById('vaultForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('submitBtn');
+      const msg = document.getElementById('formMessage');
+
+      btn.disabled = true;
+      btn.textContent = 'PROCESANDO...';
+
+      const payload = {
+        name:                document.getElementById('vName').value.trim(),
+        email:               document.getElementById('vEmail').value.trim(),
+        business_type:       document.getElementById('vType').value,
+        website_or_instagram:document.getElementById('vWeb').value.trim(),
+        ref:                 getRef(),
+        source:              'veloxia_vault',
+        submitted_at:        new Date().toISOString()
+      };
+
+      try {
+        const res = await fetch(VAULT_WEBHOOK, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          document.getElementById('vaultForm').style.display = 'none';
+          msg.textContent   = 'ACCESO SOLICITADO. Revisa tu email.';
+          msg.className     = 'form-message success';
+          msg.style.display = 'block';
+        } else {
+          throw new Error('server error');
+        }
+      } catch {
+        msg.innerHTML     = 'ERROR. Escríbenos a <a href="mailto:hola@veloxia.agency">hola@veloxia.agency</a>';
+        msg.className     = 'form-message error';
+        msg.style.display = 'block';
+        btn.disabled      = false;
+        btn.textContent   = 'SOLICITAR ACCESO →';
+      }
+    });
+  </script>
+
+</body>
+</html>
