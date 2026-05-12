@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VELOXIA Setter — Ningún lead sin atender</title>
+<meta name="description" content="Agente IA que responde en segundos, cualifica y agenda leads automáticamente por WhatsApp, Instagram y formularios. Para clínicas, coaches y consultores en Madrid.">
+<meta property="og:title" content="VELOXIA Setter — Tu agente IA de cualificación">
+<meta property="og:description" content="Respuesta automática en menos de 90 segundos. Cualificación con IA. Agenda en Calendly sin intervención humana.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ─── RESET & ROOT ─── */
+:root {
+  --obsidian: #2A2118;
+  --dusk:     #231C14;
+  --noir:     #1E1810;
+  --gold:     #C4922A;
+  --gold-l:   #E8B84A;
+  --cream:    #F0E8D8;
+  --cream2:   #D4C8B0;
+  --muted:    #9A8C78;
+  --faint:    #6B5F4E;
+  --border:   rgba(196,146,42,0.18);
+  --border-h: rgba(196,146,42,0.38);
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--obsidian);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity: 0.55;
+}
+
+/* ─── UTILIDADES ─── */
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 40px; }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--gold); font-weight: 600;
+}
+.eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); flex-shrink: 0; }
+
+a { text-decoration: none; }
+
+/* ─── BOTONES ─── */
+.btn-gold {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--gold); color: var(--noir);
+  padding: 15px 34px; font-size: 11px; letter-spacing: 3px;
+  text-transform: uppercase; font-weight: 700;
+  transition: background .2s, transform .15s;
+}
+.btn-gold:hover { background: var(--gold-l); transform: translateY(-1px); }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 1px solid var(--border-h); color: var(--cream2);
+  padding: 15px 34px; font-size: 11px; letter-spacing: 3px;
+  text-transform: uppercase; font-weight: 600;
+  transition: border-color .2s, color .2s, transform .15s;
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-1px); }
+
+.btn-wa {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: #25D366; color: #fff;
+  padding: 15px 34px; font-size: 11px; letter-spacing: 3px;
+  text-transform: uppercase; font-weight: 700;
+  transition: background .2s, transform .15s;
+}
+.btn-wa:hover { background: #1db954; transform: translateY(-1px); }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 40px;
+  background: rgba(42,33,24,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: border-color .3s;
+}
+.nav-inner {
+  max-width: 1120px; margin: 0 auto;
+  height: 68px; display: flex; align-items: center; justify-content: space-between;
+}
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 8px; color: var(--cream);
+}
+.logo .v, .logo .dot { color: var(--gold); }
+.nav-links { display: flex; align-items: center; gap: 32px; }
+.nav-links a {
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--muted); font-weight: 500; transition: color .2s;
+}
+.nav-links a:hover { color: var(--cream); }
+.nav-cta {
+  background: var(--gold); color: var(--noir) !important;
+  padding: 10px 22px; font-weight: 700 !important;
+  transition: background .2s !important;
+  font-size: 10px !important; letter-spacing: 2.5px !important;
+}
+.nav-cta:hover { background: var(--gold-l) !important; }
+.nav-burger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+}
+.nav-burger span { width: 22px; height: 1px; background: var(--cream); display: block; transition: .3s; }
+
+/* ─── HERO ─── */
+#hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 140px 40px 100px;
+  position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+.hero-bg svg {
+  position: absolute; right: 0; top: 0;
+  width: 55%; height: 100%; opacity: 0.055;
+}
+.hero-glow {
+  position: absolute; right: -80px; top: 50%; transform: translateY(-50%);
+  width: 680px; height: 680px;
+  background: radial-gradient(circle, rgba(196,146,42,0.11) 0%, transparent 68%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 1120px; margin: 0 auto; width: 100%; }
+.hero-eyebrow { margin-bottom: 36px; }
+.hero-h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(62px, 10vw, 148px);
+  letter-spacing: 2px; line-height: 0.88;
+  color: var(--cream); margin-bottom: 10px; max-width: 820px;
+}
+.hero-h1 .accent { color: var(--gold); }
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: clamp(20px, 2.8vw, 36px);
+  color: var(--muted); line-height: 1.35; margin-bottom: 28px; max-width: 600px;
+}
+.hero-desc {
+  font-size: 17px; color: var(--muted); line-height: 1.85;
+  max-width: 520px; margin-bottom: 48px; font-weight: 300;
+}
+.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 60px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 1px solid var(--border);
+  padding: 12px 20px;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--faint); font-weight: 600;
+}
+.hero-badge .dot-live {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #25D366; box-shadow: 0 0 6px #25D366;
+  flex-shrink: 0; animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* ─── HERO METRICS ─── */
+.hero-metrics {
+  position: absolute; right: 60px; top: 50%; transform: translateY(-50%);
+  background: var(--noir);
+  border: 1px solid rgba(196,146,42,0.38);
+  padding: 28px 32px; width: 252px; z-index: 2;
+}
+.hero-metrics::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.hm-header {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 24px; padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.hm-live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #25D366; box-shadow: 0 0 6px #25D366;
+  animation: pulse 2s infinite; flex-shrink: 0;
+}
+.hm-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.hm-row { padding: 16px 0; border-bottom: 1px solid var(--border); }
+.hm-row:last-child { border-bottom: none; padding-bottom: 0; }
+.hm-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px; letter-spacing: 2px;
+  color: var(--gold); line-height: 1; display: block;
+}
+.hm-suffix { font-size: 28px; color: var(--muted); }
+.hm-desc { font-size: 11px; color: var(--muted); font-weight: 300; letter-spacing: 0.5px; margin-top: 4px; display: block; }
+@media (max-width: 768px) { .hero-metrics { display: none; } }
+
+/* ─── PARA QUIÉN ─── */
+#para-quien {
+  padding: 120px 40px;
+  background: var(--dusk);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.pq-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(44px, 6.5vw, 90px);
+  letter-spacing: 2px; line-height: 0.9;
+  color: var(--cream); margin-top: 20px; margin-bottom: 16px;
+}
+.pq-h2 .gold { color: var(--gold); }
+.pq-intro { font-size: 17px; color: var(--muted); line-height: 1.8; max-width: 640px; font-weight: 300; margin-bottom: 64px; }
+.pq-intro strong { color: var(--cream2); font-weight: 500; }
+
+.pq-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0; margin-bottom: 48px;
+}
+.pq-card {
+  background: var(--obsidian);
+  border: 1px solid var(--border);
+  padding: 44px 36px;
+  position: relative; overflow: hidden; transition: border-color .3s;
+}
+.pq-card:hover { border-color: var(--border-h); }
+.pq-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.pq-card:hover::after { opacity: 1; }
+.pq-card-icon { font-size: 26px; display: block; margin-bottom: 18px; line-height: 1; }
+.pq-card-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 2px; color: var(--cream); margin-bottom: 8px; line-height: 1;
+}
+.pq-card-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; font-weight: 300; line-height: 1.5; }
+.pq-card-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.pq-card-list li { font-size: 13px; color: var(--cream2); font-weight: 300; display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+.pq-card-list li::before { content: '→'; color: var(--gold); flex-shrink: 0; font-size: 11px; margin-top: 1px; }
+
+.pq-nota {
+  background: var(--obsidian); border: 1px solid var(--border-h);
+  padding: 36px 44px; display: flex; align-items: center; justify-content: space-between; gap: 40px;
+}
+.pq-nota p { font-size: 15px; color: var(--cream2); font-weight: 300; line-height: 1.7; }
+.pq-nota strong { color: var(--gold); font-weight: 500; }
+.pq-nota a {
+  flex-shrink: 0; font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  font-weight: 700; color: var(--gold);
+  border-bottom: 1px solid var(--gold); padding-bottom: 2px;
+  transition: opacity .2s; white-space: nowrap;
+}
+.pq-nota a:hover { opacity: 0.7; }
+
+/* ─── CÓMO FUNCIONA ─── */
+#como-funciona {
+  padding: 140px 40px;
+}
+.cf-header { margin-bottom: 80px; }
+.cf-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(44px, 6.5vw, 90px);
+  letter-spacing: 2px; line-height: 0.9;
+  color: var(--cream); margin-top: 20px;
+}
+.cf-h2 .gold { color: var(--gold); }
+
+.cf-flow {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.cf-step {
+  background: var(--dusk);
+  border: 1px solid var(--border);
+  padding: 44px 32px;
+  position: relative; overflow: hidden; transition: border-color .3s;
+}
+.cf-step:hover { border-color: var(--border-h); }
+.cf-step::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.cf-step:hover::after { opacity: 1; }
+.cf-step-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 80px; letter-spacing: 2px; line-height: 1;
+  color: var(--border); display: block; margin-bottom: 20px; transition: color .3s;
+}
+.cf-step:hover .cf-step-num { color: rgba(196,146,42,0.22); }
+.cf-step-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 2px; color: var(--cream); margin-bottom: 12px;
+}
+.cf-step-body { font-size: 14px; color: var(--muted); line-height: 1.8; font-weight: 300; }
+.cf-step-body strong { color: var(--cream2); font-weight: 500; }
+
+/* ─── QUÉ INCLUYE ─── */
+#incluye {
+  padding: 120px 40px;
+  background: var(--dusk);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.inc-header { margin-bottom: 72px; }
+.inc-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(44px, 6.5vw, 90px);
+  letter-spacing: 2px; line-height: 0.9;
+  color: var(--cream); margin-top: 20px;
+}
+.inc-h2 .gold { color: var(--gold); }
+.inc-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: 24px; color: var(--muted); margin-top: 12px;
+}
+
+.inc-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0; margin-bottom: 48px;
+}
+.inc-card {
+  background: var(--obsidian);
+  border: 1px solid var(--border);
+  padding: 44px 32px;
+  position: relative; overflow: hidden; transition: border-color .3s;
+}
+.inc-card:hover { border-color: var(--border-h); }
+.inc-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.inc-card:hover::before { opacity: 1; }
+.inc-card-tag {
+  font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); font-weight: 700; margin-bottom: 18px; display: block;
+}
+.inc-card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 2px; color: var(--cream); margin-bottom: 12px; line-height: 1;
+}
+.inc-card-body { font-size: 13px; color: var(--muted); line-height: 1.8; font-weight: 300; margin-bottom: 20px; }
+.inc-card-body strong { color: var(--cream2); font-weight: 500; }
+.inc-card-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.inc-card-list li { font-size: 12px; color: var(--cream2); font-weight: 300; display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+.inc-card-list li::before { content: '→'; color: var(--gold); flex-shrink: 0; font-size: 10px; margin-top: 1px; }
+
+.inc-bottom {
+  background: var(--obsidian); border: 1px solid var(--border-h);
+  padding: 44px 48px; display: flex; align-items: center; gap: 48px;
+}
+.inc-bottom-left { flex: 1; }
+.inc-bottom-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; letter-spacing: 2px; color: var(--cream); margin-bottom: 12px;
+}
+.inc-bottom-body { font-size: 14px; color: var(--muted); line-height: 1.8; font-weight: 300; }
+.inc-bottom-body strong { color: var(--cream2); font-weight: 500; }
+.inc-bottom-right { flex-shrink: 0; }
+
+/* ─── SIN PRECIOS ─── */
+#propuesta {
+  padding: 140px 40px;
+  position: relative; overflow: hidden;
+}
+#propuesta::before {
+  content: '';
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(196,146,42,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.propuesta-inner { max-width: 900px; margin: 0 auto; text-align: center; position: relative; }
+.propuesta-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 7.5vw, 110px);
+  letter-spacing: 3px; line-height: 0.88;
+  color: var(--cream); margin-top: 20px; margin-bottom: 16px;
+}
+.propuesta-h2 .gold { color: var(--gold); }
+.propuesta-serif {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: 28px; color: var(--muted); margin-bottom: 28px;
+}
+.propuesta-desc {
+  font-size: 17px; color: var(--muted); line-height: 1.9;
+  font-weight: 300; margin-bottom: 56px; max-width: 680px; margin-left: auto; margin-right: auto;
+}
+.propuesta-desc strong { color: var(--cream2); font-weight: 500; }
+.propuesta-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0; margin-bottom: 56px;
+}
+.pc { background: var(--dusk); border: 1px solid var(--border); padding: 36px 28px; }
+.pc-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px; letter-spacing: 2px; color: var(--gold);
+  display: block; line-height: 1; margin-bottom: 12px;
+}
+.pc-text { font-size: 13px; color: var(--muted); line-height: 1.65; font-weight: 300; }
+.pc-text strong { color: var(--cream2); font-weight: 500; }
+
+/* ─── FAQ ─── */
+#faq {
+  padding: 140px 40px;
+  background: var(--dusk);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.faq-inner { max-width: 800px; margin: 0 auto; }
+.faq-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 6.5vw, 86px);
+  letter-spacing: 3px; color: var(--cream);
+  margin-top: 20px; margin-bottom: 64px; line-height: .92;
+}
+details { border-bottom: 1px solid var(--border); }
+details summary {
+  list-style: none; cursor: pointer;
+  padding: 28px 0;
+  font-size: 16px; color: var(--cream2); font-weight: 400;
+  display: flex; justify-content: space-between; align-items: center; gap: 20px;
+  transition: color .2s; user-select: none;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary:hover { color: var(--cream); }
+details summary::after {
+  content: '+'; font-size: 22px; color: var(--gold); flex-shrink: 0;
+  line-height: 1; transition: transform .3s;
+  font-family: 'DM Sans', sans-serif; font-weight: 300;
+}
+details[open] summary::after { transform: rotate(45deg); }
+.faq-answer {
+  font-size: 14px; color: var(--muted); line-height: 1.85;
+  font-weight: 300; padding-bottom: 28px; padding-right: 40px;
+}
+.faq-answer strong { color: var(--cream2); font-weight: 500; }
+
+/* ─── CTA FINAL ─── */
+#cta-final {
+  padding: 140px 40px;
+  text-align: center; position: relative; overflow: hidden;
+  background: var(--noir); border-top: 1px solid var(--border);
+}
+#cta-final::before {
+  content: '';
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  width: 900px; height: 900px;
+  background: radial-gradient(circle, rgba(196,146,42,0.09) 0%, transparent 65%);
+  pointer-events: none;
+}
+.cta-inner { max-width: 800px; margin: 0 auto; position: relative; }
+.cta-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 8vw, 116px);
+  letter-spacing: 3px; line-height: 0.88;
+  color: var(--cream); margin-top: 24px; margin-bottom: 16px;
+}
+.cta-h2 .gold { color: var(--gold); }
+.cta-serif {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: 28px; color: var(--muted); margin-bottom: 12px;
+}
+.cta-note { font-size: 13px; color: var(--faint); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 44px; }
+.cta-btns { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+/* ─── FOOTER ─── */
+footer { background: var(--noir); border-top: 1px solid var(--border); padding: 52px 40px; }
+.footer-inner {
+  max-width: 1120px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;
+}
+.footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 7px; color: var(--cream); }
+.footer-logo .v, .footer-logo .dot { color: var(--gold); }
+.footer-links { display: flex; gap: 28px; }
+.footer-links a { font-size: 11px; color: var(--faint); letter-spacing: 2px; text-transform: uppercase; transition: color .2s; }
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 11px; color: var(--faint); letter-spacing: 1.5px; }
+
+/* ─── REVEAL ─── */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity .75s ease, transform .75s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 960px) {
+  .pq-grid { grid-template-columns: 1fr 1fr; }
+  .cf-flow { grid-template-columns: 1fr 1fr; }
+  .inc-grid { grid-template-columns: 1fr 1fr; }
+  .propuesta-cards { grid-template-columns: 1fr; }
+  .inc-bottom { flex-direction: column; gap: 28px; }
+}
+@media (max-width: 768px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  #hero, #para-quien, #como-funciona, #incluye, #propuesta, #faq, #cta-final, footer { padding-left: 24px; padding-right: 24px; }
+  .pq-grid { grid-template-columns: 1fr; }
+  .cf-flow { grid-template-columns: 1fr; }
+  .inc-grid { grid-template-columns: 1fr; }
+  .pq-nota { flex-direction: column; text-align: center; }
+  .cta-btns { flex-direction: column; align-items: center; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+  details summary { font-size: 15px; }
+  .faq-answer { padding-right: 0; }
+}
+@media (max-width: 480px) {
+  .hero-ctas { flex-direction: column; align-items: flex-start; }
+  .hero-ctas .btn-gold, .hero-ctas .btn-ghost { width: 100%; justify-content: center; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="../" class="logo"><span class="v">V</span>ELOXIA<span class="dot">.</span></a>
+    <div class="nav-links">
+      <a href="../">Inicio</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#incluye">Qué incluye</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20automatizar%20mis%20leads%20con%20VELOXIA%20Setter" class="nav-cta">Quiero una demo →</a>
+    </div>
+    <button class="nav-burger" aria-label="Menú" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-bg">
+    <svg viewBox="0 0 600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="600" y1="0" x2="0" y2="900" stroke="#C4922A" stroke-width="0.5"/>
+      <line x1="500" y1="0" x2="0" y2="700" stroke="#C4922A" stroke-width="0.5"/>
+      <line x1="400" y1="0" x2="0" y2="500" stroke="#C4922A" stroke-width="0.5"/>
+      <line x1="300" y1="0" x2="0" y2="300" stroke="#C4922A" stroke-width="0.5"/>
+      <rect x="440" y="180" width="90" height="90" fill="none" stroke="#C4922A" stroke-width="0.7"/>
+      <rect x="462" y="202" width="46" height="46" fill="#C4922A" opacity="0.04"/>
+    </svg>
+    <div class="hero-glow"></div>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow reveal">
+      <span class="eyebrow">Veloxia Setter · Agente IA</span>
+    </div>
+    <h1 class="hero-h1 reveal" style="transition-delay:.1s">
+      NINGÚN LEAD<br>SIN <span class="accent">ATENDER.</span>
+    </h1>
+    <p class="hero-sub reveal" style="transition-delay:.2s">
+      Tu agente IA responde en segundos, cualifica y agenda llamadas antes de que el cliente llame a otro.
+    </p>
+    <p class="hero-desc reveal" style="transition-delay:.3s">
+      El 78% de los leads que no reciben respuesta en los primeros 5 minutos eligen a otro. ARIA responde en menos de 90 segundos, cualifica automáticamente y agenda la llamada — sin que tú levantes el teléfono.
+    </p>
+    <div class="hero-ctas reveal" style="transition-delay:.4s">
+      <a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20automatizar%20mis%20leads%20con%20VELOXIA%20Setter" class="btn-gold">Quiero automatizar mis leads →</a>
+      <a href="#como-funciona" class="btn-ghost">Ver cómo funciona</a>
+    </div>
+    <div class="reveal" style="transition-delay:.5s">
+      <div class="hero-badge">
+        <span class="dot-live"></span>
+        Activo 24/7 · Responde en &lt;90s · Sin intervención humana
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-metrics">
+    <div class="hm-header">
+      <span class="hm-live-dot"></span>
+      <span class="hm-label">ARIA en vivo</span>
+    </div>
+    <div class="hm-row">
+      <span class="hm-value"><span id="hm-resp">0</span><span class="hm-suffix">s</span></span>
+      <span class="hm-desc">Tiempo de respuesta medio</span>
+    </div>
+    <div class="hm-row">
+      <span class="hm-value"><span id="hm-qual">0</span><span class="hm-suffix">%</span></span>
+      <span class="hm-desc">Leads cualificados automáticamente</span>
+    </div>
+    <div class="hm-row">
+      <span class="hm-value"><span id="hm-calls">0</span></span>
+      <span class="hm-desc">Llamadas agendadas este mes</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PARA QUIÉN ═══ -->
+<section id="para-quien">
+  <div class="wrap">
+    <div class="eyebrow reveal">Para quién es Setter</div>
+    <h2 class="pq-h2 reveal" style="transition-delay:.1s">
+      PARA QUIEN<br>RECIBE LEADS<br>Y NO PUEDE <span class="gold">PERDERLOS.</span>
+    </h2>
+    <p class="pq-intro reveal" style="transition-delay:.2s">
+      Si tienes un proceso de venta donde el primer contacto importa, <strong>Setter trabaja para ti mientras tú trabajas para tus clientes.</strong>
+    </p>
+
+    <div class="pq-grid">
+
+      <div class="pq-card reveal">
+        <span class="pq-card-icon">⚕</span>
+        <div class="pq-card-name">CLÍNICAS</div>
+        <p class="pq-card-sub">Altas demandas de contacto. Pacientes que eligen por rapidez de respuesta.</p>
+        <ul class="pq-card-list">
+          <li>Responde consultas de WhatsApp al instante</li>
+          <li>Cualifica urgencia y tipo de tratamiento</li>
+          <li>Agenda cita directamente en Calendly</li>
+        </ul>
+      </div>
+
+      <div class="pq-card reveal" style="transition-delay:.1s">
+        <span class="pq-card-icon">◈</span>
+        <div class="pq-card-name">COACHES</div>
+        <p class="pq-card-sub">Leads de redes que llegan fuera de horario y se enfrían en horas.</p>
+        <ul class="pq-card-list">
+          <li>Respuesta inmediata a DMs de Instagram</li>
+          <li>Cualificación de presupuesto y objetivo</li>
+          <li>Entrega el lead listo para el cierre</li>
+        </ul>
+      </div>
+
+      <div class="pq-card reveal" style="transition-delay:.2s">
+        <span class="pq-card-icon">⚖</span>
+        <div class="pq-card-name">DESPACHOS</div>
+        <p class="pq-card-sub">Consultas que requieren filtrado antes de llegar al profesional.</p>
+        <ul class="pq-card-list">
+          <li>Primera criba de casos por tipo y urgencia</li>
+          <li>Recopila información antes de la primera llamada</li>
+          <li>Agenda reuniones sin secretaría manual</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="pq-nota reveal" style="transition-delay:.3s">
+      <p>Si recibes más de <strong>10 contactos nuevos al mes</strong> por cualquier canal — Setter amortiza su coste desde el primer lead que no pierdes.</p>
+      <a href="https://wa.me/34684376021?text=Quiero%20ver%20si%20Setter%20encaja%20con%20mi%20negocio">Ver si encaja →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CÓMO FUNCIONA ═══ -->
+<section id="como-funciona">
+  <div class="wrap">
+    <div class="cf-header">
+      <div class="eyebrow reveal">El proceso de ARIA</div>
+      <h2 class="cf-h2 reveal" style="transition-delay:.1s">
+        DE LEAD A<br>LLAMADA EN<br><span class="gold">CUATRO PASOS.</span>
+      </h2>
+    </div>
+
+    <div class="cf-flow">
+
+      <div class="cf-step reveal">
+        <span class="cf-step-num">01</span>
+        <h3 class="cf-step-title">LEAD ENTRA</h3>
+        <p class="cf-step-body">Llega por WhatsApp, Instagram DM o formulario web. <strong>ARIA detecta el contacto en tiempo real</strong> — no importa el canal ni la hora. Nada queda sin responder.</p>
+      </div>
+
+      <div class="cf-step reveal" style="transition-delay:.1s">
+        <span class="cf-step-num">02</span>
+        <h3 class="cf-step-title">RESPUESTA &lt;90S</h3>
+        <p class="cf-step-body">En menos de 90 segundos, ARIA saluda con el nombre del negocio, pregunta lo que necesita saber y mantiene la conversación activa. <strong>El lead nunca queda en silencio.</strong></p>
+      </div>
+
+      <div class="cf-step reveal" style="transition-delay:.2s">
+        <span class="cf-step-num">03</span>
+        <h3 class="cf-step-title">CUALIFICACIÓN IA</h3>
+        <p class="cf-step-body">ARIA identifica intención, presupuesto, urgencia y encaje. <strong>Filtra lo que no interesa. Prioriza lo que sí.</strong> Si el lead no es adecuado, lo descarta con elegancia.</p>
+      </div>
+
+      <div class="cf-step reveal" style="transition-delay:.3s">
+        <span class="cf-step-num">04</span>
+        <h3 class="cf-step-title">AGENDA + RESUMEN</h3>
+        <p class="cf-step-body">El lead cualificado reserva su llamada en Calendly sin ayuda humana. <strong>Tu closer recibe un resumen completo antes de la llamada</strong> — contexto, intención y objeciones identificadas.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ QUÉ INCLUYE ═══ -->
+<section id="incluye">
+  <div class="wrap">
+    <div class="inc-header">
+      <div class="eyebrow reveal">El sistema completo</div>
+      <h2 class="inc-h2 reveal" style="transition-delay:.1s">
+        TODO LO QUE<br>NECESITAS PARA<br><span class="gold">NO PERDER UN LEAD.</span>
+      </h2>
+      <p class="inc-sub reveal" style="transition-delay:.2s">Configurado, integrado y funcionando desde el primer día.</p>
+    </div>
+
+    <div class="inc-grid">
+
+      <div class="inc-card reveal">
+        <span class="inc-card-tag">Canales</span>
+        <h3 class="inc-card-title">OMNICANAL</h3>
+        <p class="inc-card-body">ARIA responde en todos los canales donde llegan tus leads. <strong>Un agente. Todos los frentes cubiertos.</strong></p>
+        <ul class="inc-card-list">
+          <li>WhatsApp Business API</li>
+          <li>Instagram Direct Messages</li>
+          <li>Formularios web (Make / n8n)</li>
+          <li>Integrable con más canales a medida</li>
+        </ul>
+      </div>
+
+      <div class="inc-card reveal" style="transition-delay:.1s">
+        <span class="inc-card-tag">Inteligencia</span>
+        <h3 class="inc-card-title">ARIA IA</h3>
+        <p class="inc-card-body">El cerebro del sistema. Entrenado con el tono, la oferta y los criterios de cualificación de tu negocio. <strong>Habla como tú, filtra como tú.</strong></p>
+        <ul class="inc-card-list">
+          <li>Cualificación con preguntas personalizadas</li>
+          <li>Detección de intención y urgencia</li>
+          <li>Respuestas contextuales y naturales</li>
+          <li>Escalado a humano cuando se necesita</li>
+        </ul>
+      </div>
+
+      <div class="inc-card reveal" style="transition-delay:.2s">
+        <span class="inc-card-tag">Seguimiento</span>
+        <h3 class="inc-card-title">FOLLOW-UP AUTO</h3>
+        <p class="inc-card-body">Si el lead no responde, ARIA hace seguimiento automático. <strong>Tres toques en el momento exacto</strong> sin que tú tengas que recordarlo.</p>
+        <ul class="inc-card-list">
+          <li>Recordatorio a las 2h sin respuesta</li>
+          <li>Seguimiento a las 24h con nuevo ángulo</li>
+          <li>Cierre de conversación a las 72h</li>
+          <li>Avisos instantáneos por Telegram</li>
+        </ul>
+      </div>
+
+      <div class="inc-card reveal" style="transition-delay:.3s">
+        <span class="inc-card-tag">Agenda</span>
+        <h3 class="inc-card-title">CALENDLY SIN FRICCIÓN</h3>
+        <p class="inc-card-body">El lead reserva su propia llamada dentro de la conversación. <strong>Sin links externos, sin PDF de instrucciones,</strong> sin que nadie tenga que intervenir manualmente.</p>
+        <ul class="inc-card-list">
+          <li>Integración directa con Calendly</li>
+          <li>Confirmación automática por WhatsApp</li>
+          <li>Recordatorio antes de la llamada</li>
+          <li>Reconfirmación si no aparece</li>
+        </ul>
+      </div>
+
+      <div class="inc-card reveal" style="transition-delay:.35s">
+        <span class="inc-card-tag">Control</span>
+        <h3 class="inc-card-title">CRM EN TIEMPO REAL</h3>
+        <p class="inc-card-body">Cada conversación queda registrada en Airtable. <strong>Ves el estado de cada lead, la transcripción y el resumen</strong> en tiempo real desde el móvil.</p>
+        <ul class="inc-card-list">
+          <li>CRM en Airtable actualizado automáticamente</li>
+          <li>Vista de pipeline por estado del lead</li>
+          <li>Resumen de cada conversación para el closer</li>
+          <li>Historial completo exportable</li>
+        </ul>
+      </div>
+
+      <div class="inc-card reveal" style="transition-delay:.4s">
+        <span class="inc-card-tag">Visibilidad</span>
+        <h3 class="inc-card-title">ALERTAS INSTANTÁNEAS</h3>
+        <p class="inc-card-body">Cuando hay algo que necesita atención humana, lo sabes al momento. <strong>Sin revisar el CRM, sin perderte nada importante.</strong></p>
+        <ul class="inc-card-list">
+          <li>Notificación en Telegram con resumen del lead</li>
+          <li>Alerta de lead de alta prioridad</li>
+          <li>Informe semanal de métricas del agente</li>
+          <li>Acceso directo a la conversación desde la alerta</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SIN PRECIOS ═══ -->
+<section id="propuesta">
+  <div class="propuesta-inner">
+    <div class="eyebrow reveal" style="justify-content:center">Inversión</div>
+    <h2 class="propuesta-h2 reveal" style="transition-delay:.1s">
+      TU AGENTE.<br>TU <span class="gold">PROPUESTA.</span>
+    </h2>
+    <p class="propuesta-serif reveal" style="transition-delay:.15s">Cada configuración es diferente. Sin paquetes fijos.</p>
+    <p class="propuesta-desc reveal" style="transition-delay:.2s">
+      El coste depende de los canales que necesitas cubrir, el volumen de leads y los criterios de cualificación de tu negocio. <strong>Hablamos, entendemos tu proceso y te proponemos exactamente el sistema que necesitas — sin extras que no usarás.</strong>
+    </p>
+
+    <div class="propuesta-cards reveal" style="transition-delay:.3s">
+      <div class="pc">
+        <span class="pc-num">30'</span>
+        <p class="pc-text">Diagnóstico gratuito. Entendemos tu proceso de captación y dónde pierdes leads.</p>
+      </div>
+      <div class="pc">
+        <span class="pc-num">48h</span>
+        <p class="pc-text">Propuesta cerrada con canales, flujo de cualificación e inversión real. <strong>Sin números vagos.</strong></p>
+      </div>
+      <div class="pc">
+        <span class="pc-num">72h</span>
+        <p class="pc-text">ARIA activa desde la aprobación. Tu agente respondiendo leads en menos de tres días.</p>
+      </div>
+    </div>
+
+    <div class="reveal" style="transition-delay:.4s">
+      <a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20automatizar%20mis%20leads%20con%20VELOXIA%20Setter" class="btn-gold" style="font-size:12px;letter-spacing:3.5px;padding:18px 44px;">Quiero automatizar mis leads →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section id="faq">
+  <div class="faq-inner">
+    <div class="eyebrow reveal">Lo que más nos preguntan</div>
+    <h2 class="faq-h2 reveal" style="transition-delay:.1s">PREGUNTAS<br>FRECUENTES.</h2>
+
+    <details class="reveal" style="transition-delay:.15s">
+      <summary>¿El agente IA cierra ventas automáticamente?</summary>
+      <p class="faq-answer">No, y eso es intencionado. ARIA cualifica, hace seguimiento y agenda la llamada con tu closer — pero <strong>el cierre lo hace siempre una persona de tu equipo.</strong> Lo que conseguimos es que tu closer solo hable con leads que ya tienen intención de compra, con toda la información necesaria para cerrar en esa primera llamada. La IA prepara el terreno. El humano cierra.</p>
+    </details>
+
+    <details class="reveal" style="transition-delay:.2s">
+      <summary>¿Cuánto tarda en estar activo el sistema?</summary>
+      <p class="faq-answer">Entre 48 y 72 horas desde la aprobación de la propuesta. El proceso implica conectar los canales, configurar ARIA con el tono y los criterios de tu negocio, integrar Calendly y montar el CRM en Airtable. <strong>En menos de una semana tienes el sistema respondiendo leads en tiempo real.</strong> El factor más importante es que nos facilites acceso a las cuentas necesarias sin demoras.</p>
+    </details>
+
+    <details class="reveal" style="transition-delay:.25s">
+      <summary>¿Qué pasa si un lead hace una pregunta que ARIA no sabe responder?</summary>
+      <p class="faq-answer">ARIA está entrenada para gestionar este caso con elegancia. Si detecta que una pregunta está fuera de su alcance, <strong>avisa al equipo humano por Telegram de forma inmediata</strong> y mantiene al lead en conversación sin generar frustración. Nunca deja un mensaje sin responder ni inventa información que no tiene. El escalado a humano está siempre disponible con un clic desde la alerta de Telegram.</p>
+    </details>
+
+    <details class="reveal" style="transition-delay:.3s">
+      <summary>¿Funciona solo con WhatsApp o también con Instagram y la web?</summary>
+      <p class="faq-answer">Funciona en todos los canales. <strong>WhatsApp Business, Instagram Direct y formularios web</strong> están incluidos en la configuración base. Si recibes leads por Facebook Messenger, email o cualquier otro canal, también se puede integrar bajo consulta. La gran ventaja es que ARIA gestiona todo desde un único flujo — el lead llega desde donde llega, y el tratamiento es el mismo.</p>
+    </details>
+
+  </div>
+</section>
+
+<!-- ═══ CTA FINAL ═══ -->
+<section id="cta-final">
+  <div class="cta-inner">
+    <div class="eyebrow reveal" style="justify-content:center">Empieza hoy</div>
+    <h2 class="cta-h2 reveal" style="transition-delay:.1s">
+      CADA LEAD<br>QUE NO ATIENDES<br>ES UN <span class="gold">CLIENTE PERDIDO.</span>
+    </h2>
+    <p class="cta-serif reveal" style="transition-delay:.2s">ARIA trabaja mientras tú duermes. Actívala esta semana.</p>
+    <p class="cta-note reveal" style="transition-delay:.25s">Activo en 72h · Sin permanencia · Sin intervención manual</p>
+    <div class="cta-btns reveal" style="transition-delay:.3s">
+      <a href="https://wa.me/34684376021?text=Hola%2C%20quiero%20una%20demo%20de%20VELOXIA%20Setter" class="btn-wa"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Quiero una demo →</a>
+      <a href="mailto:hola@veloxia.agency" class="btn-ghost">Enviar un email →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo"><span class="v">V</span>ELOXIA<span class="dot">.</span></div>
+    <div class="footer-links">
+      <a href="../">Inicio</a>
+      <a href="#">Privacidad</a>
+      <a href="#">Aviso legal</a>
+      <a href="mailto:hola@veloxia.agency">hola@veloxia.agency</a>
+      <a href="https://wa.me/34684376021">WhatsApp</a>
+    </div>
+    <div class="footer-copy">© 2025 VELOXIA. Madrid.</div>
+  </div>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+setTimeout(() => {
+  document.querySelectorAll('#hero .reveal').forEach(el => el.classList.add('visible'));
+}, 80);
+
+function animCount(id, target, ms) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let v = 0, step = target / (ms / 16);
+  const t = setInterval(() => {
+    v += step;
+    if (v >= target) { el.textContent = target; clearInterval(t); return; }
+    el.textContent = Math.floor(v);
+  }, 16);
+}
+setTimeout(() => {
+  animCount('hm-resp', 47, 1200);
+  animCount('hm-qual', 94, 1500);
+  animCount('hm-calls', 38, 1000);
+}, 400);
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').style.borderBottomColor =
+    window.scrollY > 50 ? 'rgba(196,146,42,0.28)' : 'rgba(196,146,42,0.18)';
+}, { passive: true });
+
+function toggleMenu() {
+  const links = document.querySelector('.nav-links');
+  const open = links.style.display === 'flex';
+  links.style.display = open ? 'none' : 'flex';
+  if (!open) {
+    links.style.flexDirection = 'column';
+    links.style.position = 'fixed';
+    links.style.top = '68px';
+    links.style.left = '0';
+    links.style.right = '0';
+    links.style.background = 'rgba(30,24,16,0.98)';
+    links.style.padding = '24px 40px';
+    links.style.borderBottom = '1px solid rgba(196,146,42,0.18)';
+    links.style.gap = '20px';
+    links.style.backdropFilter = 'blur(20px)';
+  } else {
+    links.style = '';
+  }
+}
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    const links = document.querySelector('.nav-links');
+    if (window.innerWidth <= 768) links.style.display = 'none';
+  });
+});
+</script>
+</body>
+</html>
