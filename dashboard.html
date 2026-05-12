@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VELOXIA. — CRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --obsidian: #2A2118;
+  --dusk:     #231C14;
+  --noir:     #1E1810;
+  --gold:     #C4922A;
+  --gold-l:   #E8B84A;
+  --cream:    #F0E8D8;
+  --cream2:   #D4C8B0;
+  --muted:    #9A8C78;
+  --faint:    #6B5F4E;
+  --border:   rgba(196,146,42,0.18);
+  --border-h: rgba(196,146,42,0.38);
+  --sb-w:     240px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  background: var(--noir);
+  color: var(--cream);
+  overflow: hidden;
+}
+
+/* ── LAYOUT ── */
+.app { display: flex; height: 100vh; overflow: hidden; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sb-w);
+  flex-shrink: 0;
+  background: var(--dusk);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  z-index: 10;
+}
+
+.sb-logo {
+  padding: 26px 24px 22px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.sb-wordmark {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 8px; color: var(--cream);
+}
+.sb-wordmark .v, .sb-wordmark .dot { color: var(--gold); }
+.sb-sub {
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--faint); font-weight: 600; margin-top: 5px;
+}
+
+.sb-nav { flex: 1; overflow-y: auto; padding: 12px 0; }
+
+.sb-group-label {
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--faint); font-weight: 600;
+  padding: 14px 24px 6px;
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 11px;
+  padding: 11px 24px;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 13px; font-weight: 500; letter-spacing: 0.3px;
+  border-left: 2px solid transparent;
+  transition: background 0.18s, color 0.18s;
+  user-select: none;
+}
+.nav-item:hover { background: rgba(196,146,42,0.06); color: var(--cream2); }
+.nav-item.active { background: rgba(196,146,42,0.1); color: var(--gold); border-left-color: var(--gold); }
+.nav-item svg { flex-shrink: 0; opacity: 0.65; }
+.nav-item.active svg { opacity: 1; }
+
+.sb-footer {
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.sb-updated { font-size: 10px; color: var(--faint); letter-spacing: 0.5px; }
+
+/* ── MAIN ── */
+.main { flex: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; min-width: 0; }
+
+/* ── HEADER ── */
+.header {
+  background: var(--dusk);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.header-left { display: flex; align-items: center; gap: 14px; }
+
+.hdr-burger {
+  display: none; flex-direction: column; gap: 4px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+}
+.hdr-burger span { width: 20px; height: 1px; background: var(--cream2); display: block; }
+
+.hdr-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: 4px; color: var(--cream);
+}
+.header-right { display: flex; align-items: center; gap: 16px; }
+.hdr-date { font-size: 12px; color: var(--muted); letter-spacing: 0.5px; }
+
+.badge-live {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(37,211,102,0.09);
+  border: 1px solid rgba(37,211,102,0.22);
+  padding: 5px 12px;
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: #25D366; font-weight: 600;
+}
+.live-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #25D366; box-shadow: 0 0 5px #25D366;
+  animation: blink 2s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+/* ── CONTENT ── */
+.content {
+  flex: 1; overflow-y: auto; padding: 28px 32px;
+  background: var(--obsidian);
+}
+
+/* ── SECTIONS ── */
+.section { display: none; }
+.section.active { display: block; }
+.page-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 4px; color: var(--cream);
+  margin-bottom: 24px;
+}
+
+/* ── STATS GRID ── */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0; margin-bottom: 28px;
+}
+.stat-card {
+  background: var(--dusk);
+  border: 1px solid var(--border);
+  padding: 22px 26px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.25s;
+}
+.stat-card:hover { border-color: var(--border-h); }
+.stat-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0; transition: opacity 0.25s;
+}
+.stat-card:hover::before { opacity: 1; }
+
+.stat-label {
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--muted); font-weight: 600; margin-bottom: 10px;
+}
+.stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px; letter-spacing: 2px;
+  color: var(--cream); line-height: 1; margin-bottom: 8px;
+}
+.stat-unit { font-size: 26px; color: var(--gold); }
+.stat-delta { font-size: 11px; color: var(--muted); font-weight: 300; }
+.stat-delta.up { color: #4dd87e; }
+.stat-icon {
+  position: absolute; right: 18px; top: 18px;
+  color: var(--gold); opacity: 0.07;
+}
+
+/* ── DASH BOTTOM ── */
+.dash-bottom {
+  display: grid; grid-template-columns: 1fr 300px;
+  gap: 0;
+}
+
+/* ── PIPELINE ── */
+.pipeline-wrap {
+  background: var(--dusk);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.panel-header {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.panel-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px; letter-spacing: 3px; color: var(--cream);
+}
+.panel-meta { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; }
+
+.pipeline-scroll {
+  display: flex; overflow-x: auto;
+  padding: 18px 18px 18px;
+  gap: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-h) transparent;
+}
+.pipeline-scroll::-webkit-scrollbar { height: 3px; }
+.pipeline-scroll::-webkit-scrollbar-thumb { background: var(--border-h); }
+
+.pipe-col {
+  min-width: 188px; flex-shrink: 0;
+  padding-right: 16px; margin-right: 16px;
+  border-right: 1px solid var(--border);
+}
+.pipe-col:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+
+.pipe-col-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.pipe-col-name {
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--muted); font-weight: 600;
+}
+.pipe-col-count {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; color: var(--gold);
+}
+
+.pipe-card {
+  background: var(--obsidian);
+  border: 1px solid var(--border);
+  padding: 13px;
+  margin-bottom: 8px;
+  transition: border-color 0.2s;
+}
+.pipe-card:hover { border-color: var(--border-h); }
+.pipe-card:last-child { margin-bottom: 0; }
+
+.pc-score { font-size: 9px; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 5px; }
+.pc-name { font-size: 12px; font-weight: 500; color: var(--cream); line-height: 1.3; margin-bottom: 4px; }
+.pc-niche { font-size: 10px; color: var(--muted); margin-bottom: 4px; }
+.pc-product { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+.pc-action {
+  font-size: 10px; color: var(--faint);
+  border-top: 1px solid var(--border);
+  padding-top: 7px; margin-top: 3px;
+  line-height: 1.4;
+}
+.pipe-empty { font-size: 11px; color: var(--faint); padding: 6px 0; font-style: italic; }
+
+/* ── ACTIVITY ── */
+.activity-wrap {
+  background: var(--dusk);
+  border: 1px solid var(--border);
+  border-left: none;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.act-list { padding: 4px 20px; overflow-y: auto; flex: 1; }
+.act-item {
+  display: flex; gap: 11px; align-items: flex-start;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+}
+.act-item:last-child { border-bottom: none; }
+.act-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 4px;
+}
+.act-body { flex: 1; min-width: 0; }
+.act-action { font-size: 12px; color: var(--cream2); font-weight: 500; margin-bottom: 2px; }
+.act-detail { font-size: 11px; color: var(--muted); line-height: 1.4; }
+.act-time { font-size: 10px; color: var(--faint); flex-shrink: 0; margin-top: 2px; white-space: nowrap; }
+
+/* ── SCORE / STATUS / PRODUCT ── */
+.score-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 22px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+}
+.score-hi  { background: rgba(77,216,126,0.14); color: #4dd87e; }
+.score-mid { background: rgba(196,146,42,0.14); color: var(--gold); }
+.score-lo  { background: rgba(255,107,107,0.14); color: #FF6B6B; }
+
+.status-pill {
+  display: inline-block;
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  font-weight: 600; padding: 4px 10px;
+}
+.s-nuevo      { background: rgba(196,146,42,0.12);   color: var(--gold); }
+.s-contactado { background: rgba(78,205,196,0.12);   color: #4ECDC4; }
+.s-demo       { background: rgba(69,183,209,0.12);   color: #45B7D1; }
+.s-reunion    { background: rgba(162,107,255,0.12);  color: #A26BFF; }
+.s-cerrado    { background: rgba(77,216,126,0.12);   color: #4dd87e; }
+
+.prod-studio  { color: var(--gold); }
+.prod-setter  { color: #4ECDC4; }
+.prod-content { color: #FF6A00; }
+.prod-combo   { color: var(--gold-l); }
+
+/* ── LEADS TABLE ── */
+.table-wrap { background: var(--dusk); border: 1px solid var(--border); overflow: auto; }
+.leads-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+.leads-table th {
+  background: var(--noir);
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--muted); font-weight: 600;
+  padding: 13px 20px; text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.leads-table td {
+  padding: 13px 20px; font-size: 13px; color: var(--cream2);
+  border-bottom: 1px solid var(--border);
+  font-weight: 300; vertical-align: middle;
+}
+.leads-table tr:last-child td { border-bottom: none; }
+.leads-table tbody tr:hover td { background: rgba(196,146,42,0.04); }
+.td-primary { font-weight: 500; color: var(--cream); }
+.td-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.td-date { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; }
+
+/* ── PLACEHOLDER ── */
+.placeholder {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 380px; gap: 14px; opacity: 0.35;
+}
+.placeholder svg { color: var(--gold); }
+.placeholder-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 4px; color: var(--cream);
+}
+.placeholder-sub { font-size: 12px; color: var(--muted); letter-spacing: 1px; }
+
+/* ── REFRESH BAR ── */
+.refresh-bar {
+  position: fixed; bottom: 0; right: 0;
+  left: var(--sb-w); height: 2px;
+  background: var(--border); overflow: hidden; z-index: 100;
+}
+.refresh-fill { height: 100%; background: var(--gold); width: 0%; }
+
+/* ── OVERLAY (mobile) ── */
+.sb-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.65); z-index: 40;
+}
+.sb-overlay.show { display: block; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-h); border-radius: 2px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .dash-bottom { grid-template-columns: 1fr; }
+  .activity-wrap { border-left: 1px solid var(--border); border-top: none; max-height: 320px; }
+}
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed; left: 0; top: 0;
+    transform: translateX(-100%);
+    transition: transform 0.28s ease;
+    z-index: 50;
+  }
+  .sidebar.open { transform: translateX(0); }
+  .hdr-burger { display: flex; }
+  .hdr-date { display: none; }
+  .refresh-bar { left: 0; }
+  .content { padding: 20px 16px; }
+  .header { padding: 0 16px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- OVERLAY -->
+  <div class="sb-overlay" id="overlay" onclick="closeSb()"></div>
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-wordmark"><span class="v">V</span>ELOXIA<span class="dot">.</span></div>
+      <div class="sb-sub">CRM Interno</div>
+    </div>
+
+    <nav class="sb-nav">
+      <div class="sb-group-label">Principal</div>
+
+      <div class="nav-item active" data-s="dashboard">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        Dashboard
+      </div>
+
+      <div class="nav-item" data-s="leads">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Leads
+      </div>
+
+      <div class="sb-group-label" style="margin-top:6px;">Gestión</div>
+
+      <div class="nav-item" data-s="demos">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        Demos
+      </div>
+
+      <div class="nav-item" data-s="clientes">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+        </svg>
+        Clientes
+      </div>
+
+      <div class="nav-item" data-s="ingresos">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+          <polyline points="17 6 23 6 23 12"/>
+        </svg>
+        Ingresos
+      </div>
+
+      <div class="nav-item" data-s="actividad">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+        Actividad
+      </div>
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-updated" id="last-updated">Cargando...</div>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN ═══ -->
+  <div class="main">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <button class="hdr-burger" id="burger" onclick="toggleSb()" aria-label="Menú">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="hdr-title" id="hdr-title">DASHBOARD</div>
+      </div>
+      <div class="header-right">
+        <div class="hdr-date" id="hdr-date"></div>
+        <div class="badge-live">
+          <span class="live-dot"></span>
+          Sistema activo
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <!-- ── DASHBOARD ── -->
+      <section id="s-dashboard" class="section active">
+
+        <div class="stats-grid" id="stats-grid"></div>
+
+        <div class="dash-bottom">
+          <div class="pipeline-wrap">
+            <div class="panel-header">
+              <div class="panel-title">Pipeline</div>
+              <div class="panel-meta" id="pipe-meta"></div>
+            </div>
+            <div class="pipeline-scroll" id="pipeline"></div>
+          </div>
+          <div class="activity-wrap">
+            <div class="panel-header">
+              <div class="panel-title">Actividad reciente</div>
+            </div>
+            <div class="act-list" id="act-list"></div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── LEADS ── -->
+      <section id="s-leads" class="section">
+        <div class="page-title">Leads</div>
+        <div class="table-wrap">
+          <table class="leads-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Nicho</th>
+                <th>Producto</th>
+                <th>Score</th>
+                <th>Status</th>
+                <th>Próxima acción</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+            <tbody id="leads-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── DEMOS ── -->
+      <section id="s-demos" class="section">
+        <div class="page-title">Demos</div>
+        <div class="placeholder">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <div class="placeholder-title">Módulo en construcción</div>
+          <div class="placeholder-sub">Próximamente disponible</div>
+        </div>
+      </section>
+
+      <!-- ── CLIENTES ── -->
+      <section id="s-clientes" class="section">
+        <div class="page-title">Clientes</div>
+        <div class="placeholder">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <rect x="2" y="7" width="20" height="14" rx="2"/>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+          </svg>
+          <div class="placeholder-title">Módulo en construcción</div>
+          <div class="placeholder-sub">Próximamente disponible</div>
+        </div>
+      </section>
+
+      <!-- ── INGRESOS ── -->
+      <section id="s-ingresos" class="section">
+        <div class="page-title">Ingresos</div>
+        <div class="placeholder">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+            <polyline points="17 6 23 6 23 12"/>
+          </svg>
+          <div class="placeholder-title">Módulo en construcción</div>
+          <div class="placeholder-sub">Próximamente disponible</div>
+        </div>
+      </section>
+
+      <!-- ── ACTIVIDAD ── -->
+      <section id="s-actividad" class="section">
+        <div class="page-title">Actividad</div>
+        <div class="placeholder">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          <div class="placeholder-title">Módulo en construcción</div>
+          <div class="placeholder-sub">Próximamente disponible</div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- REFRESH BAR -->
+<div class="refresh-bar"><div class="refresh-fill" id="rfill"></div></div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────
+const N8N_WEBHOOK = 'https://TU-WEBHOOK-AQUI/dashboard-data';
+const REFRESH_SEC = 60;
+
+// ── MOCK DATA ────────────────────────────────────────
+const MOCK = {
+  stats: {
+    totalLeads: 28,
+    demosScheduled: 6,
+    activeClients: 4,
+    monthlyRevenue: 8400,
+    deltaLeads: '+3 esta semana',
+    deltaDemos: '+2 esta semana',
+    deltaClients: '+1 este mes',
+    deltaRevenue: '+1.200 € este mes'
+  },
+  leads: [
+    {
+      id: 1,
+      name: 'Clínica Estética Belleza',
+      contact: 'Marta Sanz',
+      niche: 'Clínica estética',
+      product: 'Studio + Setter',
+      score: 87,
+      status: 'Demo',
+      nextAction: 'Llamada de cierre',
+      date: '2026-05-14'
+    },
+    {
+      id: 2,
+      name: 'García & Asociados',
+      contact: 'Alejandro García',
+      niche: 'Despacho de abogados',
+      product: 'Studio',
+      score: 72,
+      status: 'Contactado',
+      nextAction: 'Enviar propuesta',
+      date: '2026-05-15'
+    },
+    {
+      id: 3,
+      name: 'Centro Nutrición & Bienestar',
+      contact: 'Lucía Martínez',
+      niche: 'Nutrición · Salud',
+      product: 'Setter',
+      score: 61,
+      status: 'Nuevo',
+      nextAction: 'Primera llamada',
+      date: '2026-05-13'
+    },
+    {
+      id: 4,
+      name: 'Consultoría Talentum',
+      contact: 'Carlos Ruiz',
+      niche: 'Consultoría RRHH',
+      product: 'Content',
+      score: 54,
+      status: 'Reunión',
+      nextAction: 'Presentar demo en vídeo',
+      date: '2026-05-16'
+    },
+    {
+      id: 5,
+      name: 'Clínica Dental Sonrisa',
+      contact: 'Dr. Pablo Molina',
+      niche: 'Clínica dental',
+      product: 'Studio + Setter',
+      score: 94,
+      status: 'Cerrado',
+      nextAction: 'Onboarding',
+      date: '2026-05-10'
+    }
+  ],
+  activity: [
+    { time: 'Hace 12 min', action: 'Lead nuevo recibido',       detail: 'Clínica Estética Ruiz — vía WhatsApp',        type: 'lead'     },
+    { time: 'Hace 47 min', action: 'Demo agendada',             detail: 'Consultoría Talentum — Calendly confirmado',  type: 'demo'     },
+    { time: 'Hace 2h',     action: 'Cliente cerrado',           detail: 'Clínica Dental Sonrisa — 2.800 €',           type: 'closed'   },
+    { time: 'Hace 3h',     action: 'Propuesta enviada',         detail: 'García & Asociados — VELOXIA Studio',        type: 'proposal' },
+    { time: 'Hace 5h',     action: 'Seguimiento automático',    detail: 'ARIA → Centro Nutrición (follow-up 24h)',     type: 'followup' }
+  ]
+};
+
+const STAGES = ['Nuevo', 'Contactado', 'Demo', 'Reunión', 'Cerrado'];
+
+const ACT_COLORS = {
+  lead: '#C4922A', demo: '#45B7D1', closed: '#4dd87e',
+  proposal: '#A26BFF', followup: '#9A8C78'
+};
+
+// ── FETCH ────────────────────────────────────────────
+async function fetchDashboardData() {
+  try {
+    const r = await fetch(N8N_WEBHOOK, { method: 'GET', signal: AbortSignal.timeout(5000) });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return await r.json();
+  } catch {
+    return MOCK;
+  }
+}
+
+// ── HELPERS ──────────────────────────────────────────
+function scoreClass(s) {
+  return s >= 80 ? 'score-hi' : s >= 60 ? 'score-mid' : 'score-lo';
+}
+
+function prodClass(p) {
+  if (p.includes('+'))    return 'prod-combo';
+  if (p === 'Studio')     return 'prod-studio';
+  if (p === 'Setter')     return 'prod-setter';
+  if (p === 'Content')    return 'prod-content';
+  return 'prod-studio';
+}
+
+function statusClass(s) {
+  const map = { Nuevo:'s-nuevo', Contactado:'s-contactado', Demo:'s-demo', Reunión:'s-reunion', Cerrado:'s-cerrado' };
+  return map[s] || 's-nuevo';
+}
+
+function fmtDate(str) {
+  return new Date(str).toLocaleDateString('es-ES', { day:'2-digit', month:'short' });
+}
+
+function fmtRevenue(n) {
+  return n.toLocaleString('es-ES');
+}
+
+// ── RENDER STATS ─────────────────────────────────────
+function renderStats(s) {
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Leads totales</div>
+      <div class="stat-value">${s.totalLeads}</div>
+      <div class="stat-delta up">${s.deltaLeads}</div>
+      <svg class="stat-icon" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Demos agendadas</div>
+      <div class="stat-value">${s.demosScheduled}</div>
+      <div class="stat-delta up">${s.deltaDemos}</div>
+      <svg class="stat-icon" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Clientes activos</div>
+      <div class="stat-value">${s.activeClients}</div>
+      <div class="stat-delta up">${s.deltaClients}</div>
+      <svg class="stat-icon" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Cash este mes</div>
+      <div class="stat-value">${fmtRevenue(s.monthlyRevenue)}<span class="stat-unit"> €</span></div>
+      <div class="stat-delta up">${s.deltaRevenue}</div>
+      <svg class="stat-icon" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8">
+        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+        <polyline points="17 6 23 6 23 12"/>
+      </svg>
+    </div>
+  `;
+}
+
+// ── RENDER PIPELINE ───────────────────────────────────
+function renderPipeline(leads) {
+  document.getElementById('pipe-meta').textContent = leads.length + ' leads activos';
+  document.getElementById('pipeline').innerHTML = STAGES.map(stage => {
+    const sl = leads.filter(l => l.status === stage);
+    const cards = sl.map(l => `
+      <div class="pipe-card">
+        <div class="pc-score ${scoreClass(l.score)}">Score: ${l.score}</div>
+        <div class="pc-name">${l.name}</div>
+        <div class="pc-niche">${l.niche}</div>
+        <div class="pc-product ${prodClass(l.product)}">${l.product}</div>
+        <div class="pc-action">${l.nextAction} →</div>
+      </div>
+    `).join('');
+    return `
+      <div class="pipe-col">
+        <div class="pipe-col-hdr">
+          <div class="pipe-col-name">${stage}</div>
+          <div class="pipe-col-count">${sl.length}</div>
+        </div>
+        ${cards || '<div class="pipe-empty">Sin leads</div>'}
+      </div>
+    `;
+  }).join('');
+}
+
+// ── RENDER ACTIVITY ───────────────────────────────────
+function renderActivity(activity) {
+  document.getElementById('act-list').innerHTML = activity.map(a => {
+    const col = ACT_COLORS[a.type] || '#9A8C78';
+    return `
+      <div class="act-item">
+        <div class="act-dot" style="background:${col};box-shadow:0 0 5px ${col}55"></div>
+        <div class="act-body">
+          <div class="act-action">${a.action}</div>
+          <div class="act-detail">${a.detail}</div>
+        </div>
+        <div class="act-time">${a.time}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ── RENDER LEADS TABLE ────────────────────────────────
+function renderLeadsTable(leads) {
+  document.getElementById('leads-tbody').innerHTML = leads.map(l => `
+    <tr>
+      <td>
+        <div class="td-primary">${l.name}</div>
+        <div class="td-sub">${l.contact}</div>
+      </td>
+      <td>${l.niche}</td>
+      <td><span class="${prodClass(l.product)}" style="font-size:10px;letter-spacing:1px;font-weight:600;text-transform:uppercase;">${l.product}</span></td>
+      <td><span class="score-badge ${scoreClass(l.score)}">${l.score}</span></td>
+      <td><span class="status-pill ${statusClass(l.status)}">${l.status}</span></td>
+      <td>${l.nextAction}</td>
+      <td class="td-date">${fmtDate(l.date)}</td>
+    </tr>
+  `).join('');
+}
+
+// ── FULL RENDER ───────────────────────────────────────
+function renderAll(data) {
+  renderStats(data.stats);
+  renderPipeline(data.leads);
+  renderActivity(data.activity);
+  renderLeadsTable(data.leads);
+  const now = new Date();
+  document.getElementById('last-updated').textContent =
+    'Act. ' + now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+}
+
+// ── DATE ─────────────────────────────────────────────
+function updateDate() {
+  document.getElementById('hdr-date').textContent =
+    new Date().toLocaleDateString('es-ES', { weekday:'short', day:'numeric', month:'long', year:'numeric' });
+}
+
+// ── NAVIGATION ───────────────────────────────────────
+const NAV_LABELS = {
+  dashboard: 'DASHBOARD', leads: 'LEADS', demos: 'DEMOS',
+  clientes: 'CLIENTES', ingresos: 'INGRESOS', actividad: 'ACTIVIDAD'
+};
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const s = item.dataset.s;
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+    item.classList.add('active');
+    document.getElementById('s-' + s).classList.add('active');
+    document.getElementById('hdr-title').textContent = NAV_LABELS[s];
+    closeSb();
+  });
+});
+
+// ── MOBILE SIDEBAR ────────────────────────────────────
+function toggleSb() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSb() {
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+  }
+}
+
+// ── REFRESH BAR ───────────────────────────────────────
+const rfill = document.getElementById('rfill');
+function startBar() {
+  rfill.style.transition = 'none';
+  rfill.style.width = '0%';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    rfill.style.transition = `width ${REFRESH_SEC}s linear`;
+    rfill.style.width = '100%';
+  }));
+}
+
+// ── INIT + AUTO-REFRESH ───────────────────────────────
+async function init() {
+  updateDate();
+  const data = await fetchDashboardData();
+  renderAll(data);
+  startBar();
+}
+
+async function refresh() {
+  const data = await fetchDashboardData();
+  renderAll(data);
+  startBar();
+}
+
+init();
+setInterval(refresh, REFRESH_SEC * 1000);
+</script>
+</body>
+</html>
