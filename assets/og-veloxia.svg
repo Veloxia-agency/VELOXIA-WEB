@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#040404"/>
+  <!-- Subtle gold grid lines -->
+  <line x1="0" y1="314" x2="1200" y2="314" stroke="#C4922A" stroke-width="0.5" stroke-opacity="0.08"/>
+  <line x1="600" y1="0" x2="600" y2="630" stroke="#C4922A" stroke-width="0.5" stroke-opacity="0.08"/>
+  <!-- Gold bottom border -->
+  <rect x="0" y="626" width="1200" height="4" fill="#C4922A"/>
+  <!-- Logo: VELOXIA. -->
+  <text x="600" y="290" text-anchor="middle" dominant-baseline="middle"
+        font-family="Arial Black, Arial, sans-serif" font-weight="900"
+        font-size="120" letter-spacing="16" fill="#F0E8D8">VELOXIA</text>
+  <!-- Gold dot -->
+  <text x="882" y="290" text-anchor="middle" dominant-baseline="middle"
+        font-family="Arial Black, Arial, sans-serif" font-weight="900"
+        font-size="120" fill="#C4922A">.</text>
+  <!-- Subtitle -->
+  <text x="600" y="390" text-anchor="middle" dominant-baseline="middle"
+        font-family="Arial, sans-serif" font-weight="300"
+        font-size="28" letter-spacing="6" fill="#9A8C78">Presencia. Captación. Contenido.</text>
+</svg>

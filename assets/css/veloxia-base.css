@@ -1,0 +1,214 @@
+/* =========================================================
+   VELOXIA BASE — Estilos compartidos
+   Modificar aquí afecta todos los archivos que importan este CSS.
+   ========================================================= */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+/* ── VARIABLES GLOBALES ── */
+:root {
+  /* Spec — variables genéricas */
+  --color-black:  #040404;
+  --color-dark:   #111111;
+  --color-card:   #1A1A1A;
+  --color-border: #27272A;
+  --color-gold:   #C4922A;
+  --color-orange: #FF6A00;
+  --color-white:  #FFFFFF;
+  --color-gray:   #A1A1AA;
+  --font-primary: 'Inter', sans-serif;
+  --font-mono:    'Geist Mono', monospace;
+
+  /* VELOXIA Brand — páginas principales */
+  --obsidian: #040404;
+  --dusk:     #231C14;
+  --noir:     #1E1810;
+  --gold:     #C4922A;
+  --gold-l:   #E8B84A;
+  --cream:    #F0E8D8;
+  --cream2:   #D4C8B0;
+  --muted:    #9A8C78;
+  --faint:    #6B5F4E;
+  --border:   rgba(196,146,42,0.18);
+  --border-h: rgba(196,146,42,0.38);
+
+  /* Vault palette */
+  --black:       #040404;
+  --black-2:     #060606;
+  --black-3:     #080808;
+  --gold-light:  #E8B84A;
+  --gold-border: rgba(196,146,42,0.25);
+  --gold-glow:   rgba(196,146,42,0.08);
+  --text:        #F0E8D8;
+  --text-muted:  #9A8C78;
+  --text-dim:    #6B5F4E;
+  --green:       #4AFF8A;
+  --red:         #FF6666;
+  --orange:      #FF9A3A;
+}
+
+/* ── VAULT — Estilos compartidos por vault/index + exp001–005 ──
+   Las páginas principales sobreescriben body y body::before
+   con sus propios estilos en su <style> local.              ── */
+
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'DM Mono', 'Courier New', monospace;
+  overflow-x: hidden;
+  padding-top: 40px;
+}
+
+/* Grid background Vault */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(196,146,42,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196,146,42,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* TOP BAR */
+.top-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 40px;
+  background: #000;
+  border-bottom: 1px solid rgba(196,146,42,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  z-index: 1000;
+  padding: 0 20px;
+}
+
+.blink-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #ff3333;
+  flex-shrink: 0;
+  animation: blinkDot 1s ease-in-out infinite;
+}
+.blink-dot:last-child { animation-delay: 0.5s; }
+
+@keyframes blinkDot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.1; }
+}
+
+.top-bar-text {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* LAYOUT — la max-width se sobreescribe por página */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* BREADCRUMB */
+.breadcrumb {
+  padding: 32px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.breadcrumb a {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-decoration: none;
+  text-transform: uppercase;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+.breadcrumb a:hover { opacity: 1; }
+.breadcrumb span { font-size: 10px; color: var(--text-dim); }
+
+/* HERO BASE */
+.hero { padding: 40px 0 56px; }
+
+.badge-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.badge-exp {
+  font-size: 9px;
+  letter-spacing: 3px;
+  padding: 5px 12px;
+  border: 1px solid var(--gold-border);
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.badge-cat {
+  font-size: 9px;
+  letter-spacing: 2px;
+  padding: 5px 12px;
+  border: 1px solid rgba(74,255,138,0.25);
+  color: var(--green);
+  background: rgba(74,255,138,0.04);
+  text-transform: uppercase;
+}
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(38px, 7vw, 68px);
+  line-height: 0.95;
+  letter-spacing: 2px;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+h1 em { color: var(--gold); font-style: normal; }
+
+.hero-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.8;
+  font-weight: 300;
+  max-width: 620px;
+}
+
+/* MARCAR COMO COMPLETADO — compartido por vault/exp001–005 */
+.complete-wrap {
+  margin: 0 auto;
+  padding: 0 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+.complete-btn {
+  display: block;
+  width: 100%;
+  padding: 20px;
+  background: transparent;
+  border: 1px solid var(--gold-border);
+  color: var(--text-dim);
+  font-family: 'DM Mono', 'Courier New', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.complete-btn:hover { border-color: var(--gold); color: var(--gold); }
+.complete-btn.done  { border-color: rgba(74,255,138,0.4); color: var(--green); cursor: default; }

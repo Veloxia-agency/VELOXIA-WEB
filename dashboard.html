@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VELOXIA. — CRM</title>
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="alternate icon" href="/assets/favicon.ico">
+<meta name="theme-color" content="#040404">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -399,6 +402,25 @@ html, body {
 </head>
 <body>
 
+<script>
+// ⚠️ TEMPORAL: gate de contraseña básico.
+// ACCIÓN PENDIENTE: configurar Cloudflare Access para restricción
+// real por email (hola@veloxia.agency). Este gate es solo de emergencia.
+const VELOXIA_DASH_PASSWORD = "VELOXIA2026";
+// PLACEHOLDER — cámbialo manualmente antes de subir a producción
+
+const stored = sessionStorage.getItem('veloxia_dash_auth');
+if (!stored) {
+  const input = prompt('VELOXIA Dashboard — Acceso restringido. Introduce la contraseña:');
+  if (input !== VELOXIA_DASH_PASSWORD) {
+    document.body.innerHTML = '';
+    window.location.href = '/';
+  } else {
+    sessionStorage.setItem('veloxia_dash_auth', 'true');
+  }
+}
+</script>
+
 <div class="app">
 
   <!-- OVERLAY -->
@@ -599,8 +621,24 @@ html, body {
 
 <script>
 // ── CONFIG ──────────────────────────────────────────
-const N8N_WEBHOOK = 'https://TU-WEBHOOK-AQUI/dashboard-data';
+const VELOXIA_CONFIG = {
+  DASHBOARD_WEBHOOK: "REPLACE_WITH_N8N_WEBHOOK_URL",
+  // Añadir aquí otras configuraciones futuras
+};
 const REFRESH_SEC = 60;
+
+if (VELOXIA_CONFIG.DASHBOARD_WEBHOOK === "REPLACE_WITH_N8N_WEBHOOK_URL") {
+  const warningEl = document.createElement('div');
+  warningEl.style.cssText = `
+    position: fixed; top: 0; left: 0; right: 0;
+    background: #FF6A00; color: white;
+    text-align: center; padding: 12px;
+    font-family: Inter, sans-serif; font-size: 14px;
+    z-index: 9999;
+  `;
+  warningEl.textContent = '⚠️ Webhook no configurado. Actualiza VELOXIA_CONFIG.DASHBOARD_WEBHOOK en dashboard.html';
+  document.body.prepend(warningEl);
+}
 
 // ── MOCK DATA ────────────────────────────────────────
 const MOCK = {
@@ -690,7 +728,7 @@ const ACT_COLORS = {
 // ── FETCH ────────────────────────────────────────────
 async function fetchDashboardData() {
   try {
-    const r = await fetch(N8N_WEBHOOK, { method: 'GET', signal: AbortSignal.timeout(5000) });
+    const r = await fetch(VELOXIA_CONFIG.DASHBOARD_WEBHOOK, { method: 'GET', signal: AbortSignal.timeout(5000) });
     if (!r.ok) throw new Error('HTTP ' + r.status);
     return await r.json();
   } catch {

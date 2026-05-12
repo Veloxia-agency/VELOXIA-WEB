@@ -4,91 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VELOXIA VAULT · Acceso Privado</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="alternate icon" href="/assets/favicon.ico">
+  <meta name="theme-color" content="#040404">
   <meta name="description" content="Recursos privados para mejorar tu presencia digital, crear contenido que posiciona y no perder oportunidades.">
+  <meta property="og:title" content="VELOXIA Vault — Frameworks y sistemas para negocios premium">
+  <meta property="og:description" content="Recursos privados para mejorar tu presencia digital, crear contenido que posiciona y no perder oportunidades.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://veloxia.agency/vault">
+  <meta property="og:image" content="https://veloxia.agency/assets/og-veloxia.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://veloxia.agency/assets/og-veloxia.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 
+  <link rel="stylesheet" href="/assets/css/veloxia-base.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --black:       #040404;
-      --black-2:     #060606;
-      --black-3:     #080808;
-      --gold:        #C4922A;
-      --gold-light:  #E8B84A;
-      --gold-border: rgba(196,146,42,0.25);
-      --gold-glow:   rgba(196,146,42,0.08);
-      --text:        #F0E8D8;
-      --text-muted:  #9A8C78;
-      --text-dim:    #6B5F4E;
-      --green:       #4AFF8A;
-      --red:         #FF6666;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background-color: var(--black);
-      color: var(--text);
-      font-family: 'DM Mono', 'Courier New', monospace;
-      overflow-x: hidden;
-      padding-top: 40px;
-    }
-
-    /* Grid background */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(196,146,42,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(196,146,42,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ===================== TOP BAR ===================== */
-    .top-bar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 40px;
-      background: #000;
-      border-bottom: 1px solid rgba(196,146,42,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      z-index: 1000;
-      padding: 0 20px;
-    }
-
-    .blink-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #ff3333;
-      flex-shrink: 0;
-      animation: blinkDot 1s ease-in-out infinite;
-    }
-    .blink-dot:last-child { animation-delay: 0.5s; }
-
-    @keyframes blinkDot {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.1; }
-    }
-
-    .top-bar-text {
-      font-size: 10px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--gold);
-      animation: topTextPulse 4s ease-in-out infinite;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
+    .top-bar-text { animation: topTextPulse 4s ease-in-out infinite; }
     @keyframes topTextPulse {
       0%, 85%, 100% { opacity: 1; }
       92%            { opacity: 0.25; }
@@ -802,12 +734,12 @@
         </p>
 
         <div class="counter-widget">
-          <p class="counter-label">// PROGRESO DE INVITACIONES //</p>
-          <div class="counter-numbers">0 <span>/ 3</span></div>
+          <p class="counter-label">// RECURSOS COMPLETADOS //</p>
+          <div class="counter-numbers" id="vaultCounter">0 <span>/ 5</span></div>
           <div class="progress-bar">
             <div class="progress-fill" id="progressFill"></div>
           </div>
-          <p class="counter-status">ESTADO: EN ESPERA DE ACCESO</p>
+          <p class="counter-status" id="counterStatus">ESTADO: 0/5 RECURSOS COMPLETADOS</p>
         </div>
       </div>
     </div>
@@ -824,6 +756,20 @@
 
   <script>
     const VAULT_WEBHOOK = 'https://veloxiasetter.app.n8n.cloud/webhook/vault-register';
+
+    // Contador de recursos completados (localStorage)
+    (function() {
+      const completed = JSON.parse(localStorage.getItem('veloxia_completed') || '[]');
+      const count = Math.min(completed.length, 5);
+      const counter = document.getElementById('vaultCounter');
+      const fill    = document.getElementById('progressFill');
+      const status  = document.getElementById('counterStatus');
+      if (counter) counter.innerHTML = count + ' <span>/ 5</span>';
+      if (fill)    fill.style.width  = (count / 5 * 100) + '%';
+      if (status)  status.textContent = count === 5
+        ? 'ESTADO: TODOS LOS RECURSOS COMPLETADOS ✓'
+        : 'ESTADO: ' + count + '/5 RECURSOS COMPLETADOS';
+    })();
 
     function getRef() {
       return new URLSearchParams(window.location.search).get('ref') || '';
