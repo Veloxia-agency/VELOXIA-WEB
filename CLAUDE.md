@@ -56,6 +56,7 @@ parezca mejor, responda más rápido y venda más."
 ## CTAs
 - WhatsApp: https://wa.me/34684376021
 - Email: hola@veloxia.agency
+- Calendly: https://calendly.com/hola-veloxia/30min
 
 ## Reglas de diseño
 - Fondo siempre oscuro (Obsidian #2A2118 o Noir #1E1810)
