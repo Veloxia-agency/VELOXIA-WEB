@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EXP.005 · Sistema de Oportunidades — VELOXIA VAULT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #040404; --black-2: #060606; --black-3: #080808;
+      --gold: #C4922A; --gold-light: #E8B84A;
+      --gold-border: rgba(196,146,42,0.25);
+      --text: #F0E8D8; --text-muted: #9A8C78; --text-dim: #6B5F4E;
+      --green: #4AFF8A; --red: #FF6666; --orange: #FF9A3A;
+    }
+    html { scroll-behavior: smooth; }
+    body { background:var(--black);color:var(--text);font-family:'DM Mono','Courier New',monospace;overflow-x:hidden;padding-top:40px; }
+    body::before { content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(196,146,42,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(196,146,42,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0; }
+    .top-bar { position:fixed;top:0;left:0;right:0;height:40px;background:#000;border-bottom:1px solid rgba(196,146,42,0.2);display:flex;align-items:center;justify-content:center;gap:12px;z-index:1000;padding:0 20px; }
+    .blink-dot { width:6px;height:6px;border-radius:50%;background:#ff3333;flex-shrink:0;animation:blinkDot 1s ease-in-out infinite; }
+    @keyframes blinkDot { 0%,100%{opacity:1}50%{opacity:0.1} }
+    .top-bar-text { font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .container { max-width:1060px;margin:0 auto;padding:0 24px;position:relative;z-index:1; }
+    .breadcrumb { padding:32px 0 0;display:flex;align-items:center;gap:12px; }
+    .breadcrumb a { font-size:10px;letter-spacing:3px;color:var(--gold);text-decoration:none;text-transform:uppercase;opacity:.6;transition:opacity .2s; }
+    .breadcrumb a:hover { opacity:1; }
+    .breadcrumb span { font-size:10px;color:var(--text-dim); }
+    .hero { padding:40px 0 56px; }
+    .badge-row { display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap; }
+    .badge-exp { font-size:9px;letter-spacing:3px;padding:5px 12px;border:1px solid var(--gold-border);color:var(--gold);text-transform:uppercase; }
+    .badge-cat { font-size:9px;letter-spacing:2px;padding:5px 12px;border:1px solid rgba(74,255,138,0.25);color:var(--green);background:rgba(74,255,138,0.04);text-transform:uppercase; }
+    h1 { font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,7vw,68px);line-height:.95;letter-spacing:2px;color:var(--text);margin-bottom:20px; }
+    h1 em { color:var(--gold);font-style:normal; }
+    .hero-desc { font-size:13px;color:var(--text-muted);line-height:1.8;font-weight:300;max-width:620px; }
+
+    /* PIPELINE VISUAL */
+    .pipeline-section { padding:0 0 80px; }
+    .pipeline-label { font-size:9px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;opacity:.55;margin-bottom:28px; }
+
+    .pipeline-track {
+      display: flex; align-items: stretch; gap: 0;
+      overflow-x: auto; padding-bottom: 8px; margin-bottom: 64px;
+    }
+    .pipeline-track::-webkit-scrollbar { height:2px; }
+    .pipeline-track::-webkit-scrollbar-track { background:rgba(196,146,42,.05); }
+    .pipeline-track::-webkit-scrollbar-thumb { background:var(--gold-border); }
+
+    .pipeline-stage {
+      flex: 1; min-width: 140px;
+      border: 1px solid var(--gold-border); background: var(--black-2);
+      padding: 20px 16px; position: relative; cursor: default;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .pipeline-stage:hover {
+      border-color: rgba(196,146,42,.5);
+      box-shadow: 0 0 30px rgba(196,146,42,.07);
+    }
+    .pipeline-stage + .pipeline-stage { margin-left: -1px; }
+    .pipeline-stage.active { border-color: var(--gold); z-index: 2; }
+
+    .stage-num { font-size:8px;letter-spacing:3px;color:var(--gold);opacity:.4;margin-bottom:10px;text-transform:uppercase; }
+    .stage-name { font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--text);margin-bottom:8px; }
+    .stage-count {
+      font-size:9px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;
+      padding: 4px 8px; border:1px solid var(--gold-border); display:inline-block; margin-bottom:10px;
+    }
+    .stage-desc { font-size:10px;color:var(--text-dim);line-height:1.7; }
+
+    /* Arrow connector */
+    .pipeline-arrow {
+      display: flex; align-items: center; padding: 0 8px;
+      flex-shrink: 0; color: var(--gold); opacity: .4; font-size: 18px;
+    }
+
+    /* STAGE DETAIL CARDS */
+    .stages-detail { display: flex; flex-direction: column; gap: 4px; }
+    .stage-card {
+      display: grid;
+      grid-template-columns: 180px 1fr 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--gold-border);
+      background: var(--black-2);
+      overflow: hidden;
+      transition: border-color .2s;
+    }
+    .stage-card:hover { border-color: rgba(196,146,42,.45); }
+    .stage-cell {
+      padding: 18px 20px;
+      border-right: 1px solid var(--gold-border);
+      font-size: 11px; line-height: 1.7;
+    }
+    .stage-cell:last-child { border-right: none; }
+    .stage-cell-label {
+      font-size: 8px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;
+      opacity: .5; margin-bottom: 8px; display: block;
+    }
+    .stage-cell-title { font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--text); }
+    .stage-cell-body { color:var(--text-muted); }
+    .stage-cell .flag {
+      display: inline-block; margin-top: 8px;
+      font-size:8px;letter-spacing:2px;padding:3px 8px;
+      border:1px solid rgba(255,102,102,.3);color:var(--red);
+      background:rgba(255,102,102,.05);text-transform:uppercase;
+    }
+
+    /* TABLE HEADER */
+    .stages-header {
+      display: grid;
+      grid-template-columns: 180px 1fr 1fr 1fr;
+      gap: 0; margin-bottom: 4px; padding: 0 0 8px;
+      border-bottom: 1px solid var(--gold-border);
+    }
+    .stages-header span {
+      font-size: 8px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;
+      opacity: .45; padding: 0 20px;
+    }
+
+    /* METRICS */
+    .metrics-section { padding: 0 0 80px; }
+    .metrics-label { font-size:9px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;opacity:.55;margin-bottom:24px; }
+    .metrics-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:12px; }
+    .metric-card {
+      border:1px solid var(--gold-border);background:var(--black-2);
+      padding:24px 20px;text-align:center;
+    }
+    .metric-value { font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:2px;color:var(--gold);line-height:1; }
+    .metric-unit { font-size:10px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;margin-top:4px; }
+    .metric-label { font-size:11px;color:var(--text-muted);margin-top:8px;line-height:1.5; }
+
+    /* TIPS */
+    .tips-section { padding: 0 0 80px; }
+    .tips-label { font-size:9px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;opacity:.55;margin-bottom:24px; }
+    .tips-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:12px; }
+    .tip-card {
+      border:1px solid var(--gold-border);background:var(--black-2);
+      padding:24px; display:flex;gap:16px;
+    }
+    .tip-icon { width:32px;height:32px;border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+    .tip-body {}
+    .tip-title { font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--text);margin-bottom:8px; }
+    .tip-desc { font-size:11px;color:var(--text-dim);line-height:1.7; }
+
+    /* CTA */
+    .cta-section { padding:60px 0 80px;border-top:1px solid var(--gold-border); }
+    .cta-label { font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;opacity:.6;margin-bottom:16px; }
+    .cta-title { font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,5vw,52px);letter-spacing:3px;color:var(--text);margin-bottom:16px; }
+    .cta-desc { font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:32px;max-width:520px; }
+    .cta-btn { display:inline-block;background:var(--gold);color:#000;padding:16px 40px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:4px;text-decoration:none;transition:background .2s; }
+    .cta-btn:hover { background:var(--gold-light); }
+    .footer { padding:40px 0 32px;border-top:1px solid var(--gold-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px; }
+    .footer-brand { font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:5px;color:var(--gold); }
+    .footer-hash { font-size:9px;color:rgba(196,146,42,.2);letter-spacing:2px; }
+
+    @media (max-width:900px) {
+      .stage-card { grid-template-columns:1fr;border-left:3px solid var(--gold-border); }
+      .stages-header { display:none; }
+      .stage-cell { border-right:none;border-bottom:1px solid var(--gold-border); }
+      .stage-cell:last-child { border-bottom:none; }
+      .metrics-grid { grid-template-columns:repeat(2,1fr); }
+      .tips-grid { grid-template-columns:1fr; }
+    }
+    @media (max-width:480px) {
+      .metrics-grid { grid-template-columns:1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <span class="blink-dot"></span>
+    <span class="top-bar-text">REC · SISTEMA PRIVADO ACTIVO · VX—01 / MADRID NODE · CANAL SEGURO</span>
+    <span class="blink-dot" style="animation-delay:.5s"></span>
+  </div>
+
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a href="/vault/">← VAULT</a>
+      <span>/</span>
+      <span style="color:var(--text-muted);font-size:10px;letter-spacing:2px;text-transform:uppercase">EXP.005</span>
+    </nav>
+
+    <header class="hero">
+      <div class="badge-row">
+        <span class="badge-exp">EXP.005</span>
+        <span class="badge-cat">CRM // DASHBOARD</span>
+      </div>
+      <h1>Cómo debería verse tu<br><em>sistema de oportunidades</em></h1>
+      <p class="hero-desc">Guía visual para entender cómo organizar leads, citas, propuestas y clientes. Si no tienes esto claro, estás dejando dinero sobre la mesa sin saberlo.</p>
+    </header>
+
+    <!-- PIPELINE VISUAL -->
+    <section class="pipeline-section">
+      <p class="pipeline-label">// PIPELINE DE OPORTUNIDADES //</p>
+
+      <div class="pipeline-track">
+        <div class="pipeline-stage">
+          <p class="stage-num">FASE 01</p>
+          <p class="stage-name">VISITA</p>
+          <span class="stage-count">TRÁFICO FRÍO</span>
+          <p class="stage-desc">Alguien descubre tu negocio por primera vez. Web, Instagram, referido, anuncio.</p>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-stage">
+          <p class="stage-num">FASE 02</p>
+          <p class="stage-name">LEAD</p>
+          <span class="stage-count">INTERÉS REAL</span>
+          <p class="stage-desc">Deja sus datos, escribe por WhatsApp, rellena el formulario o responde a una historia.</p>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-stage">
+          <p class="stage-num">FASE 03</p>
+          <p class="stage-name">CONTACTO</p>
+          <span class="stage-count">CONVERSACIÓN</span>
+          <p class="stage-desc">Ya habéis hablado. Conoces su situación, tiene contexto de lo que ofreces.</p>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-stage active">
+          <p class="stage-num">FASE 04</p>
+          <p class="stage-name">PROPUESTA</p>
+          <span class="stage-count">DECISIÓN</span>
+          <p class="stage-desc">Ha recibido tu propuesta o presupuesto. Está evaluando si contratar.</p>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-stage">
+          <p class="stage-num">FASE 05</p>
+          <p class="stage-name">CLIENTE</p>
+          <span class="stage-count">ACTIVO</span>
+          <p class="stage-desc">Pagó y empezasteis a trabajar. Objetivo: resultado, reseña y referido.</p>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-stage">
+          <p class="stage-num">FASE 06</p>
+          <p class="stage-name">RECURRENTE</p>
+          <span class="stage-count">RETENCIÓN</span>
+          <p class="stage-desc">Vuelve, amplía o te recomienda. El cliente más rentable que tendrás.</p>
+        </div>
+      </div>
+
+      <!-- STAGE DETAIL TABLE -->
+      <div class="stages-header">
+        <span>FASE</span>
+        <span>QUÉ REGISTRAR</span>
+        <span>ACCIÓN SIGUIENTE</span>
+        <span>SEÑAL DE ALARMA</span>
+      </div>
+
+      <div class="stages-detail">
+
+        <div class="stage-card">
+          <div class="stage-cell">
+            <span class="stage-cell-label">FASE 01</span>
+            <div class="stage-cell-title">VISITA</div>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">QUÉ REGISTRAR</span>
+            <p class="stage-cell-body">Fuente (IG, web, referido, anuncio). Fecha. Canal concreto si es posible.</p>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">ACCIÓN SIGUIENTE</span>
+            <p class="stage-cell-body">Asegúrate de que haya un CTA claro para que pase a lead. Sin fricción.</p>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">SEÑAL DE ALARMA</span>
+            <p class="stage-cell-body">Muchas visitas, cero leads. Tu propuesta o CTA no está funcionando.<span class="flag">CTA ROTO</span></p>
+          </div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-cell">
+            <span class="stage-cell-label">FASE 02</span>
+            <div class="stage-cell-title">LEAD</div>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">QUÉ REGISTRAR</span>
+            <p class="stage-cell-body">Nombre, contacto, fuente de origen, fecha de entrada, tipo de negocio.</p>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">ACCIÓN SIGUIENTE</span>
+            <p class="stage-cell-body">Responder en menos de 5 minutos. Cualificar con 3 preguntas básicas.</p>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">SEÑAL DE ALARMA</span>
+            <p class="stage-cell-body">Leads que no responden al segundo mensaje. Revisar primera respuesta.<span class="flag">BAJA RESPUESTA</span></p>
+          </div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-cell">
+            <span class="stage-cell-label">FASE 03</span>
+            <div class="stage-cell-title">CONTACTO</div>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">QUÉ REGISTRAR</span>
+            <p class="stage-cell-body">Situación actual, problema principal, presupuesto estimado, urgencia, siguiente paso acordado.</p>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">ACCIÓN SIGUIENTE</span>
+            <p class="stage-cell-body">Agendar llamada o videollamada con fecha y hora concretas. No dejar abierto.</p>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">SEÑAL DE ALARMA</span>
+            <p class="stage-cell-body">Más de 3 días sin avanzar a propuesta. Necesita seguimiento activo.<span class="flag">STALE CONTACT</span></p>
+          </div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-cell">
+            <span class="stage-cell-label">FASE 04</span>
+            <div class="stage-cell-title">PROPUESTA</div>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">QUÉ REGISTRAR</span>
+            <p class="stage-cell-body">Fecha de envío, importe, servicio propuesto, fecha límite de respuesta.</p>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">ACCIÓN SIGUIENTE</span>
+            <p class="stage-cell-body">Seguimiento a las 24h si no responde. Luego a los 3 días. Resolución de objeciones.</p>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">SEÑAL DE ALARMA</span>
+            <p class="stage-cell-body">Propuesta vista, sin respuesta en 5 días. Revisar pricing o propuesta.<span class="flag">SIN RESPUESTA</span></p>
+          </div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-cell">
+            <span class="stage-cell-label">FASE 05</span>
+            <div class="stage-cell-title">CLIENTE</div>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">QUÉ REGISTRAR</span>
+            <p class="stage-cell-body">Fecha de inicio, importe total, servicios activos, fecha de revisión o renovación.</p>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">ACCIÓN SIGUIENTE</span>
+            <p class="stage-cell-body">Entregar resultado prometido. Pedir reseña al mes. Proponer siguiente paso.</p>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">SEÑAL DE ALARMA</span>
+            <p class="stage-cell-body">Sin comunicación en 2 semanas. Cliente en riesgo de churn silencioso.<span class="flag">CHURN RISK</span></p>
+          </div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-cell">
+            <span class="stage-cell-label">FASE 06</span>
+            <div class="stage-cell-title">RECURRENTE</div>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">QUÉ REGISTRAR</span>
+            <p class="stage-cell-body">Histórico de contrataciones, referidos generados, NPS o satisfacción.</p>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">ACCIÓN SIGUIENTE</span>
+            <p class="stage-cell-body">Programa de referidos, upsell de servicio adicional, reseña en Google.</p>
+          </div>
+          <div class="stage-cell">
+            <span class="stage-cell-label">SEÑAL DE ALARMA</span>
+            <p class="stage-cell-body">Cliente satisfecho que no refiere ni amplía. No le has pedido que lo haga.<span class="flag">OPORTUNIDAD PERDIDA</span></p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- METRICS -->
+    <section class="metrics-section">
+      <p class="metrics-label">// MÉTRICAS QUE DEBES CONOCER //</p>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-value">&lt;5'</div>
+          <div class="metric-unit">Tiempo de respuesta</div>
+          <p class="metric-label">Máximo aceptable para la primera respuesta a un lead nuevo</p>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">30%</div>
+          <div class="metric-unit">Tasa de cierre mínima</div>
+          <p class="metric-label">Si cierras menos del 30% de propuestas enviadas, algo falla en el proceso</p>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">5x</div>
+          <div class="metric-unit">Contactos antes de cerrar</div>
+          <p class="metric-label">El 80% de las ventas ocurren después del quinto punto de contacto</p>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">7d</div>
+          <div class="metric-unit">Ciclo de seguimiento</div>
+          <p class="metric-label">Si llevas 7 días sin noticias de un lead cualificado, actúa hoy</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIPS -->
+    <section class="tips-section">
+      <p class="tips-label">// ERRORES MÁS COMUNES //</p>
+      <div class="tips-grid">
+
+        <div class="tip-card">
+          <div class="tip-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1v7M8 12v2" stroke="#C4922A" stroke-width="1.5" stroke-linecap="square"/>
+              <circle cx="8" cy="8" r="7" stroke="#C4922A" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <div class="tip-body">
+            <p class="tip-title">No registrar leads en ningún lugar</p>
+            <p class="tip-desc">Si los leads viven solo en tu cabeza o en los DMs de Instagram, estás operando a ciegas. Un Excel simple ya es mejor que nada. Un CRM real cambia el negocio.</p>
+          </div>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1v7M8 12v2" stroke="#C4922A" stroke-width="1.5" stroke-linecap="square"/>
+              <circle cx="8" cy="8" r="7" stroke="#C4922A" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <div class="tip-body">
+            <p class="tip-title">Tratar igual a todos los leads</p>
+            <p class="tip-desc">Un lead frío que llegó de un post necesita educación. Uno caliente que llegó referido necesita una propuesta rápida. El mismo tratamiento para ambos es un error costoso.</p>
+          </div>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1v7M8 12v2" stroke="#C4922A" stroke-width="1.5" stroke-linecap="square"/>
+              <circle cx="8" cy="8" r="7" stroke="#C4922A" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <div class="tip-body">
+            <p class="tip-title">Abandonar después del primer "no es el momento"</p>
+            <p class="tip-desc">La mayoría de leads que dicen "ahora no" compran en los siguientes 6 meses… a alguien. Si ese alguien no eres tú, es porque no hiciste seguimiento.</p>
+          </div>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1v7M8 12v2" stroke="#C4922A" stroke-width="1.5" stroke-linecap="square"/>
+              <circle cx="8" cy="8" r="7" stroke="#C4922A" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <div class="tip-body">
+            <p class="tip-title">No pedir referidos a clientes satisfechos</p>
+            <p class="tip-desc">Un cliente contento que no refiere no es mal cliente, es una oportunidad no activada. La mayoría no refiere porque nunca se lo pediste de forma concreta y fácil.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <p class="cta-label">// IMPLEMENTA TU SISTEMA //</p>
+      <h2 class="cta-title">¿Quieres ver cómo<br>queda en tu negocio?</h2>
+      <p class="cta-desc">Implementamos este sistema completo con automatización de respuestas, cualificación y seguimiento para que no pierdas ninguna oportunidad.</p>
+      <a href="https://wa.me/34684376021" class="cta-btn" target="_blank" rel="noopener">QUIERO VER CÓMO IMPLEMENTARLO →</a>
+    </section>
+
+    <footer class="footer">
+      <span class="footer-brand"><span style="color:var(--gold)">V</span>ELOXIA VAULT<span style="color:var(--gold)">.</span></span>
+      <span class="footer-hash">EXP.005 // CRM // DASHBOARD // VX.v1.0</span>
+    </footer>
+
+  </div>
+</body>
+</html>

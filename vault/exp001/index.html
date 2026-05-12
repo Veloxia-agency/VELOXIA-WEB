@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EXP.001 · Checklist de Presencia — VELOXIA VAULT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #040404; --black-2: #060606; --black-3: #080808;
+      --gold: #C4922A; --gold-light: #E8B84A;
+      --gold-border: rgba(196,146,42,0.25); --gold-glow: rgba(196,146,42,0.07);
+      --text: #F0E8D8; --text-muted: #9A8C78; --text-dim: #6B5F4E;
+      --green: #4AFF8A; --red: #FF6666;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'DM Mono', 'Courier New', monospace;
+      overflow-x: hidden;
+      padding-top: 40px;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(196,146,42,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(196,146,42,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none; z-index: 0;
+    }
+    /* TOP BAR */
+    .top-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 40px;
+      background: #000; border-bottom: 1px solid rgba(196,146,42,0.2);
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      z-index: 1000; padding: 0 20px;
+    }
+    .blink-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #ff3333;
+      flex-shrink: 0; animation: blinkDot 1s ease-in-out infinite;
+    }
+    @keyframes blinkDot { 0%,100%{opacity:1} 50%{opacity:0.1} }
+    .top-bar-text {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    /* LAYOUT */
+    .container { max-width: 820px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+    /* BREADCRUMB */
+    .breadcrumb {
+      padding: 32px 0 0;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .breadcrumb a {
+      font-size: 10px; letter-spacing: 3px; color: var(--gold); text-decoration: none;
+      text-transform: uppercase; opacity: 0.6; transition: opacity 0.2s;
+    }
+    .breadcrumb a:hover { opacity: 1; }
+    .breadcrumb span { font-size: 10px; color: var(--text-dim); }
+    /* HERO */
+    .hero { padding: 40px 0 56px; }
+    .badge-row {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;
+    }
+    .badge-exp {
+      font-size: 9px; letter-spacing: 3px; padding: 5px 12px;
+      border: 1px solid var(--gold-border); color: var(--gold); text-transform: uppercase;
+    }
+    .badge-cat {
+      font-size: 9px; letter-spacing: 2px; padding: 5px 12px;
+      border: 1px solid rgba(74,255,138,0.25); color: var(--green);
+      background: rgba(74,255,138,0.04); text-transform: uppercase;
+    }
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 7vw, 72px);
+      line-height: 0.95; letter-spacing: 2px; color: var(--text);
+      margin-bottom: 20px;
+    }
+    h1 em { color: var(--gold); font-style: normal; }
+    .hero-desc {
+      font-size: 13px; color: var(--text-muted); line-height: 1.8;
+      font-weight: 300; max-width: 600px;
+    }
+    /* CHECKLIST */
+    .checklist-section { padding: 0 0 80px; }
+    .checklist-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+    }
+    .checklist-label {
+      font-size: 9px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; opacity: 0.6;
+    }
+    .score-display {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px; letter-spacing: 3px; color: var(--text);
+    }
+    .score-display span { color: var(--text-dim); }
+    .checklist { display: flex; flex-direction: column; gap: 10px; margin-bottom: 36px; }
+    .check-item { position: relative; }
+    .check-input {
+      position: absolute; opacity: 0; width: 0; height: 0;
+    }
+    .check-label {
+      display: flex; align-items: flex-start; gap: 16px;
+      cursor: pointer; padding: 16px 20px;
+      border: 1px solid var(--gold-border);
+      background: var(--black-2);
+      transition: border-color 0.2s, background 0.2s;
+      font-size: 13px; line-height: 1.5; color: var(--text-muted);
+    }
+    .check-label:hover { border-color: rgba(196,146,42,0.45); }
+    .check-box {
+      width: 20px; height: 20px; flex-shrink: 0;
+      border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px; transition: all 0.2s;
+    }
+    .check-box svg { opacity: 0; transition: opacity 0.15s; }
+    .check-input:checked ~ .check-label {
+      border-color: rgba(196,146,42,0.5);
+      background: rgba(196,146,42,0.04);
+      color: var(--text);
+    }
+    .check-input:checked ~ .check-label .check-box {
+      background: var(--gold); border-color: var(--gold);
+    }
+    .check-input:checked ~ .check-label .check-box svg { opacity: 1; }
+    /* PROGRESS BAR */
+    .progress-wrap { margin-bottom: 40px; }
+    .progress-bar {
+      width: 100%; height: 2px; background: rgba(196,146,42,0.1); position: relative;
+    }
+    .progress-fill {
+      height: 100%; width: 0; background: var(--gold); transition: width 0.4s ease;
+      position: relative;
+    }
+    .progress-fill::after {
+      content: ''; position: absolute; right: -4px; top: -3px;
+      width: 8px; height: 8px; background: var(--gold); border-radius: 50%;
+    }
+    /* RESULT */
+    .result-panel {
+      border: 1px solid var(--gold-border); background: var(--black-3);
+      padding: 32px; margin-bottom: 48px; display: none;
+    }
+    .result-panel.visible { display: block; }
+    .result-label { font-size: 9px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; opacity: 0.6; margin-bottom: 12px; }
+    .result-score {
+      font-family: 'Bebas Neue', sans-serif; font-size: 52px; letter-spacing: 3px; color: var(--text); line-height: 1; margin-bottom: 10px;
+    }
+    .result-score span { color: var(--text-dim); }
+    .result-msg { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+    .result-msg strong { color: var(--gold); display: block; font-size: 16px; margin-bottom: 6px; }
+    /* CTA */
+    .cta-section { padding: 0 0 80px; border-top: 1px solid var(--gold-border); padding-top: 60px; }
+    .cta-label { font-size: 9px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; opacity: 0.6; margin-bottom: 16px; }
+    .cta-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px,5vw,52px); letter-spacing: 3px; color: var(--text); margin-bottom: 16px; }
+    .cta-desc { font-size: 12px; color: var(--text-dim); line-height: 1.8; margin-bottom: 32px; max-width: 520px; }
+    .cta-btn {
+      display: inline-block; background: var(--gold); color: #000;
+      padding: 16px 40px; font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px; letter-spacing: 4px; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .cta-btn:hover { background: var(--gold-light); }
+    /* FOOTER */
+    .footer { padding: 40px 0 32px; border-top: 1px solid var(--gold-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 5px; color: var(--gold); }
+    .footer-hash { font-size: 9px; color: rgba(196,146,42,0.2); letter-spacing: 2px; }
+    @media (max-width: 640px) {
+      .check-label { padding: 14px 16px; font-size: 12px; }
+      .footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <span class="blink-dot"></span>
+    <span class="top-bar-text">REC · SISTEMA PRIVADO ACTIVO · VX—01 / MADRID NODE · CANAL SEGURO</span>
+    <span class="blink-dot" style="animation-delay:.5s"></span>
+  </div>
+
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a href="/vault/">← VAULT</a>
+      <span>/</span>
+      <span style="color:var(--text-muted);font-size:10px;letter-spacing:2px;text-transform:uppercase">EXP.001</span>
+    </nav>
+
+    <header class="hero">
+      <div class="badge-row">
+        <span class="badge-exp">EXP.001</span>
+        <span class="badge-cat">STUDIO // CHECKLIST</span>
+      </div>
+      <h1>Checklist de presencia<br><em>que vende</em></h1>
+      <p class="hero-desc">Detecta en 10 minutos exactamente dónde está tu negocio perdiendo contactos. Marca cada punto que ya tienes resuelto.</p>
+    </header>
+
+    <section class="checklist-section">
+      <div class="checklist-header">
+        <span class="checklist-label">// PUNTOS A EVALUAR //</span>
+        <div class="score-display" id="scoreDisplay">0 <span>/ 10</span></div>
+      </div>
+
+      <div class="checklist" id="checklistEl">
+
+        <div class="check-item">
+          <input class="check-input" type="checkbox" id="c1" onchange="updateScore()">
+          <label class="check-label" for="c1">
+            <span class="check-box">
+              <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5l3.5 3.5L11 1" stroke="#000" stroke-width="2" stroke-linecap="square"/>
+              </svg>
+            </span>
+            Tu web explica en 5 segundos qué haces y para quién
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input class="check-input" type="checkbox" id="c2" onchange="updateScore()">
+          <label class="check-label" for="c2">
+            <span class="check-box">
+              <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5l3.5 3.5L11 1" stroke="#000" stroke-width="2" stroke-linecap="square"/>
+              </svg>
+            </span>
+            Tienes un CTA visible arriba del todo
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input class="check-input" type="checkbox" id="c3" onchange="updateScore()">
+          <label class="check-label" for="c3">
+            <span class="check-box">
+              <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5l3.5 3.5L11 1" stroke="#000" stroke-width="2" stroke-linecap="square"/>
+              </svg>
+            </span>
+            Tu WhatsApp o formulario está a un clic
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input class="check-input" type="checkbox" id="c4" onchange="updateScore()">
+          <label class="check-label" for="c4">
+            <span class="check-box">
+              <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5l3.5 3.5L11 1" stroke="#000" stroke-width="2" stroke-linecap="square"/>
+              </svg>
+            </span>
+            Tu Instagram transmite confianza en 10 segundos
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input class="check-input" type="checkbox" id="c5" onchange="updateScore()">
+          <label class="check-label" for="c5">
+            <span class="check-box">
+              <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5l3.5 3.5L11 1" stroke="#000" stroke-width="2" stroke-linecap="square"/>
+              </svg>
+            </span>
+            Tus servicios explicados con beneficios, no características
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input class="check-input" type="checkbox" id="c6" onchange="updateScore()">
+          <label class="check-label" for="c6">
+            <span class="check-box">
+              <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5l3.5 3.5L11 1" stroke="#000" stroke-width="2" stroke-linecap="square"/>
+              </svg>
+            </span>
+            Tienes prueba de autoridad: casos, reseñas o resultados
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input class="check-input" type="checkbox" id="c7" onchange="updateScore()">
+          <label class="check-label" for="c7">
+            <span class="check-box">
+              <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5l3.5 3.5L11 1" stroke="#000" stroke-width="2" stroke-linecap="square"/>
+              </svg>
+            </span>
+            Publicas contenido que responde dudas reales
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input class="check-input" type="checkbox" id="c8" onchange="updateScore()">
+          <label class="check-label" for="c8">
+            <span class="check-box">
+              <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5l3.5 3.5L11 1" stroke="#000" stroke-width="2" stroke-linecap="square"/>
+              </svg>
+            </span>
+            Tienes seguimiento para quien pregunta y no compra
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input class="check-input" type="checkbox" id="c9" onchange="updateScore()">
+          <label class="check-label" for="c9">
+            <span class="check-box">
+              <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5l3.5 3.5L11 1" stroke="#000" stroke-width="2" stroke-linecap="square"/>
+              </svg>
+            </span>
+            Registras tus oportunidades en un CRM
+          </label>
+        </div>
+
+        <div class="check-item">
+          <input class="check-input" type="checkbox" id="c10" onchange="updateScore()">
+          <label class="check-label" for="c10">
+            <span class="check-box">
+              <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5l3.5 3.5L11 1" stroke="#000" stroke-width="2" stroke-linecap="square"/>
+              </svg>
+            </span>
+            Sabes de dónde vienen tus mejores leads
+          </label>
+        </div>
+
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="result-panel" id="resultPanel">
+        <p class="result-label">// DIAGNÓSTICO //</p>
+        <div class="result-score" id="resultScore">0 <span>/ 10</span></div>
+        <div class="result-msg" id="resultMsg">
+          <strong id="resultHeadline"></strong>
+          <span id="resultBody"></span>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="cta-section">
+      <p class="cta-label">// SIGUIENTE PASO //</p>
+      <h2 class="cta-title">¿Quieres que lo revisemos juntos?</h2>
+      <p class="cta-desc">En 30 minutos analizamos tu presencia, detectamos los puntos críticos y te contamos exactamente qué haríamos para mejorarla.</p>
+      <a href="https://calendly.com/hola-veloxia/30min" class="cta-btn" target="_blank" rel="noopener">RESERVAR DIAGNÓSTICO GRATUITO →</a>
+    </section>
+
+    <footer class="footer">
+      <span class="footer-brand"><span style="color:var(--gold)">V</span>ELOXIA VAULT<span style="color:var(--gold)">.</span></span>
+      <span class="footer-hash">EXP.001 // STUDIO // CHECKLIST // VX.v1.0</span>
+    </footer>
+
+  </div>
+
+  <script>
+    function updateScore() {
+      const total = 10;
+      const checked = document.querySelectorAll('.check-input:checked').length;
+      document.getElementById('scoreDisplay').innerHTML = checked + ' <span>/ ' + total + '</span>';
+      document.getElementById('progressFill').style.width = (checked / total * 100) + '%';
+
+      const panel = document.getElementById('resultPanel');
+      const scoreEl = document.getElementById('resultScore');
+      const headline = document.getElementById('resultHeadline');
+      const body = document.getElementById('resultBody');
+
+      scoreEl.innerHTML = checked + ' <span>/ ' + total + '</span>';
+      panel.classList.add('visible');
+
+      if (checked <= 4) {
+        headline.textContent = 'Tu presencia está frenando ventas.';
+        body.textContent = 'Tienes puntos críticos sin resolver. Cada día sin corregirlos es dinero que se va a otro. Empieza por los primeros tres puntos que no marcaste.';
+        panel.style.borderColor = 'rgba(255,102,102,0.4)';
+      } else if (checked <= 7) {
+        headline.textContent = 'Tienes base pero pierdes oportunidades.';
+        body.textContent = 'Tu sistema funciona pero tiene fugas. Los puntos sin marcar son exactamente donde estás dejando leads sin atender o sin convertir.';
+        panel.style.borderColor = 'rgba(196,146,42,0.4)';
+      } else {
+        headline.textContent = 'Estás cerca de tener un sistema serio.';
+        body.textContent = 'Tu presencia está bien trabajada. Los últimos puntos que faltan son los que separan un negocio que funciona de uno que escala.';
+        panel.style.borderColor = 'rgba(74,255,138,0.3)';
+      }
+    }
+  </script>
+
+</body>
+</html>

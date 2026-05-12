@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EXP.002 · Cómo No Perder Leads — VELOXIA VAULT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #040404; --black-2: #060606; --black-3: #080808;
+      --gold: #C4922A; --gold-light: #E8B84A;
+      --gold-border: rgba(196,146,42,0.25);
+      --text: #F0E8D8; --text-muted: #9A8C78; --text-dim: #6B5F4E;
+      --green: #4AFF8A;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black); color: var(--text);
+      font-family: 'DM Mono', 'Courier New', monospace;
+      overflow-x: hidden; padding-top: 40px;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(196,146,42,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(196,146,42,0.03) 1px, transparent 1px);
+      background-size: 60px 60px; pointer-events: none; z-index: 0;
+    }
+    .top-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 40px;
+      background: #000; border-bottom: 1px solid rgba(196,146,42,0.2);
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      z-index: 1000; padding: 0 20px;
+    }
+    .blink-dot { width:6px;height:6px;border-radius:50%;background:#ff3333;flex-shrink:0;animation:blinkDot 1s ease-in-out infinite; }
+    @keyframes blinkDot { 0%,100%{opacity:1} 50%{opacity:0.1} }
+    .top-bar-text { font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+    .breadcrumb { padding: 32px 0 0; display: flex; align-items: center; gap: 12px; }
+    .breadcrumb a { font-size:10px;letter-spacing:3px;color:var(--gold);text-decoration:none;text-transform:uppercase;opacity:.6;transition:opacity .2s; }
+    .breadcrumb a:hover { opacity:1; }
+    .breadcrumb span { font-size:10px;color:var(--text-dim); }
+    .hero { padding: 40px 0 56px; }
+    .badge-row { display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap; }
+    .badge-exp { font-size:9px;letter-spacing:3px;padding:5px 12px;border:1px solid var(--gold-border);color:var(--gold);text-transform:uppercase; }
+    .badge-cat { font-size:9px;letter-spacing:2px;padding:5px 12px;border:1px solid rgba(74,255,138,0.25);color:var(--green);background:rgba(74,255,138,0.04);text-transform:uppercase; }
+    h1 { font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,7vw,68px);line-height:.95;letter-spacing:2px;color:var(--text);margin-bottom:20px; }
+    h1 em { color:var(--gold);font-style:normal; }
+    .hero-desc { font-size:13px;color:var(--text-muted);line-height:1.8;font-weight:300;max-width:620px; }
+
+    /* FRAMEWORK */
+    .framework-section { padding: 0 0 80px; }
+    .steps { display: flex; flex-direction: column; gap: 0; position: relative; }
+    .steps::before {
+      content: ''; position: absolute; left: 31px; top: 64px; bottom: 64px;
+      width: 1px; background: linear-gradient(to bottom, var(--gold-border), transparent);
+    }
+    .step {
+      display: grid; grid-template-columns: 64px 1fr;
+      gap: 0; position: relative;
+    }
+    .step + .step { margin-top: 4px; }
+    .step-icon-col {
+      display: flex; flex-direction: column; align-items: center; padding-top: 28px;
+    }
+    .step-num {
+      width: 48px; height: 48px; border: 1px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; background: var(--black-3); position: relative; z-index: 1;
+    }
+    .step-num svg { display: block; }
+    .step-body {
+      border: 1px solid var(--gold-border); background: var(--black-2);
+      padding: 28px 32px; margin-left: -1px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .step:hover .step-body { border-color: rgba(196,146,42,.5); box-shadow: 0 0 30px rgba(196,146,42,.05); }
+    .step-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
+    .step-index { font-size:9px;letter-spacing:3px;color:var(--gold);opacity:.5;text-transform:uppercase; }
+    .step-title { font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:var(--text); }
+    .step-title em { color:var(--gold);font-style:normal; }
+    .step-desc { font-size:12px;color:var(--text-muted);line-height:1.9;margin-bottom:18px;font-weight:300; }
+    .step-example {
+      border-left: 2px solid var(--gold-border); padding: 12px 16px;
+      background: rgba(196,146,42,0.03);
+    }
+    .step-example-label { font-size:8px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;opacity:.5;margin-bottom:6px; }
+    .step-example-text { font-size:11px;color:var(--text-dim);line-height:1.7;font-style:italic; }
+
+    /* CTA */
+    .cta-section { padding: 60px 0 80px; border-top: 1px solid var(--gold-border); }
+    .cta-label { font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;opacity:.6;margin-bottom:16px; }
+    .cta-title { font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,5vw,52px);letter-spacing:3px;color:var(--text);margin-bottom:16px; }
+    .cta-desc { font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:32px;max-width:520px; }
+    .cta-btn { display:inline-block;background:var(--gold);color:#000;padding:16px 40px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:4px;text-decoration:none;transition:background .2s; }
+    .cta-btn:hover { background:var(--gold-light); }
+    .footer { padding:40px 0 32px;border-top:1px solid var(--gold-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px; }
+    .footer-brand { font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:5px;color:var(--gold); }
+    .footer-hash { font-size:9px;color:rgba(196,146,42,.2);letter-spacing:2px; }
+    @media (max-width:640px) {
+      .steps::before { display:none; }
+      .step { grid-template-columns: 1fr; }
+      .step-icon-col { flex-direction: row; padding: 20px 16px 0; }
+      .step-body { margin-left: 0; border-top: none; padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <span class="blink-dot"></span>
+    <span class="top-bar-text">REC · SISTEMA PRIVADO ACTIVO · VX—01 / MADRID NODE · CANAL SEGURO</span>
+    <span class="blink-dot" style="animation-delay:.5s"></span>
+  </div>
+
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a href="/vault/">← VAULT</a>
+      <span>/</span>
+      <span style="color:var(--text-muted);font-size:10px;letter-spacing:2px;text-transform:uppercase">EXP.002</span>
+    </nav>
+
+    <header class="hero">
+      <div class="badge-row">
+        <span class="badge-exp">EXP.002</span>
+        <span class="badge-cat">SETTER // FRAMEWORK</span>
+      </div>
+      <h1>Cómo no perder leads<br><em>por responder tarde</em></h1>
+      <p class="hero-desc">El sistema en 5 pasos para responder, cualificar y convertir antes de que el cliente llame a otro. No necesitas más herramientas — necesitas un proceso.</p>
+    </header>
+
+    <section class="framework-section">
+      <div class="steps">
+
+        <!-- PASO 1 -->
+        <div class="step">
+          <div class="step-icon-col">
+            <div class="step-num">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#C4922A" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="step-body">
+            <div class="step-header">
+              <span class="step-index">01</span>
+              <h2 class="step-title">RESPONDE en menos de <em>5 minutos</em></h2>
+            </div>
+            <p class="step-desc">El 78% de los clientes elige al primero que responde. No el mejor, el primero. Cada minuto que pasa sin contestar reduce un 10% la probabilidad de cierre. Configura notificaciones o automatiza la primera respuesta para que nadie espere.</p>
+            <div class="step-example">
+              <p class="step-example-label">// EJEMPLO DE PRIMERA RESPUESTA</p>
+              <p class="step-example-text">"Hola [nombre], gracias por escribir. Soy [nombre] de [negocio]. ¿Me puedes contar brevemente qué necesitas para orientarte mejor?"</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PASO 2 -->
+        <div class="step">
+          <div class="step-icon-col">
+            <div class="step-num">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M3 6h18M6 12h12M10 18h4" stroke="#C4922A" stroke-width="1.5" stroke-linecap="square"/>
+              </svg>
+            </div>
+          </div>
+          <div class="step-body">
+            <div class="step-header">
+              <span class="step-index">02</span>
+              <h2 class="step-title">CUALIFICA con <em>3 preguntas</em></h2>
+            </div>
+            <p class="step-desc">No todos los leads son iguales. Antes de invertir 30 minutos en una llamada, necesitas saber si hay encaje real. Tres preguntas bien hechas te ahorran horas y evitan perder tiempo con quien no puede o no quiere contratar ahora.</p>
+            <div class="step-example">
+              <p class="step-example-label">// LAS 3 PREGUNTAS</p>
+              <p class="step-example-text">"¿Cuál es tu situación ahora mismo?" · "¿Qué llevas intentando hasta ahora?" · "¿Para cuándo necesitas tener esto resuelto?"</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PASO 3 -->
+        <div class="step">
+          <div class="step-icon-col">
+            <div class="step-num">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="4" stroke="#C4922A" stroke-width="1.5"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12" stroke="#C4922A" stroke-width="1.5" stroke-linecap="square"/>
+              </svg>
+            </div>
+          </div>
+          <div class="step-body">
+            <div class="step-header">
+              <span class="step-index">03</span>
+              <h2 class="step-title">EDUCA con una <em>pieza de valor</em></h2>
+            </div>
+            <p class="step-desc">Antes de proponer precio, entrega valor. Un recurso, un caso de éxito, una explicación corta. Eleva la percepción de lo que ofreces y baja la fricción de compra. El cliente que aprende algo de ti antes de la llamada entra con el doble de predisposición.</p>
+            <div class="step-example">
+              <p class="step-example-label">// EJEMPLO DE ENTREGA DE VALOR</p>
+              <p class="step-example-text">"Te mando algo que puede ayudarte antes de hablar: [link a recurso / caso]. Así ya tienes contexto para nuestra conversación."</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PASO 4 -->
+        <div class="step">
+          <div class="step-icon-col">
+            <div class="step-num">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12h14M14 7l5 5-5 5" stroke="#C4922A" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"/>
+              </svg>
+            </div>
+          </div>
+          <div class="step-body">
+            <div class="step-header">
+              <span class="step-index">04</span>
+              <h2 class="step-title">PROPÓN la siguiente <em>acción concreta</em></h2>
+            </div>
+            <p class="step-desc">No preguntes "¿quieres que hablemos?". Propón fecha, hora y formato específicos. La especificidad genera confianza y acelera la decisión. Una propuesta vaga produce una respuesta vaga — o ninguna.</p>
+            <div class="step-example">
+              <p class="step-example-label">// EJEMPLO DE PROPUESTA CONCRETA</p>
+              <p class="step-example-text">"¿Tienes 20 minutos el jueves a las 11h para una videollamada sin compromiso? Te confirmo en 5 minutos."</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PASO 5 -->
+        <div class="step">
+          <div class="step-icon-col">
+            <div class="step-num">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M2 12a10 10 0 0 1 17.66-6.5M22 12a10 10 0 0 1-17.66 6.5" stroke="#C4922A" stroke-width="1.5" stroke-linecap="square"/>
+                <path d="M18 6l2-2 2 2M6 18l-2 2-2-2" stroke="#C4922A" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"/>
+              </svg>
+            </div>
+          </div>
+          <div class="step-body">
+            <div class="step-header">
+              <span class="step-index">05</span>
+              <h2 class="step-title">HAZ SEGUIMIENTO a <em>24h y 7 días</em></h2>
+            </div>
+            <p class="step-desc">El 80% de las ventas se cierran después del quinto contacto. La mayoría abandona después del primero. El seguimiento sistemático es donde está el dinero real: no en conseguir más leads, sino en no perder los que ya tienes.</p>
+            <div class="step-example">
+              <p class="step-example-label">// CADENCIA DE SEGUIMIENTO</p>
+              <p class="step-example-text">"+24h: '¿Pudiste ver lo que te mandé? Cualquier duda, aquí estoy.' · +7 días: 'Hola [nombre], ¿cómo va la situación que me comentaste?'"</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <p class="cta-label">// IMPLEMENTA EL SISTEMA //</p>
+      <h2 class="cta-title">Automatiza este proceso<br>en tu negocio</h2>
+      <p class="cta-desc">Implantamos este framework con IA para que funcione 24/7 sin que tengas que estar pendiente. Respuesta automática, cualificación y agenda incluidos.</p>
+      <a href="https://wa.me/34684376021" class="cta-btn" target="_blank" rel="noopener">QUIERO AUTOMATIZAR MIS LEADS →</a>
+    </section>
+
+    <footer class="footer">
+      <span class="footer-brand"><span style="color:var(--gold)">V</span>ELOXIA VAULT<span style="color:var(--gold)">.</span></span>
+      <span class="footer-hash">EXP.002 // SETTER // FRAMEWORK // VX.v1.0</span>
+    </footer>
+
+  </div>
+</body>
+</html>

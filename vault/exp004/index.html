@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EXP.004 · Mini Auditoría Digital — VELOXIA VAULT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #040404; --black-2: #060606; --black-3: #080808;
+      --gold: #C4922A; --gold-light: #E8B84A;
+      --gold-border: rgba(196,146,42,0.25);
+      --text: #F0E8D8; --text-muted: #9A8C78; --text-dim: #6B5F4E;
+      --green: #4AFF8A; --orange: #FF9A3A; --red: #FF6666;
+    }
+    html { scroll-behavior: smooth; }
+    body { background:var(--black);color:var(--text);font-family:'DM Mono','Courier New',monospace;overflow-x:hidden;padding-top:40px; }
+    body::before { content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(196,146,42,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(196,146,42,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0; }
+    .top-bar { position:fixed;top:0;left:0;right:0;height:40px;background:#000;border-bottom:1px solid rgba(196,146,42,0.2);display:flex;align-items:center;justify-content:center;gap:12px;z-index:1000;padding:0 20px; }
+    .blink-dot { width:6px;height:6px;border-radius:50%;background:#ff3333;flex-shrink:0;animation:blinkDot 1s ease-in-out infinite; }
+    @keyframes blinkDot { 0%,100%{opacity:1}50%{opacity:0.1} }
+    .top-bar-text { font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .container { max-width:900px;margin:0 auto;padding:0 24px;position:relative;z-index:1; }
+    .breadcrumb { padding:32px 0 0;display:flex;align-items:center;gap:12px; }
+    .breadcrumb a { font-size:10px;letter-spacing:3px;color:var(--gold);text-decoration:none;text-transform:uppercase;opacity:.6;transition:opacity .2s; }
+    .breadcrumb a:hover { opacity:1; }
+    .breadcrumb span { font-size:10px;color:var(--text-dim); }
+    .hero { padding:40px 0 56px; }
+    .badge-row { display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap; }
+    .badge-exp { font-size:9px;letter-spacing:3px;padding:5px 12px;border:1px solid var(--gold-border);color:var(--gold);text-transform:uppercase; }
+    .badge-cat { font-size:9px;letter-spacing:2px;padding:5px 12px;border:1px solid rgba(74,255,138,0.25);color:var(--green);background:rgba(74,255,138,0.04);text-transform:uppercase; }
+    h1 { font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,7vw,68px);line-height:.95;letter-spacing:2px;color:var(--text);margin-bottom:20px; }
+    h1 em { color:var(--gold);font-style:normal; }
+    .hero-desc { font-size:13px;color:var(--text-muted);line-height:1.8;font-weight:300;max-width:620px; }
+
+    /* SCORE BAR */
+    .score-bar {
+      position: sticky; top: 40px; z-index: 50;
+      background: var(--black-3); border-bottom: 1px solid var(--gold-border);
+      padding: 14px 24px; margin: 0 -24px 48px;
+      display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+    }
+    .score-bar-label { font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;opacity:.6; }
+    .score-bar-num { font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--text); }
+    .score-bar-num span { color:var(--text-dim); }
+    .score-bar-track { flex:1;min-width:120px;height:2px;background:rgba(196,146,42,.1);position:relative; }
+    .score-bar-fill { height:100%;background:var(--gold);transition:width .4s ease;position:relative;min-width:0; }
+    .score-bar-fill::after { content:'';position:absolute;right:-4px;top:-3px;width:8px;height:8px;background:var(--gold);border-radius:50%; }
+    .score-bar-status { font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim); }
+
+    /* AUDIT SECTIONS */
+    .audit-section { margin-bottom: 56px; }
+    .audit-header {
+      display:flex;align-items:center;gap:14px;margin-bottom:4px;
+      padding-bottom:16px;border-bottom:1px solid var(--gold-border);
+    }
+    .audit-icon { width:36px;height:36px;border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+    .audit-title { font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:var(--text); }
+    .audit-score { margin-left:auto;font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;opacity:.5; }
+    .audit-items { display:flex;flex-direction:column;gap:2px;margin-top:4px; }
+    .audit-item {
+      display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;
+      padding:14px 18px;border:1px solid var(--gold-border);background:var(--black-2);
+      transition:border-color .2s;
+    }
+    .audit-item:hover { border-color:rgba(196,146,42,.4); }
+    .audit-q { font-size:12px;color:var(--text-muted);line-height:1.5; }
+    .answer-group { display:flex;gap:4px;flex-shrink:0; }
+    .answer-radio { display:none; }
+    .answer-label {
+      font-size:8px;letter-spacing:2px;padding:6px 10px;text-transform:uppercase;
+      border:1px solid var(--gold-border);color:var(--text-dim);cursor:pointer;
+      transition:all .2s;white-space:nowrap;
+    }
+    .answer-label:hover { border-color:var(--gold);color:var(--gold); }
+    .answer-radio.si:checked  + .answer-label { background:rgba(74,255,138,.12);border-color:rgba(74,255,138,.4);color:var(--green); }
+    .answer-radio.par:checked + .answer-label { background:rgba(255,154,58,.1);border-color:rgba(255,154,58,.4);color:var(--orange); }
+    .answer-radio.no:checked  + .answer-label { background:rgba(255,102,102,.1);border-color:rgba(255,102,102,.4);color:var(--red); }
+
+    /* RESULT */
+    .result-section {
+      border:1px solid var(--gold-border);background:var(--black-3);
+      padding:36px;margin-bottom:60px;display:none;
+    }
+    .result-section.visible { display:block; }
+    .result-label { font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;opacity:.6;margin-bottom:14px; }
+    .result-big { font-family:'Bebas Neue',sans-serif;font-size:64px;letter-spacing:3px;line-height:1;margin-bottom:12px; }
+    .result-big span { color:var(--text-dim);font-size:40px; }
+    .result-headline { font-size:15px;color:var(--text-muted);line-height:1.7;margin-bottom:10px; }
+    .result-headline strong { display:block;font-size:17px;margin-bottom:6px; }
+
+    /* CTA */
+    .cta-section { padding:60px 0 80px;border-top:1px solid var(--gold-border); }
+    .cta-label { font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;opacity:.6;margin-bottom:16px; }
+    .cta-title { font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,5vw,52px);letter-spacing:3px;color:var(--text);margin-bottom:16px; }
+    .cta-desc { font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:32px;max-width:520px; }
+    .cta-btn { display:inline-block;background:var(--gold);color:#000;padding:16px 40px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:4px;text-decoration:none;transition:background .2s; }
+    .cta-btn:hover { background:var(--gold-light); }
+    .footer { padding:40px 0 32px;border-top:1px solid var(--gold-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px; }
+    .footer-brand { font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:5px;color:var(--gold); }
+    .footer-hash { font-size:9px;color:rgba(196,146,42,.2);letter-spacing:2px; }
+    @media (max-width:640px) {
+      .audit-item { grid-template-columns:1fr;gap:10px; }
+      .answer-group { flex-wrap:wrap; }
+      .score-bar { margin:0 -24px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <span class="blink-dot"></span>
+    <span class="top-bar-text">REC · SISTEMA PRIVADO ACTIVO · VX—01 / MADRID NODE · CANAL SEGURO</span>
+    <span class="blink-dot" style="animation-delay:.5s"></span>
+  </div>
+
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a href="/vault/">← VAULT</a>
+      <span>/</span>
+      <span style="color:var(--text-muted);font-size:10px;letter-spacing:2px;text-transform:uppercase">EXP.004</span>
+    </nav>
+
+    <header class="hero">
+      <div class="badge-row">
+        <span class="badge-exp">EXP.004</span>
+        <span class="badge-cat">AUDIT // TEMPLATE</span>
+      </div>
+      <h1>Plantilla de<br><em>mini auditoría digital</em></h1>
+      <p class="hero-desc">El esquema que usamos para revisar web, contenido, captación y seguimiento. Responde Sí / Parcial / No en cada punto y obtén tu diagnóstico inmediato.</p>
+    </header>
+
+    <!-- SCORE BAR STICKY -->
+    <div class="score-bar" id="scoreBar">
+      <span class="score-bar-label">// PUNTUACIÓN //</span>
+      <span class="score-bar-num" id="scoreNum">0 <span>/ 40</span></span>
+      <div class="score-bar-track">
+        <div class="score-bar-fill" id="scoreFill" style="width:0%"></div>
+      </div>
+      <span class="score-bar-status" id="scoreStatus">EN ESPERA</span>
+    </div>
+
+    <form id="auditForm">
+
+      <!-- WEB -->
+      <div class="audit-section">
+        <div class="audit-header">
+          <div class="audit-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="1" y="3" width="16" height="12" rx="0" stroke="#C4922A" stroke-width="1.2"/>
+              <path d="M1 7h16" stroke="#C4922A" stroke-width="1.2"/>
+              <circle cx="4" cy="5" r=".8" fill="#C4922A"/>
+              <circle cx="7" cy="5" r=".8" fill="#C4922A"/>
+            </svg>
+          </div>
+          <span class="audit-title">WEB</span>
+          <span class="audit-score" id="webScore">0 / 10</span>
+        </div>
+        <div class="audit-items">
+          <div class="audit-item">
+            <span class="audit-q">¿Tu web carga en menos de 3 segundos?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="w1" id="w1s" value="2" onchange="calc()"><label class="answer-label" for="w1s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="w1" id="w1p" value="1" onchange="calc()"><label class="answer-label" for="w1p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="w1" id="w1n" value="0" onchange="calc()"><label class="answer-label" for="w1n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿El visitante entiende en 5 segundos qué haces y para quién?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="w2" id="w2s" value="2" onchange="calc()"><label class="answer-label" for="w2s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="w2" id="w2p" value="1" onchange="calc()"><label class="answer-label" for="w2p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="w2" id="w2n" value="0" onchange="calc()"><label class="answer-label" for="w2n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿Hay un CTA claro visible en la primera pantalla?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="w3" id="w3s" value="2" onchange="calc()"><label class="answer-label" for="w3s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="w3" id="w3p" value="1" onchange="calc()"><label class="answer-label" for="w3p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="w3" id="w3n" value="0" onchange="calc()"><label class="answer-label" for="w3n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿La web está optimizada para móvil?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="w4" id="w4s" value="2" onchange="calc()"><label class="answer-label" for="w4s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="w4" id="w4p" value="1" onchange="calc()"><label class="answer-label" for="w4p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="w4" id="w4n" value="0" onchange="calc()"><label class="answer-label" for="w4n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿Tienes WhatsApp o formulario accesible en toda la web?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="w5" id="w5s" value="2" onchange="calc()"><label class="answer-label" for="w5s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="w5" id="w5p" value="1" onchange="calc()"><label class="answer-label" for="w5p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="w5" id="w5n" value="0" onchange="calc()"><label class="answer-label" for="w5n">NO</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTENIDO -->
+      <div class="audit-section">
+        <div class="audit-header">
+          <div class="audit-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="2" y="1" width="14" height="16" stroke="#C4922A" stroke-width="1.2"/>
+              <path d="M5 6h8M5 9h8M5 12h5" stroke="#C4922A" stroke-width="1.2" stroke-linecap="square"/>
+            </svg>
+          </div>
+          <span class="audit-title">CONTENIDO</span>
+          <span class="audit-score" id="contentScore">0 / 10</span>
+        </div>
+        <div class="audit-items">
+          <div class="audit-item">
+            <span class="audit-q">¿Publicas contenido mínimo 3 veces por semana?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="c1" id="c1s" value="2" onchange="calc()"><label class="answer-label" for="c1s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="c1" id="c1p" value="1" onchange="calc()"><label class="answer-label" for="c1p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="c1" id="c1n" value="0" onchange="calc()"><label class="answer-label" for="c1n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿Tu contenido habla de beneficios y resultados, no de características?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="c2" id="c2s" value="2" onchange="calc()"><label class="answer-label" for="c2s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="c2" id="c2p" value="1" onchange="calc()"><label class="answer-label" for="c2p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="c2" id="c2n" value="0" onchange="calc()"><label class="answer-label" for="c2n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿Tienes contenido de autoridad publicado: casos, testimonios, resultados?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="c3" id="c3s" value="2" onchange="calc()"><label class="answer-label" for="c3s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="c3" id="c3p" value="1" onchange="calc()"><label class="answer-label" for="c3p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="c3" id="c3n" value="0" onchange="calc()"><label class="answer-label" for="c3n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿Tienes un formato de contenido que repites y reconocen?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="c4" id="c4s" value="2" onchange="calc()"><label class="answer-label" for="c4s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="c4" id="c4p" value="1" onchange="calc()"><label class="answer-label" for="c4p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="c4" id="c4n" value="0" onchange="calc()"><label class="answer-label" for="c4n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿Respondes públicamente preguntas frecuentes de tus clientes?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="c5" id="c5s" value="2" onchange="calc()"><label class="answer-label" for="c5s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="c5" id="c5p" value="1" onchange="calc()"><label class="answer-label" for="c5p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="c5" id="c5n" value="0" onchange="calc()"><label class="answer-label" for="c5n">NO</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAPTACIÓN -->
+      <div class="audit-section">
+        <div class="audit-header">
+          <div class="audit-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M9 1v16M1 9h16" stroke="#C4922A" stroke-width="1.2" stroke-linecap="square"/>
+              <circle cx="9" cy="9" r="4" stroke="#C4922A" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <span class="audit-title">CAPTACIÓN</span>
+          <span class="audit-score" id="captScore">0 / 10</span>
+        </div>
+        <div class="audit-items">
+          <div class="audit-item">
+            <span class="audit-q">¿Sabes exactamente de dónde vienen tus mejores clientes?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="k1" id="k1s" value="2" onchange="calc()"><label class="answer-label" for="k1s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="k1" id="k1p" value="1" onchange="calc()"><label class="answer-label" for="k1p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="k1" id="k1n" value="0" onchange="calc()"><label class="answer-label" for="k1n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿Tienes una oferta o primer paso claro para el primer contacto?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="k2" id="k2s" value="2" onchange="calc()"><label class="answer-label" for="k2s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="k2" id="k2p" value="1" onchange="calc()"><label class="answer-label" for="k2p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="k2" id="k2n" value="0" onchange="calc()"><label class="answer-label" for="k2n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿Respondes consultas en menos de 5 minutos habitualmente?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="k3" id="k3s" value="2" onchange="calc()"><label class="answer-label" for="k3s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="k3" id="k3p" value="1" onchange="calc()"><label class="answer-label" for="k3p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="k3" id="k3n" value="0" onchange="calc()"><label class="answer-label" for="k3n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿Tienes alguna automatización para la primera respuesta o cualificación?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="k4" id="k4s" value="2" onchange="calc()"><label class="answer-label" for="k4s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="k4" id="k4p" value="1" onchange="calc()"><label class="answer-label" for="k4p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="k4" id="k4n" value="0" onchange="calc()"><label class="answer-label" for="k4n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿Mides cuántos leads recibes cada semana?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="k5" id="k5s" value="2" onchange="calc()"><label class="answer-label" for="k5s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="k5" id="k5p" value="1" onchange="calc()"><label class="answer-label" for="k5p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="k5" id="k5n" value="0" onchange="calc()"><label class="answer-label" for="k5n">NO</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEGUIMIENTO -->
+      <div class="audit-section">
+        <div class="audit-header">
+          <div class="audit-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M2 9a7 7 0 0 1 13.5-2.5M16 9a7 7 0 0 1-13.5 2.5" stroke="#C4922A" stroke-width="1.2" stroke-linecap="square"/>
+              <path d="M14 3l2 3.5-3.5.5" stroke="#C4922A" stroke-width="1.2" stroke-linecap="square" stroke-linejoin="miter"/>
+            </svg>
+          </div>
+          <span class="audit-title">SEGUIMIENTO</span>
+          <span class="audit-score" id="followScore">0 / 10</span>
+        </div>
+        <div class="audit-items">
+          <div class="audit-item">
+            <span class="audit-q">¿Registras todos tus contactos y oportunidades en algún lugar?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="s1" id="s1s" value="2" onchange="calc()"><label class="answer-label" for="s1s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="s1" id="s1p" value="1" onchange="calc()"><label class="answer-label" for="s1p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="s1" id="s1n" value="0" onchange="calc()"><label class="answer-label" for="s1n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿Haces seguimiento a quienes preguntaron y no compraron?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="s2" id="s2s" value="2" onchange="calc()"><label class="answer-label" for="s2s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="s2" id="s2p" value="1" onchange="calc()"><label class="answer-label" for="s2p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="s2" id="s2n" value="0" onchange="calc()"><label class="answer-label" for="s2n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿Tienes un proceso claro para enviar y hacer seguimiento de propuestas?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="s3" id="s3s" value="2" onchange="calc()"><label class="answer-label" for="s3s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="s3" id="s3p" value="1" onchange="calc()"><label class="answer-label" for="s3p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="s3" id="s3n" value="0" onchange="calc()"><label class="answer-label" for="s3n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿Sabes cuál es tu tasa de cierre aproximada?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="s4" id="s4s" value="2" onchange="calc()"><label class="answer-label" for="s4s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="s4" id="s4p" value="1" onchange="calc()"><label class="answer-label" for="s4p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="s4" id="s4n" value="0" onchange="calc()"><label class="answer-label" for="s4n">NO</label>
+            </div>
+          </div>
+          <div class="audit-item">
+            <span class="audit-q">¿Reactivas clientes anteriores con alguna frecuencia?</span>
+            <div class="answer-group">
+              <input class="answer-radio si" type="radio" name="s5" id="s5s" value="2" onchange="calc()"><label class="answer-label" for="s5s">SÍ</label>
+              <input class="answer-radio par" type="radio" name="s5" id="s5p" value="1" onchange="calc()"><label class="answer-label" for="s5p">PARCIAL</label>
+              <input class="answer-radio no" type="radio" name="s5" id="s5n" value="0" onchange="calc()"><label class="answer-label" for="s5n">NO</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- RESULT -->
+    <div class="result-section" id="resultSection">
+      <p class="result-label">// DIAGNÓSTICO COMPLETO //</p>
+      <div class="result-big" id="resultBig">0 <span>/ 40</span></div>
+      <div class="result-headline" id="resultHeadline"></div>
+    </div>
+
+    <section class="cta-section">
+      <p class="cta-label">// SIGUIENTE PASO //</p>
+      <h2 class="cta-title">¿Quieres una auditoría<br>profesional?</h2>
+      <p class="cta-desc">En 30 minutos hacemos contigo la auditoría completa, identificamos las fugas más grandes y te contamos exactamente qué haríamos para cerrarlas.</p>
+      <a href="https://calendly.com/hola-veloxia/30min" class="cta-btn" target="_blank" rel="noopener">QUIERO UNA AUDITORÍA PROFESIONAL →</a>
+    </section>
+
+    <footer class="footer">
+      <span class="footer-brand"><span style="color:var(--gold)">V</span>ELOXIA VAULT<span style="color:var(--gold)">.</span></span>
+      <span class="footer-hash">EXP.004 // AUDIT // TEMPLATE // VX.v1.0</span>
+    </footer>
+
+  </div>
+
+  <script>
+    const sections = [
+      { prefix:'w', el:'webScore' },
+      { prefix:'c', el:'contentScore' },
+      { prefix:'k', el:'captScore' },
+      { prefix:'s', el:'followScore' }
+    ];
+
+    function getSectionScore(prefix) {
+      let score = 0;
+      for (let i = 1; i <= 5; i++) {
+        const radios = document.querySelectorAll('input[name="' + prefix + i + '"]:checked');
+        if (radios.length) score += parseInt(radios[0].value);
+      }
+      return score;
+    }
+
+    function calc() {
+      let total = 0;
+      sections.forEach(sec => {
+        const s = getSectionScore(sec.prefix);
+        document.getElementById(sec.el).textContent = s + ' / 10';
+        total += s;
+      });
+
+      document.getElementById('scoreNum').innerHTML = total + ' <span>/ 40</span>';
+      document.getElementById('scoreFill').style.width = (total / 40 * 100) + '%';
+
+      const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+
+      let status = 'EN ESPERA';
+      if      (total >= 33) status = 'SISTEMA SÓLIDO';
+      else if (total >= 20) status = 'MEJORAS NECESARIAS';
+      else if (answered > 0) status = 'PUNTOS CRÍTICOS';
+      document.getElementById('scoreStatus').textContent = status;
+
+      if (answered >= 10) {
+        const rs = document.getElementById('resultSection');
+        rs.classList.add('visible');
+        document.getElementById('resultBig').innerHTML = total + ' <span>/ 40</span>';
+        const rh = document.getElementById('resultHeadline');
+        if (total <= 15) {
+          rs.style.borderColor = 'rgba(255,102,102,0.4)';
+          rh.innerHTML = '<strong style="color:#FF6666">Puntos críticos sin resolver.</strong>Tu sistema digital tiene fugas importantes. Estás perdiendo oportunidades cada día. Prioriza las secciones con 0 o 1 punto primero.';
+        } else if (total <= 28) {
+          rs.style.borderColor = 'rgba(255,154,58,0.4)';
+          rh.innerHTML = '<strong style="color:#FF9A3A">Base sólida con fugas importantes.</strong>Tu negocio tiene estructura, pero hay áreas que están frenando tu crecimiento. Las secciones con menor puntuación son donde se escapa el dinero.';
+        } else {
+          rs.style.borderColor = 'rgba(74,255,138,0.3)';
+          rh.innerHTML = '<strong style="color:#4AFF8A">Sistema bien trabajado.</strong>Tu presencia digital está en buen estado. Los últimos puntos que faltan son los que separan un buen negocio de uno que escala sin depender de ti.';
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>

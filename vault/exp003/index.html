@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EXP.003 · 30 Ideas de Contenido — VELOXIA VAULT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #040404; --black-2: #060606; --black-3: #080808;
+      --gold: #C4922A; --gold-light: #E8B84A;
+      --gold-border: rgba(196,146,42,0.25);
+      --text: #F0E8D8; --text-muted: #9A8C78; --text-dim: #6B5F4E;
+      --green: #4AFF8A; --red: #FF6666;
+    }
+    html { scroll-behavior: smooth; }
+    body { background:var(--black);color:var(--text);font-family:'DM Mono','Courier New',monospace;overflow-x:hidden;padding-top:40px; }
+    body::before { content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(196,146,42,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(196,146,42,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0; }
+    .top-bar { position:fixed;top:0;left:0;right:0;height:40px;background:#000;border-bottom:1px solid rgba(196,146,42,0.2);display:flex;align-items:center;justify-content:center;gap:12px;z-index:1000;padding:0 20px; }
+    .blink-dot { width:6px;height:6px;border-radius:50%;background:#ff3333;flex-shrink:0;animation:blinkDot 1s ease-in-out infinite; }
+    @keyframes blinkDot { 0%,100%{opacity:1}50%{opacity:0.1} }
+    .top-bar-text { font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .container { max-width:1080px;margin:0 auto;padding:0 24px;position:relative;z-index:1; }
+    .breadcrumb { padding:32px 0 0;display:flex;align-items:center;gap:12px; }
+    .breadcrumb a { font-size:10px;letter-spacing:3px;color:var(--gold);text-decoration:none;text-transform:uppercase;opacity:.6;transition:opacity .2s; }
+    .breadcrumb a:hover { opacity:1; }
+    .breadcrumb span { font-size:10px;color:var(--text-dim); }
+    .hero { padding:40px 0 56px; }
+    .badge-row { display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap; }
+    .badge-exp { font-size:9px;letter-spacing:3px;padding:5px 12px;border:1px solid var(--gold-border);color:var(--gold);text-transform:uppercase; }
+    .badge-cat { font-size:9px;letter-spacing:2px;padding:5px 12px;border:1px solid rgba(74,255,138,0.25);color:var(--green);background:rgba(74,255,138,0.04);text-transform:uppercase; }
+    h1 { font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,7vw,68px);line-height:.95;letter-spacing:2px;color:var(--text);margin-bottom:20px; }
+    h1 em { color:var(--gold);font-style:normal; }
+    .hero-desc { font-size:13px;color:var(--text-muted);line-height:1.8;font-weight:300;max-width:620px; }
+
+    /* FILTER */
+    .filter-bar { display:flex;gap:8px;margin-bottom:40px;flex-wrap:wrap; }
+    .filter-btn {
+      font-size:9px;letter-spacing:2px;padding:8px 16px;text-transform:uppercase;
+      border:1px solid var(--gold-border);color:var(--text-dim);background:transparent;
+      cursor:pointer;transition:all .2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color:var(--gold);color:var(--gold);background:rgba(196,146,42,0.05);
+    }
+
+    /* CATEGORIES */
+    .cat-section { margin-bottom: 64px; }
+    .cat-header {
+      display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
+      padding-bottom: 12px; border-bottom: 1px solid var(--gold-border);
+    }
+    .cat-tag {
+      font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px; color: var(--gold);
+    }
+    .cat-count { font-size:9px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase; }
+    .cat-desc { font-size:11px;color:var(--text-dim);margin-left:auto; }
+
+    .ideas-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:10px; }
+
+    .idea-card {
+      border:1px solid var(--gold-border);background:var(--black-2);
+      padding:20px 22px;transition:border-color .2s,box-shadow .2s;
+    }
+    .idea-card:hover { border-color:rgba(196,146,42,.45);box-shadow:0 0 24px rgba(196,146,42,.05); }
+    .idea-top { display:flex;justify-content:space-between;align-items:center;margin-bottom:10px; }
+    .idea-num { font-size:9px;letter-spacing:2px;color:var(--gold);opacity:.45; }
+    .copy-btn {
+      font-size:8px;letter-spacing:2px;padding:4px 10px;background:transparent;
+      border:1px solid var(--gold-border);color:var(--text-dim);cursor:pointer;
+      transition:all .2s;text-transform:uppercase;
+    }
+    .copy-btn:hover { border-color:var(--gold);color:var(--gold); }
+    .copy-btn.copied { border-color:var(--green);color:var(--green); }
+    .idea-title { font-size:13px;color:var(--text);line-height:1.5;margin-bottom:8px; }
+    .idea-prompt {
+      font-size:10px;color:var(--text-dim);line-height:1.7;
+      border-left:2px solid var(--gold-border);padding-left:12px;
+    }
+
+    /* CTA */
+    .cta-section { padding:60px 0 80px;border-top:1px solid var(--gold-border); }
+    .cta-label { font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;opacity:.6;margin-bottom:16px; }
+    .cta-title { font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,5vw,52px);letter-spacing:3px;color:var(--text);margin-bottom:16px; }
+    .cta-desc { font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:32px;max-width:520px; }
+    .cta-btn { display:inline-block;background:var(--gold);color:#000;padding:16px 40px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:4px;text-decoration:none;transition:background .2s; }
+    .cta-btn:hover { background:var(--gold-light); }
+    .footer { padding:40px 0 32px;border-top:1px solid var(--gold-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px; }
+    .footer-brand { font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:5px;color:var(--gold); }
+    .footer-hash { font-size:9px;color:rgba(196,146,42,.2);letter-spacing:2px; }
+    @media (max-width:768px) {
+      .ideas-grid { grid-template-columns:1fr; }
+      .cat-desc { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <span class="blink-dot"></span>
+    <span class="top-bar-text">REC · SISTEMA PRIVADO ACTIVO · VX—01 / MADRID NODE · CANAL SEGURO</span>
+    <span class="blink-dot" style="animation-delay:.5s"></span>
+  </div>
+
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a href="/vault/">← VAULT</a>
+      <span>/</span>
+      <span style="color:var(--text-muted);font-size:10px;letter-spacing:2px;text-transform:uppercase">EXP.003</span>
+    </nav>
+
+    <header class="hero">
+      <div class="badge-row">
+        <span class="badge-exp">EXP.003</span>
+        <span class="badge-cat">CONTENT // PROMPTS</span>
+      </div>
+      <h1>30 ideas de contenido<br>para <em>negocios premium</em></h1>
+      <p class="hero-desc">Prompts listos para clínicas, despachos, coaches e inmobiliarias. Copia el prompt, adáptalo a tu negocio y tendrás contenido que posiciona en minutos.</p>
+    </header>
+
+    <section>
+
+      <!-- DOLOR -->
+      <div class="cat-section" data-cat="dolor">
+        <div class="cat-header">
+          <span class="cat-tag">DOLOR</span>
+          <span class="cat-count">8 IDEAS</span>
+          <span class="cat-desc">Contenido que conecta con el problema real</span>
+        </div>
+        <div class="ideas-grid">
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">001</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'El error más común que cometen los [tipo de negocio] al intentar captar clientes online (y cómo evitarlo)')">COPIAR</button>
+            </div>
+            <p class="idea-title">El error más común al intentar captar clientes online</p>
+            <p class="idea-prompt">El error más común que cometen los [tipo de negocio] al intentar captar clientes online (y cómo evitarlo)</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">002</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Por qué tu web tiene visitas pero no genera consultas: los 3 motivos reales que nadie te dice')">COPIAR</button>
+            </div>
+            <p class="idea-title">Por qué tu web tiene visitas pero no genera consultas</p>
+            <p class="idea-prompt">Por qué tu web tiene visitas pero no genera consultas: los 3 motivos reales que nadie te dice</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">003</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Lo que pierdes cada vez que tardas más de 5 minutos en responder un mensaje de un cliente potencial')">COPIAR</button>
+            </div>
+            <p class="idea-title">Lo que pierdes cuando tardas en responder un DM</p>
+            <p class="idea-prompt">Lo que pierdes cada vez que tardas más de 5 minutos en responder un mensaje de un cliente potencial</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">004</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Por qué explicar características en lugar de resultados está hundiendo tu conversión (con ejemplo real)')">COPIAR</button>
+            </div>
+            <p class="idea-title">Características vs resultados: el error que mata tu conversión</p>
+            <p class="idea-prompt">Por qué explicar características en lugar de resultados está hundiendo tu conversión (con ejemplo real)</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">005</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Cuántos leads perdiste este mes sin saberlo y qué puedes hacer para recuperarlos')">COPIAR</button>
+            </div>
+            <p class="idea-title">Los leads que perdiste este mes sin saberlo</p>
+            <p class="idea-prompt">Cuántos leads perdiste este mes sin saberlo y qué puedes hacer para recuperarlos</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">006</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'El coste real de no tener un sistema de seguimiento: cuánto dinero se va sin que lo veas')">COPIAR</button>
+            </div>
+            <p class="idea-title">El coste real de no hacer seguimiento</p>
+            <p class="idea-prompt">El coste real de no tener un sistema de seguimiento: cuánto dinero se va sin que lo veas</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">007</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Por qué tienes buenas reseñas y pocos clientes nuevos: el problema de confiar solo en el boca a boca')">COPIAR</button>
+            </div>
+            <p class="idea-title">Buenas reseñas pero pocos clientes nuevos</p>
+            <p class="idea-prompt">Por qué tienes buenas reseñas y pocos clientes nuevos: el problema de confiar solo en el boca a boca</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">008</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Lo que tus mejores clientes dijeron antes de contratarte y por qué no lo estás usando para atraer a más')">COPIAR</button>
+            </div>
+            <p class="idea-title">Lo que tus mejores clientes dijeron antes de contratarte</p>
+            <p class="idea-prompt">Lo que tus mejores clientes dijeron antes de contratarte y por qué no lo estás usando para atraer a más</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- EDUCACIÓN -->
+      <div class="cat-section" data-cat="educacion">
+        <div class="cat-header">
+          <span class="cat-tag">EDUCACIÓN</span>
+          <span class="cat-count">8 IDEAS</span>
+          <span class="cat-desc">Enseña sin regalar todo</span>
+        </div>
+        <div class="ideas-grid">
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">009</span>
+              <button class="copy-btn" onclick="copyPrompt(this, '3 preguntas que debes hacer antes de aceptar a un nuevo cliente para evitar problemas más adelante')">COPIAR</button>
+            </div>
+            <p class="idea-title">3 preguntas antes de aceptar a un cliente</p>
+            <p class="idea-prompt">3 preguntas que debes hacer antes de aceptar a un nuevo cliente para evitar problemas más adelante</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">010</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Cómo estructurar una primera consulta o reunión para que el cliente quiera seguir trabajando contigo')">COPIAR</button>
+            </div>
+            <p class="idea-title">Cómo estructurar la primera consulta para que quieran seguir</p>
+            <p class="idea-prompt">Cómo estructurar una primera consulta o reunión para que el cliente quiera seguir trabajando contigo</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">011</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'La diferencia entre un lead frío y uno caliente y cómo debes tratar a cada uno de forma distinta')">COPIAR</button>
+            </div>
+            <p class="idea-title">Lead frío vs lead caliente: cómo tratarlos diferente</p>
+            <p class="idea-prompt">La diferencia entre un lead frío y uno caliente y cómo debes tratar a cada uno de forma distinta</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">012</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Qué publicar en Instagram si eres profesional de servicios y no sabes por dónde empezar')">COPIAR</button>
+            </div>
+            <p class="idea-title">Qué publicar en Instagram si eres profesional de servicios</p>
+            <p class="idea-prompt">Qué publicar en Instagram si eres profesional de servicios y no sabes por dónde empezar</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">013</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Cómo escribir la bio de tu perfil de Instagram para que convierta visitas en mensajes en 3 segundos')">COPIAR</button>
+            </div>
+            <p class="idea-title">La bio de Instagram que convierte en 3 segundos</p>
+            <p class="idea-prompt">Cómo escribir la bio de tu perfil de Instagram para que convierta visitas en mensajes en 3 segundos</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">014</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Cómo revisar tu presencia digital en 15 minutos y detectar qué está frenando tus ventas')">COPIAR</button>
+            </div>
+            <p class="idea-title">Cómo revisar tu presencia digital en 15 minutos</p>
+            <p class="idea-prompt">Cómo revisar tu presencia digital en 15 minutos y detectar qué está frenando tus ventas</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">015</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Qué métricas de redes sociales importan de verdad si eres un negocio de servicios (y cuáles puedes ignorar)')">COPIAR</button>
+            </div>
+            <p class="idea-title">Las métricas que importan si eres negocio de servicios</p>
+            <p class="idea-prompt">Qué métricas de redes sociales importan de verdad si eres un negocio de servicios (y cuáles puedes ignorar)</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">016</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Cómo crear contenido de valor que posiciona tu expertise sin regalar todo lo que sabes')">COPIAR</button>
+            </div>
+            <p class="idea-title">Crear contenido de valor sin regalar todo</p>
+            <p class="idea-prompt">Cómo crear contenido de valor que posiciona tu expertise sin regalar todo lo que sabes</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DEMOSTRACIÓN -->
+      <div class="cat-section" data-cat="demostracion">
+        <div class="cat-header">
+          <span class="cat-tag">DEMOSTRACIÓN</span>
+          <span class="cat-count">7 IDEAS</span>
+          <span class="cat-desc">Muestra resultados reales</span>
+        </div>
+        <div class="ideas-grid">
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">017</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Antes y después: así cambió la presencia digital de [tipo de cliente] en [tiempo] trabajando con nosotros')">COPIAR</button>
+            </div>
+            <p class="idea-title">Antes y después: caso real de transformación</p>
+            <p class="idea-prompt">Antes y después: así cambió la presencia digital de [tipo de cliente] en [tiempo] trabajando con nosotros</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">018</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'El proceso completo de cómo trabajamos con un nuevo cliente desde el primer contacto hasta los resultados')">COPIAR</button>
+            </div>
+            <p class="idea-title">Behind the scenes: cómo trabajamos con un cliente nuevo</p>
+            <p class="idea-prompt">El proceso completo de cómo trabajamos con un nuevo cliente desde el primer contacto hasta los resultados</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">019</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'De 0 a primera cita: el flujo completo de captación desde que alguien te descubre hasta que reserva')">COPIAR</button>
+            </div>
+            <p class="idea-title">De 0 a primera cita: el flujo completo de captación</p>
+            <p class="idea-prompt">De 0 a primera cita: el flujo completo de captación desde que alguien te descubre hasta que reserva</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">020</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Así respondemos consultas en menos de 2 minutos con IA: lo que verías si fueras cliente nuestro')">COPIAR</button>
+            </div>
+            <p class="idea-title">Cómo respondemos consultas en 2 minutos con IA</p>
+            <p class="idea-prompt">Así respondemos consultas en menos de 2 minutos con IA: lo que verías si fueras cliente nuestro</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">021</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Así se ve un sistema de gestión de leads bien configurado para un negocio de servicios (vídeo real)')">COPIAR</button>
+            </div>
+            <p class="idea-title">Así se ve un sistema de leads bien configurado</p>
+            <p class="idea-prompt">Así se ve un sistema de gestión de leads bien configurado para un negocio de servicios (vídeo real)</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">022</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Resultado real: [cliente] pasó de no tener presencia online a recibir [X] consultas por semana en [tiempo]')">COPIAR</button>
+            </div>
+            <p class="idea-title">Resultado real: de sin presencia a consultas semanales</p>
+            <p class="idea-prompt">Resultado real: [cliente] pasó de no tener presencia online a recibir [X] consultas por semana en [tiempo]</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">023</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'El dashboard que usan nuestros clientes para ver en tiempo real sus oportunidades, citas y propuestas')">COPIAR</button>
+            </div>
+            <p class="idea-title">El dashboard que usan nuestros clientes para ver su pipeline</p>
+            <p class="idea-prompt">El dashboard que usan nuestros clientes para ver en tiempo real sus oportunidades, citas y propuestas</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CONFIANZA -->
+      <div class="cat-section" data-cat="confianza">
+        <div class="cat-header">
+          <span class="cat-tag">CONFIANZA</span>
+          <span class="cat-count">7 IDEAS</span>
+          <span class="cat-desc">Construye autoridad premium</span>
+        </div>
+        <div class="ideas-grid">
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">024</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Por qué no trabajamos con todo tipo de negocios y qué tipo de cliente buscamos realmente')">COPIAR</button>
+            </div>
+            <p class="idea-title">Por qué no trabajamos con todo el mundo</p>
+            <p class="idea-prompt">Por qué no trabajamos con todo tipo de negocios y qué tipo de cliente buscamos realmente</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">025</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Lo que dice un cliente después de 3 meses trabajando con nosotros (testimonio sin guión)')">COPIAR</button>
+            </div>
+            <p class="idea-title">Testimonio real: 3 meses después</p>
+            <p class="idea-prompt">Lo que dice un cliente después de 3 meses trabajando con nosotros (testimonio sin guión)</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">026</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Nuestra filosofía: construimos presencia que vende, no que impresiona en premios del sector')">COPIAR</button>
+            </div>
+            <p class="idea-title">Nuestra filosofía: presencia que vende, no que impresiona</p>
+            <p class="idea-prompt">Nuestra filosofía: construimos presencia que vende, no que impresiona en premios del sector</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">027</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Los 3 tipos de negocios con los que no trabajaríamos y por qué ser selectivo mejora nuestros resultados')">COPIAR</button>
+            </div>
+            <p class="idea-title">Los negocios con los que no trabajaríamos</p>
+            <p class="idea-prompt">Los 3 tipos de negocios con los que no trabajaríamos y por qué ser selectivo mejora nuestros resultados</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">028</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Cómo es el primer mes trabajando con nosotros: lo que hacemos, lo que esperamos y lo que vas a notar')">COPIAR</button>
+            </div>
+            <p class="idea-title">El primer mes trabajando con nosotros: qué esperar</p>
+            <p class="idea-prompt">Cómo es el primer mes trabajando con nosotros: lo que hacemos, lo que esperamos y lo que vas a notar</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">029</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Una cosa que aprendimos trabajando con [sector] que cambió la forma en que diseñamos sus sistemas de captación')">COPIAR</button>
+            </div>
+            <p class="idea-title">Un insight del sector que cambió nuestra forma de trabajar</p>
+            <p class="idea-prompt">Una cosa que aprendimos trabajando con [sector] que cambió la forma en que diseñamos sus sistemas de captación</p>
+          </div>
+
+          <div class="idea-card">
+            <div class="idea-top">
+              <span class="idea-num">030</span>
+              <button class="copy-btn" onclick="copyPrompt(this, 'Nuestro proceso de selección de clientes: por qué pedimos una llamada antes de aceptar a alguien')">COPIAR</button>
+            </div>
+            <p class="idea-title">Nuestro proceso de selección de clientes</p>
+            <p class="idea-prompt">Nuestro proceso de selección de clientes: por qué pedimos una llamada antes de aceptar a alguien</p>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <section class="cta-section">
+      <p class="cta-label">// SIGUIENTE PASO //</p>
+      <h2 class="cta-title">¿Quieres contenido<br>que posiciona tu negocio?</h2>
+      <p class="cta-desc">Creamos vídeos con IA cinemática para clínicas, despachos y consultores. Sin cámara, sin equipo, con resultados reales.</p>
+      <a href="https://calendly.com/hola-veloxia/30min" class="cta-btn" target="_blank" rel="noopener">QUIERO CREAR CONTENIDO QUE POSICIONA →</a>
+    </section>
+
+    <footer class="footer">
+      <span class="footer-brand"><span style="color:var(--gold)">V</span>ELOXIA VAULT<span style="color:var(--gold)">.</span></span>
+      <span class="footer-hash">EXP.003 // CONTENT // PROMPTS // VX.v1.0</span>
+    </footer>
+
+  </div>
+
+  <script>
+    function copyPrompt(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'COPIADO';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'COPIAR'; btn.classList.remove('copied'); }, 2000);
+      }).catch(() => {
+        btn.textContent = '✓';
+        setTimeout(() => { btn.textContent = 'COPIAR'; }, 1500);
+      });
+    }
+  </script>
+
+</body>
+</html>
