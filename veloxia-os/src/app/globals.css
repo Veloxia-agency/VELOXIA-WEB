@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold:         #C4922A;
+  --gold-light:   #E8B84A;
+  --orange:       #FF6A00;
+  --black:        #040404;
+  --surface:      #0A0A0A;
+  --surface2:     #111111;
+  --surface3:     #1A1A1A;
+  --text:         #FFFFFF;
+  --muted:        #A1A1AA;
+  --border:       rgba(196,146,42,0.18);
+  --border-h:     rgba(196,146,42,0.45);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #040404;
+  color: #FFFFFF;
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #0A0A0A; }
+::-webkit-scrollbar-thumb { background: rgba(196,146,42,0.3); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(196,146,42,0.6); }
+
+/* Selection */
+::selection { background: rgba(196,146,42,0.25); color: #fff; }
+
+@layer utilities {
+  .font-display { font-family: var(--font-bebas), 'Bebas Neue', sans-serif; }
+  .font-mono-os { font-family: var(--font-dm-mono), 'DM Mono', monospace; }
+
+  .glow-gold {
+    box-shadow: 0 0 40px rgba(196,146,42,0.15);
+  }
+  .glow-gold-lg {
+    box-shadow: 0 0 80px rgba(196,146,42,0.25);
+  }
+  .glow-orange {
+    box-shadow: 0 0 40px rgba(255,106,0,0.2);
+  }
+  .border-gold {
+    border-color: rgba(196,146,42,0.18);
+  }
+  .border-gold-h {
+    border-color: rgba(196,146,42,0.45);
+  }
+  .text-gold { color: #C4922A; }
+  .text-orange { color: #FF6A00; }
+  .bg-surface  { background-color: #0A0A0A; }
+  .bg-surface2 { background-color: #111111; }
+  .bg-surface3 { background-color: #1A1A1A; }
+}
