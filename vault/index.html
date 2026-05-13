@@ -707,16 +707,17 @@
           <p class="card-desc">Guía visual para entender leads, citas, propuestas y clientes.</p>
         </div>
 
-        <div class="resource-card locked">
+        <a href="/vault/exp006/" style="text-decoration:none;display:block;">
+        <div class="resource-card">
           <div class="card-top">
             <span class="card-id">EXP.006</span>
-            <span class="badge badge-locked">LOCKED</span>
+            <span class="badge badge-open">OPEN</span>
           </div>
-          <p class="card-category">GROWTH SYSTEM // 3 INVITES</p>
-          <h3 class="card-title">Sistema completo Veloxia</h3>
-          <p class="card-desc">El flujo completo para convertir visitas, DMs y formularios en oportunidades.</p>
-          <button class="unlock-btn" onclick="scrollToForm()">DESBLOQUEA CON 3 INVITACIONES</button>
+          <p class="card-category">GROWTH SYSTEM // COMPLETO</p>
+          <h3 class="card-title">Sistema completo de captación</h3>
+          <p class="card-desc">El flujo completo para convertir visitas, DMs y formularios en clientes reales.</p>
         </div>
+        </a>
 
       </div>
     </div>
@@ -735,7 +736,7 @@
 
         <div class="counter-widget">
           <p class="counter-label">// RECURSOS COMPLETADOS //</p>
-          <div class="counter-numbers" id="vaultCounter">0 <span>/ 5</span></div>
+          <div class="counter-numbers" id="vaultCounter">0 <span>/ 6</span></div>
           <div class="progress-bar">
             <div class="progress-fill" id="progressFill"></div>
           </div>
@@ -760,15 +761,15 @@
     // Contador de recursos completados (localStorage)
     (function() {
       const completed = JSON.parse(localStorage.getItem('veloxia_completed') || '[]');
-      const count = Math.min(completed.length, 5);
+      const count = Math.min(completed.length, 6);
       const counter = document.getElementById('vaultCounter');
       const fill    = document.getElementById('progressFill');
       const status  = document.getElementById('counterStatus');
-      if (counter) counter.innerHTML = count + ' <span>/ 5</span>';
-      if (fill)    fill.style.width  = (count / 5 * 100) + '%';
-      if (status)  status.textContent = count === 5
+      if (counter) counter.innerHTML = count + ' <span>/ 6</span>';
+      if (fill)    fill.style.width  = (count / 6 * 100) + '%';
+      if (status)  status.textContent = count === 6
         ? 'ESTADO: TODOS LOS RECURSOS COMPLETADOS ✓'
-        : 'ESTADO: ' + count + '/5 RECURSOS COMPLETADOS';
+        : 'ESTADO: ' + count + '/6 RECURSOS COMPLETADOS';
     })();
 
     function getRef() {

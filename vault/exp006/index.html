@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EXP.006 · Sistema Completo de Captación — VELOXIA VAULT</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="alternate icon" href="/assets/favicon.ico">
+  <meta name="theme-color" content="#040404">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/veloxia-base.css">
+  <style>
+    .container { max-width: 960px; }
+
+    /* ── SYSTEM INTRO ── */
+    .system-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 64px;
+    }
+    .intro-stat {
+      border: 1px solid var(--gold-border);
+      background: var(--black-2);
+      padding: 24px 28px;
+    }
+    .intro-stat-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 44px;
+      letter-spacing: 2px;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .intro-stat-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    /* ── FLOW DIAGRAM ── */
+    .flow-label {
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-bottom: 32px;
+    }
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 80px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    .flow-node {
+      flex-shrink: 0;
+      text-align: center;
+      min-width: 140px;
+    }
+    .flow-icon {
+      width: 52px;
+      height: 52px;
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      background: var(--black-3);
+    }
+    .flow-node-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: var(--text);
+      display: block;
+    }
+    .flow-node-sub {
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 1.5px;
+      display: block;
+      margin-top: 3px;
+      text-transform: uppercase;
+    }
+    .flow-arrow {
+      flex-shrink: 0;
+      width: 32px;
+      text-align: center;
+      color: var(--gold-border);
+      font-size: 18px;
+      padding-bottom: 24px;
+    }
+
+    /* ── PHASES ── */
+    .phases-section { padding: 0 0 80px; }
+    .phases-header { margin-bottom: 48px; }
+    .phases-tag {
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .phases-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      letter-spacing: 4px;
+      color: var(--text);
+    }
+
+    .phase {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 0;
+      position: relative;
+      margin-bottom: 2px;
+    }
+    .phase-sidebar {
+      border: 1px solid var(--gold-border);
+      background: var(--black-3);
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .phase-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      letter-spacing: 2px;
+      color: var(--gold);
+      opacity: 0.25;
+      line-height: 1;
+    }
+    .phase-cat {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+    .phase-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 3px;
+      color: var(--text);
+    }
+    .phase-metric {
+      margin-top: auto;
+    }
+    .phase-metric-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 2px;
+      color: var(--gold);
+      display: block;
+    }
+    .phase-metric-label {
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .phase-body {
+      border: 1px solid var(--gold-border);
+      border-left: none;
+      background: var(--black-2);
+      padding: 32px 36px;
+      transition: border-color .2s;
+    }
+    .phase:hover .phase-body { border-color: rgba(196,146,42,0.45); }
+    .phase:hover .phase-sidebar { border-color: rgba(196,146,42,0.45); }
+
+    .phase-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.9;
+      margin-bottom: 24px;
+      font-weight: 300;
+    }
+
+    .phase-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .action-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--gold-border);
+      background: var(--black-3);
+    }
+    .action-bullet {
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+    .action-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .action-text strong {
+      display: block;
+      color: var(--text);
+      font-weight: 500;
+      margin-bottom: 2px;
+      font-size: 11px;
+    }
+
+    .phase-insight {
+      border-left: 2px solid var(--gold);
+      padding: 12px 16px;
+      background: rgba(196,146,42,0.03);
+    }
+    .phase-insight-label {
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 6px;
+    }
+    .phase-insight-text {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    /* ── RESUMEN HERRAMIENTAS ── */
+    .tools-section {
+      padding: 0 0 80px;
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .tool-card {
+      border: 1px solid var(--gold-border);
+      background: var(--black-2);
+      padding: 24px 22px;
+    }
+    .tool-service {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 10px;
+    }
+    .tool-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .tool-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .tool-list li {
+      font-size: 11px;
+      color: var(--text-dim);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .tool-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      opacity: 0.5;
+    }
+
+    /* ── CTA ── */
+    .cta-section { padding: 60px 0 80px; border-top: 1px solid var(--gold-border); }
+    .cta-label { font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;opacity:.6;margin-bottom:16px; }
+    .cta-title { font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,5vw,52px);letter-spacing:3px;color:var(--text);margin-bottom:16px; }
+    .cta-desc { font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:32px;max-width:520px; }
+    .cta-btn { display:inline-block;background:var(--gold);color:#000;padding:16px 40px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:4px;text-decoration:none;transition:background .2s; }
+    .cta-btn:hover { background:var(--gold-light); }
+    .footer { padding:40px 0 32px;border-top:1px solid var(--gold-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px; }
+    .footer-brand { font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:5px;color:var(--gold); }
+    .footer-hash { font-size:9px;color:rgba(196,146,42,.2);letter-spacing:2px; }
+
+    @media (max-width: 768px) {
+      .system-intro { grid-template-columns: 1fr 1fr; }
+      .phase { grid-template-columns: 1fr; }
+      .phase-body { border-left: 1px solid var(--gold-border); border-top: none; }
+      .phase-sidebar { flex-direction: row; flex-wrap: wrap; align-items: center; padding: 20px; }
+      .phase-num { font-size: 40px; }
+      .phase-metric { margin-top: 0; }
+      .phase-actions { grid-template-columns: 1fr; }
+      .tools-grid { grid-template-columns: 1fr; }
+      .flow-diagram { gap: 0; }
+    }
+    @media (max-width: 480px) {
+      .system-intro { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <span class="blink-dot"></span>
+    <span class="top-bar-text">REC · SISTEMA PRIVADO ACTIVO · VX—01 / MADRID NODE · CANAL SEGURO</span>
+    <span class="blink-dot" style="animation-delay:.5s"></span>
+  </div>
+
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a href="/vault/">← VAULT</a>
+      <span>/</span>
+      <span style="color:var(--text-muted);font-size:10px;letter-spacing:2px;text-transform:uppercase">EXP.006</span>
+    </nav>
+
+    <header class="hero">
+      <div class="badge-row">
+        <span class="badge-exp">EXP.006</span>
+        <span class="badge-cat">GROWTH SYSTEM // COMPLETO</span>
+      </div>
+      <h1>El sistema completo<br><em>de captación</em></h1>
+      <p class="hero-desc">El flujo que usamos en VELOXIA para convertir visitas, DMs y formularios en clientes reales. Cinco fases. Sin fisuras. Automatizable desde el día uno.</p>
+    </header>
+
+    <!-- STATS INTRO -->
+    <div class="system-intro">
+      <div class="intro-stat">
+        <div class="intro-stat-value">78%</div>
+        <div class="intro-stat-label">de clientes elige al primero en responder</div>
+      </div>
+      <div class="intro-stat">
+        <div class="intro-stat-value">5×</div>
+        <div class="intro-stat-label">más conversiones con seguimiento sistemático</div>
+      </div>
+      <div class="intro-stat">
+        <div class="intro-stat-value">&lt;5min</div>
+        <div class="intro-stat-label">ventana crítica para el primer contacto</div>
+      </div>
+      <div class="intro-stat">
+        <div class="intro-stat-value">80%</div>
+        <div class="intro-stat-label">de ventas requieren más de un seguimiento</div>
+      </div>
+    </div>
+
+    <!-- FLOW DIAGRAM -->
+    <p class="flow-label">// FLUJO DEL SISTEMA //</p>
+    <div class="flow-diagram" aria-hidden="true">
+      <div class="flow-node">
+        <div class="flow-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="18" height="18" stroke="#C4922A" stroke-width="1.5"/>
+            <path d="M7 8h10M7 12h6" stroke="#C4922A" stroke-width="1.5" stroke-linecap="square"/>
+          </svg>
+        </div>
+        <span class="flow-node-label">PRESENCIA</span>
+        <span class="flow-node-sub">Web · Marca</span>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-node">
+        <div class="flow-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#C4922A" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#C4922A" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="flow-node-label">ATRACCIÓN</span>
+        <span class="flow-node-sub">Contenido · Redes</span>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-node">
+        <div class="flow-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#C4922A" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="flow-node-label">CAPTACIÓN</span>
+        <span class="flow-node-sub">Lead · Contacto</span>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-node">
+        <div class="flow-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="#C4922A" stroke-width="1.5" stroke-linecap="square"/>
+            <path d="M22 4L12 14.01l-3-3" stroke="#C4922A" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"/>
+          </svg>
+        </div>
+        <span class="flow-node-label">CONVERSIÓN</span>
+        <span class="flow-node-sub">Cierre · Propuesta</span>
+      </div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-node">
+        <div class="flow-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8" r="4" stroke="#C4922A" stroke-width="1.5"/>
+            <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7" stroke="#C4922A" stroke-width="1.5" stroke-linecap="square"/>
+            <path d="M17 11l3 3-3 3" stroke="#C4922A" stroke-width="1.5" stroke-linecap="square"/>
+          </svg>
+        </div>
+        <span class="flow-node-label">REFERIDOS</span>
+        <span class="flow-node-sub">Retención · Escala</span>
+      </div>
+    </div>
+
+    <!-- PHASES -->
+    <section class="phases-section">
+      <div class="phases-header">
+        <span class="phases-tag">// DESGLOSE POR FASES //</span>
+        <h2 class="phases-title">CÓMO FUNCIONA EL SISTEMA</h2>
+      </div>
+
+      <!-- FASE 1 -->
+      <div class="phase">
+        <div class="phase-sidebar">
+          <div class="phase-num">01</div>
+          <div>
+            <p class="phase-cat">VELOXIA STUDIO</p>
+            <p class="phase-name">PRESENCIA</p>
+          </div>
+          <div class="phase-metric">
+            <span class="phase-metric-value">3 seg</span>
+            <span class="phase-metric-label">para convencer al visitante</span>
+          </div>
+        </div>
+        <div class="phase-body">
+          <p class="phase-desc">Tu web es el primer filtro. En los primeros 3 segundos el visitante decide si sigues o no. Una web que no transmite confianza inmediata no genera contactos, da igual cuánto tráfico tengas.</p>
+          <div class="phase-actions">
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Propuesta de valor clara</strong>
+                Quién eres, a quién ayudas y qué consiguen en la primera sección.
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Prueba social visible</strong>
+                Casos, testimonios o logos en el fold superior. Sin prueba no hay confianza.
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>CTA único y directo</strong>
+                Una sola acción por sección. Botón con texto de acción, no "más información".
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Velocidad &lt;2 segundos</strong>
+                Cada segundo extra de carga resta un 7% de conversión. Imagen ≠ argumento de venta.
+              </div>
+            </div>
+          </div>
+          <div class="phase-insight">
+            <p class="phase-insight-label">// SEÑAL DE ALERTA</p>
+            <p class="phase-insight-text">"Si necesitas explicar mucho para que alguien entienda qué haces, no es problema de comunicación — es problema de posicionamiento."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FASE 2 -->
+      <div class="phase">
+        <div class="phase-sidebar">
+          <div class="phase-num">02</div>
+          <div>
+            <p class="phase-cat">VELOXIA CONTENT</p>
+            <p class="phase-name">ATRACCIÓN</p>
+          </div>
+          <div class="phase-metric">
+            <span class="phase-metric-value">3×</span>
+            <span class="phase-metric-label">más leads con contenido constante</span>
+          </div>
+        </div>
+        <div class="phase-body">
+          <p class="phase-desc">El contenido no es para likes. Es para que el cliente correcto llegue a ti ya pre-convencido. Cada pieza de contenido debe responder una objeción, mostrar un resultado o generar credibilidad específica.</p>
+          <div class="phase-actions">
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Piezas de autoridad</strong>
+                Vídeos o posts que demuestran expertise. No motivación, sino metodología.
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Casos de éxito</strong>
+                Antes → proceso → resultado. El cliente se ve reflejado y decide contactar.
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Contenido de objeciones</strong>
+                Responde los "¿por qué no contratar?" antes de que el cliente los piense.
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Lead magnet concreto</strong>
+                Un recurso, un diagnóstico, una guía. Captura el contacto antes de la llamada.
+              </div>
+            </div>
+          </div>
+          <div class="phase-insight">
+            <p class="phase-insight-label">// REGLA DE CONTENIDO</p>
+            <p class="phase-insight-text">"Una pieza de contenido semanal que resuelve un problema real vale más que diez piezas de entretenimiento. El cliente premium no busca inspiración, busca soluciones."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FASE 3 -->
+      <div class="phase">
+        <div class="phase-sidebar">
+          <div class="phase-num">03</div>
+          <div>
+            <p class="phase-cat">VELOXIA SETTER</p>
+            <p class="phase-name">CAPTACIÓN</p>
+          </div>
+          <div class="phase-metric">
+            <span class="phase-metric-value">&lt;5min</span>
+            <span class="phase-metric-label">ventana para responder</span>
+          </div>
+        </div>
+        <div class="phase-body">
+          <p class="phase-desc">El momento del primer contacto es donde más oportunidades se pierden. Formulario, DM o WhatsApp — si no hay respuesta en 5 minutos, la probabilidad de cierre cae un 80%. La respuesta rápida no es amabilidad, es sistema.</p>
+          <div class="phase-actions">
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Respuesta automática</strong>
+                Confirmación instantánea del contacto. El cliente sabe que su mensaje llegó.
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Cualificación en 3 preguntas</strong>
+                Situación actual · intentos previos · urgencia. Filtra sin perder tiempo.
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Entrega de valor previo</strong>
+                Un recurso, caso o insight antes de la llamada. Eleva la predisposición de compra.
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Propuesta de cita concreta</strong>
+                Fecha, hora y formato específicos. No "¿cuándo te viene bien?" sino "¿jueves 11h?".
+              </div>
+            </div>
+          </div>
+          <div class="phase-insight">
+            <p class="phase-insight-label">// DATO CLAVE</p>
+            <p class="phase-insight-text">"Las empresas que responden en menos de 5 minutos tienen 21 veces más probabilidad de cualificar el lead. No es exageración — es el dato de Harvard Business Review."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FASE 4 -->
+      <div class="phase">
+        <div class="phase-sidebar">
+          <div class="phase-num">04</div>
+          <div>
+            <p class="phase-cat">SETTER // CIERRE</p>
+            <p class="phase-name">CONVERSIÓN</p>
+          </div>
+          <div class="phase-metric">
+            <span class="phase-metric-value">+40%</span>
+            <span class="phase-metric-label">cierre con seguimiento en 5 toques</span>
+          </div>
+        </div>
+        <div class="phase-body">
+          <p class="phase-desc">La venta rara vez ocurre en el primer contacto. El proceso de conversión es una secuencia: llamada de diagnóstico, propuesta personalizada y seguimiento sistemático. La mayoría pierde aquí porque abandona demasiado pronto.</p>
+          <div class="phase-actions">
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Diagnóstico estructurado</strong>
+                30 minutos para entender la situación real. Sin diagnóstico no hay propuesta.
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Propuesta específica</strong>
+                Solución concreta para su problema concreto. No catálogo de servicios genérico.
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Seguimiento a +24h</strong>
+                "¿Pudiste ver la propuesta?" Un solo mensaje que recupera el 30% de silencios.
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Seguimiento a +7 días</strong>
+                Toque de reactivación. Sin presión, con valor: un caso nuevo, una pregunta.
+              </div>
+            </div>
+          </div>
+          <div class="phase-insight">
+            <p class="phase-insight-label">// REGLA DE CONVERSIÓN</p>
+            <p class="phase-insight-text">"El 80% de las ventas se cierran entre el 5º y 12º contacto. El 44% de los comerciales abandona después del primero. El dinero está en la persistencia sistemática, no en conseguir más leads."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FASE 5 -->
+      <div class="phase">
+        <div class="phase-sidebar">
+          <div class="phase-num">05</div>
+          <div>
+            <p class="phase-cat">GROWTH // ESCALA</p>
+            <p class="phase-name">REFERIDOS</p>
+          </div>
+          <div class="phase-metric">
+            <span class="phase-metric-value">5×</span>
+            <span class="phase-metric-label">más barato que captar un cliente nuevo</span>
+          </div>
+        </div>
+        <div class="phase-body">
+          <p class="phase-desc">Un cliente satisfecho es el canal de captación más barato y de mayor conversión. Pero los referidos no ocurren solos — necesitan un sistema: el momento adecuado, el mensaje correcto y una razón para recomendar.</p>
+          <div class="phase-actions">
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Momento de pedir</strong>
+                El pico de satisfacción: primer resultado visible. No al final del contrato.
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Mensaje de referido</strong>
+                Facilita la acción: "¿Conoces a alguien en [situación similar]?" con texto listo para enviar.
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Incentivo claro</strong>
+                Un mes de descuento, una sesión extra, un recurso premium. Algo concreto y valioso.
+              </div>
+            </div>
+            <div class="action-item">
+              <div class="action-bullet"></div>
+              <div class="action-text">
+                <strong>Reactivación trimestral</strong>
+                Vuelve con ex-clientes cada 90 días. Situaciones cambian — tú eres la opción obvia.
+              </div>
+            </div>
+          </div>
+          <div class="phase-insight">
+            <p class="phase-insight-label">// PALANCA DE ESCALA</p>
+            <p class="phase-insight-text">"No necesitas más tráfico. Necesitas activar el activo que ya tienes: clientes que ya confían en ti y conocen a personas que tienen exactamente el mismo problema que ellos tenían."</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- HERRAMIENTAS -->
+    <section class="tools-section">
+      <div class="phases-header">
+        <span class="phases-tag">// INFRAESTRUCTURA DEL SISTEMA //</span>
+        <h2 class="phases-title">LOS TRES PILARES</h2>
+      </div>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <p class="tool-service">VELOXIA STUDIO</p>
+          <p class="tool-name">WEB + MARCA</p>
+          <ul class="tool-list">
+            <li>Diseño premium que genera confianza</li>
+            <li>Copy enfocado en conversión</li>
+            <li>Formularios y CTAs optimizados</li>
+            <li>Velocidad y SEO técnico</li>
+            <li>Integración con el sistema de leads</li>
+          </ul>
+        </div>
+        <div class="tool-card">
+          <p class="tool-service">VELOXIA SETTER</p>
+          <p class="tool-name">IA DE CAPTACIÓN</p>
+          <ul class="tool-list">
+            <li>Respuesta automática en segundos</li>
+            <li>Cualificación sin intervención humana</li>
+            <li>Agenda de llamadas automatizada</li>
+            <li>Seguimiento en cadencia exacta</li>
+            <li>Dashboard de oportunidades en tiempo real</li>
+          </ul>
+        </div>
+        <div class="tool-card">
+          <p class="tool-service">VELOXIA CONTENT</p>
+          <p class="tool-name">VÍDEO CON IA</p>
+          <ul class="tool-list">
+            <li>Vídeos cinemáticos sin cámara ni equipo</li>
+            <li>Contenido de autoridad semanal</li>
+            <li>Guiones optimizados para conversión</li>
+            <li>Distribución multicanal automática</li>
+            <li>Storytelling de casos de éxito</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <p class="cta-label">// IMPLEMENTA EL SISTEMA COMPLETO //</p>
+      <h2 class="cta-title">¿Cuántos leads estás<br>perdiendo cada semana?</h2>
+      <p class="cta-desc">Implantamos este sistema completo en tu negocio — web, IA de captación y contenido. Para que funcione solo mientras tú te dedicas a lo tuyo.</p>
+      <a href="https://wa.me/34684376021" class="cta-btn" target="_blank" rel="noopener">QUIERO EL SISTEMA COMPLETO →</a>
+    </section>
+
+    <footer class="footer">
+      <span class="footer-brand"><span style="color:var(--gold)">V</span>ELOXIA VAULT<span style="color:var(--gold)">.</span></span>
+      <span class="footer-hash">EXP.006 // GROWTH SYSTEM // VX.v1.0</span>
+    </footer>
+
+  </div>
+
+  <div class="complete-wrap container">
+    <button class="complete-btn" id="completeBtn">Marcar como completado →</button>
+  </div>
+  <script>
+    (function() {
+      var EXP_ID = 'exp006';
+      var arr = JSON.parse(localStorage.getItem('veloxia_completed') || '[]');
+      var btn = document.getElementById('completeBtn');
+      if (arr.includes(EXP_ID)) { btn.textContent = '✓ Completado'; btn.classList.add('done'); }
+      btn.addEventListener('click', function() {
+        if (btn.classList.contains('done')) return;
+        var list = JSON.parse(localStorage.getItem('veloxia_completed') || '[]');
+        if (!list.includes(EXP_ID)) list.push(EXP_ID);
+        localStorage.setItem('veloxia_completed', JSON.stringify(list));
+        btn.textContent = '✓ Completado';
+        btn.classList.add('done');
+      });
+    })();
+  </script>
+
+</body>
+</html>
