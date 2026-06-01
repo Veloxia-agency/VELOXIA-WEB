@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VELOXIA FORGE — Forja tu Setter IA</title>
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="alternate icon" href="/assets/favicon.ico">
+<meta name="theme-color" content="#040404">
+<meta name="description" content="Forja tu Setter IA en 3 minutos. Dinos cómo es tu negocio y te mostramos cómo respondería ARIA a tus leads reales.">
+<meta property="og:title" content="VELOXIA FORGE — Forja tu Setter IA">
+<meta property="og:description" content="Dinos cómo es tu negocio. En 3 minutos te mostramos cómo respondería ARIA a tus leads reales.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/veloxia-base.css">
+<style>
+/* ─── BASE ─── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--obsidian);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity: 0.55;
+}
+body.noscroll { overflow: hidden; }
+a { text-decoration: none; color: inherit; }
+
+/* ─── PHASE SYSTEM ─── */
+.phase { display: none; position: relative; z-index: 1; }
+.phase.active { display: block; }
+
+#phase-intro.active,
+#phase-processing.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed; inset: 0; z-index: 50;
+  background: var(--obsidian);
+  min-height: 100vh;
+}
+
+/* ─── PHASE: INTRO ─── */
+.intro-bg-overlay {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(160deg, rgba(35,28,20,0.96) 0%, rgba(4,4,4,0.92) 100%);
+}
+.intro-lines {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+.intro-lines svg {
+  position: absolute; right: 0; top: 0;
+  width: 55%; height: 100%; opacity: 0.045;
+}
+.intro-glow {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 640px; height: 640px;
+  background: radial-gradient(circle, rgba(196,146,42,0.09) 0%, transparent 65%);
+  pointer-events: none; border-radius: 50%;
+}
+.particle {
+  position: absolute; width: 3px; height: 3px; border-radius: 50%;
+  background: rgba(196,146,42,0.55);
+  animation: floatParticle var(--dur, 3s) ease-in-out var(--del, 0s) infinite;
+}
+
+.intro-content {
+  position: relative; z-index: 2;
+  text-align: center; padding: 40px 24px;
+  max-width: 680px; width: 100%;
+}
+
+.forge-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 8px 18px;
+  border: 1px solid rgba(196,146,42,0.32);
+  background: rgba(196,146,42,0.07);
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(196,146,42,0.88); font-weight: 600;
+  margin-bottom: 36px;
+  animation: fadeInDown 0.7s ease 0.3s both;
+}
+.pulse-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); flex-shrink: 0;
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+.intro-h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(60px, 14vw, 112px);
+  letter-spacing: 3px; line-height: 0.9;
+  margin-bottom: 22px;
+  animation: fadeInUp 0.7s ease 0.5s both;
+}
+.intro-h1 .white { color: var(--cream); }
+.intro-h1 .gold  { color: var(--gold); }
+
+.intro-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: clamp(20px, 3.5vw, 28px);
+  color: var(--muted); line-height: 1.35;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.7s ease 0.7s both;
+}
+.intro-sub2 {
+  font-size: 13px; color: var(--faint);
+  font-weight: 300; letter-spacing: 0.3px;
+  margin-bottom: 40px;
+  animation: fadeInUp 0.7s ease 0.9s both;
+}
+
+.btn-forge {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-l) 100%);
+  color: #1E1810;
+  padding: 17px 38px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 19px; letter-spacing: 3px;
+  border: none; cursor: pointer;
+  transition: opacity .2s, transform .15s;
+  animation: fadeInUp 0.7s ease 1.1s both;
+}
+.btn-forge:hover { opacity: 0.88; transform: translateY(-2px); }
+.btn-forge .arrow { width: 18px; height: 18px; transition: transform .2s; }
+.btn-forge:hover .arrow { transform: translateX(4px); }
+
+.intro-caption {
+  margin-top: 18px;
+  font-size: 11px; color: var(--faint); font-weight: 300; letter-spacing: 0.5px;
+  animation: fadeInUp 0.7s ease 1.3s both;
+}
+
+.scroll-ind {
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  animation: floatScroll 1.6s ease-in-out infinite; z-index: 2;
+}
+
+/* ─── SHARED HEADER ─── */
+.forge-header {
+  position: sticky; top: 0; z-index: 20;
+  border-bottom: 1px solid var(--border);
+  background: rgba(4,4,4,0.93);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 0 24px;
+}
+.forge-header-inner {
+  max-width: 720px; margin: 0 auto;
+  height: 60px; display: flex; align-items: center; justify-content: space-between;
+}
+.forge-wordmark {
+  display: flex; align-items: baseline; gap: 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 6px; color: var(--cream);
+}
+.forge-wordmark .v, .forge-wordmark .dot { color: var(--gold); }
+.forge-wordmark .sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 9px; letter-spacing: 3px;
+  color: var(--faint); margin-left: 6px; font-weight: 500;
+  align-self: center;
+}
+.header-right {
+  display: flex; align-items: center; gap: 16px;
+}
+.forge-status {
+  display: flex; align-items: center; gap: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(196,146,42,0.65); font-weight: 500;
+}
+.btn-back {
+  display: flex; align-items: center; gap: 5px;
+  background: none; border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--faint); font-weight: 500;
+  transition: color .2s;
+}
+.btn-back:hover { color: var(--gold); }
+.btn-back svg { width: 13px; height: 13px; }
+
+/* ─── PHASE: FORM ─── */
+.form-wrap {
+  max-width: 720px; margin: 0 auto;
+  padding: 52px 24px 88px;
+}
+
+.form-eyebrow {
+  font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
+  color: rgba(196,146,42,0.65); font-weight: 600; margin-bottom: 14px;
+}
+.form-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(38px, 7vw, 58px); letter-spacing: 2px; line-height: 0.93;
+  color: var(--cream); margin-bottom: 12px;
+}
+.form-h2 .gold { color: var(--gold); }
+.form-desc {
+  font-size: 14px; color: var(--muted); font-weight: 300;
+  line-height: 1.75; margin-bottom: 44px;
+}
+
+.field-group { margin-bottom: 26px; }
+
+.field-label {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(196,146,42,0.75); font-weight: 600;
+  margin-bottom: 9px;
+}
+.req { color: var(--gold); margin-left: 4px; }
+
+.field-input {
+  width: 100%; padding: 13px 16px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(196,146,42,0.18);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 300;
+  transition: border-color .2s, box-shadow .2s;
+  outline: none; border-radius: 0; -webkit-appearance: none;
+}
+.field-input::placeholder { color: rgba(240,232,216,0.22); }
+.field-input:focus {
+  border-color: rgba(196,146,42,0.5);
+  box-shadow: 0 0 0 3px rgba(196,146,42,0.07);
+}
+.field-input.error { border-color: rgba(255,102,102,0.5); }
+
+.field-error {
+  display: none; margin-top: 7px;
+  font-size: 11px; color: rgba(255,102,102,0.9); letter-spacing: 0.3px;
+}
+.field-error.show { display: block; }
+
+/* Channel toggles */
+.channels-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+}
+@media (min-width: 440px) {
+  .channels-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.channel-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(196,146,42,0.15);
+  color: rgba(240,232,216,0.38);
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.3px; cursor: pointer; text-align: left;
+  transition: border-color .2s, color .2s, background .2s;
+  -webkit-appearance: none; border-radius: 0;
+}
+.channel-btn:hover {
+  border-color: rgba(196,146,42,0.32);
+  color: rgba(240,232,216,0.65);
+}
+.channel-btn.selected {
+  border-color: rgba(196,146,42,0.65);
+  background: rgba(196,146,42,0.1);
+  color: var(--gold);
+}
+.ch-check { font-size: 12px; flex-shrink: 0; line-height: 1; }
+
+/* Submit */
+.btn-submit {
+  width: 100%; padding: 18px 24px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-l) 100%);
+  color: #1E1810; border: none; cursor: pointer;
+  font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  transition: opacity .2s, transform .15s;
+  margin-top: 12px;
+}
+.btn-submit:hover { opacity: 0.88; transform: translateY(-2px); }
+.btn-submit svg { width: 20px; height: 20px; }
+.btn-submit .arrow { transition: transform .2s; }
+.btn-submit:hover .arrow { transform: translateX(4px); }
+
+.form-disclaimer {
+  text-align: center; margin-top: 12px;
+  font-size: 11px; color: var(--faint); font-weight: 300; letter-spacing: 0.3px;
+}
+
+/* ─── PHASE: PROCESSING ─── */
+.proc-glow {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 440px; height: 440px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(196,146,42,0.07) 0%, transparent 65%);
+  animation: glowPulse 2.2s ease-in-out infinite;
+  pointer-events: none;
+}
+.proc-content {
+  position: relative; z-index: 2;
+  text-align: center; padding: 40px 24px; max-width: 440px; width: 100%;
+}
+.spinner-wrap {
+  position: relative; width: 80px; height: 80px;
+  margin: 0 auto 32px;
+}
+.sp-outer {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 2px solid rgba(196,146,42,0.2);
+  animation: spinCW 3s linear infinite;
+}
+.sp-inner {
+  position: absolute; inset: 8px; border-radius: 50%;
+  border: 1px solid rgba(196,146,42,0.45);
+  animation: spinCCW 2s linear infinite;
+}
+.sp-icon {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.sp-icon svg { width: 28px; height: 28px; color: var(--gold); }
+
+.proc-h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px; letter-spacing: 2px; color: var(--cream); margin-bottom: 6px;
+}
+.proc-sub {
+  font-size: 13px; color: var(--muted); font-weight: 300;
+  letter-spacing: 0.3px; margin-bottom: 36px;
+}
+.steps-list {
+  text-align: left; display: flex; flex-direction: column; gap: 13px;
+}
+.step-item {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 13px; font-weight: 300; letter-spacing: 0.2px;
+  transition: opacity .4s ease;
+  opacity: 0.28;
+}
+.step-item.done { opacity: 1; }
+.step-dot {
+  width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+.step-dot.done {
+  background: var(--gold); border-color: var(--gold);
+  color: #1E1810; font-size: 10px; font-weight: 700;
+}
+.step-label { color: var(--muted); }
+.step-item.done .step-label { color: rgba(240,232,216,0.85); }
+
+/* ─── PHASE: OUTPUT ─── */
+.output-wrap {
+  max-width: 800px; margin: 0 auto;
+  padding: 52px 24px 80px;
+}
+
+.out-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid rgba(196,146,42,0.3);
+  background: rgba(196,146,42,0.07);
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(196,146,42,0.88); font-weight: 600;
+  margin-bottom: 20px;
+}
+.out-badge svg { width: 11px; height: 11px; }
+
+.out-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 7vw, 56px); letter-spacing: 2px; line-height: 0.93;
+  color: var(--cream); margin-bottom: 14px;
+}
+.out-h2 .gold { color: var(--gold); }
+
+.out-meta {
+  font-size: 13px; color: var(--muted); font-weight: 300;
+  margin-bottom: 44px; line-height: 1.6;
+}
+.out-meta .hl { color: rgba(196,146,42,0.85); }
+
+/* Conversations */
+.convos-label {
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(240,232,216,0.28); font-weight: 500;
+  margin-bottom: 18px;
+}
+.convo-card {
+  background: rgba(255,255,255,0.018);
+  border: 1px solid rgba(196,146,42,0.1);
+  padding: 24px; margin-bottom: 18px;
+  animation: fadeInUp .55s ease both;
+}
+.convo-num {
+  font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(255,255,255,0.22); font-weight: 600; margin-bottom: 20px;
+}
+/* Bubble rows */
+.brow { display: flex; margin-bottom: 14px; }
+.brow:last-of-type { margin-bottom: 0; }
+.brow.lead { justify-content: flex-end; }
+.brow.aria  { justify-content: flex-start; }
+.bwrap { max-width: 86%; }
+.bsender {
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 5px;
+}
+.brow.lead .bsender { color: rgba(255,255,255,0.28); justify-content: flex-end; }
+.brow.aria .bsender { color: rgba(196,146,42,0.72); }
+.brow.aria .bsender svg { width: 11px; height: 11px; }
+.bubble {
+  padding: 13px 16px;
+  font-size: 13px; line-height: 1.72; font-weight: 300;
+}
+.bubble.blead {
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.07);
+  color: rgba(240,232,216,0.78);
+}
+.bubble.baria {
+  background: rgba(196,146,42,0.055);
+  border: 1px solid rgba(196,146,42,0.22);
+  color: rgba(240,232,216,0.9);
+  min-height: 48px;
+}
+.aria-foot {
+  font-size: 10px; letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.2); margin-top: 6px; font-weight: 300;
+}
+/* Cursor */
+.tw-cursor {
+  display: inline-block; width: 1.5px; height: 1em;
+  background: var(--gold); vertical-align: text-bottom;
+  animation: blinkCursor .75s step-end infinite;
+  margin-left: 1px;
+}
+
+/* System block */
+.sys-block {
+  background: rgba(255,255,255,0.018);
+  border: 1px solid rgba(196,146,42,0.14);
+  padding: 28px; margin-top: 44px; margin-bottom: 28px;
+}
+.sys-label {
+  font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
+  color: rgba(196,146,42,0.75); font-weight: 600; margin-bottom: 24px;
+}
+.sys-grid {
+  display: grid; grid-template-columns: 1fr;
+  gap: 24px;
+}
+@media (min-width: 560px) {
+  .sys-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.sys-item-icon { margin-bottom: 10px; }
+.sys-item-icon svg { width: 19px; height: 19px; color: rgba(196,146,42,0.72); }
+.sys-item-title { font-size: 14px; font-weight: 600; color: rgba(240,232,216,0.9); margin-bottom: 6px; }
+.sys-item-desc  { font-size: 12px; color: var(--muted); line-height: 1.72; font-weight: 300; }
+
+/* CTA block */
+.cta-block {
+  background: linear-gradient(135deg, rgba(196,146,42,0.055) 0%, transparent 70%);
+  border: 1px solid rgba(196,146,42,0.17);
+  padding: 40px 28px; text-align: center; margin-bottom: 24px;
+}
+.cta-h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; letter-spacing: 2px; color: var(--cream); margin-bottom: 12px;
+}
+.cta-p {
+  font-size: 14px; color: var(--muted); font-weight: 300; line-height: 1.8;
+  max-width: 480px; margin: 0 auto 28px;
+}
+.cta-btns {
+  display: flex; flex-direction: column; gap: 12px;
+  align-items: center;
+}
+@media (min-width: 480px) {
+  .cta-btns { flex-direction: row; justify-content: center; }
+}
+.btn-cta-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-l) 100%);
+  color: #1E1810; padding: 15px 28px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 2px;
+  transition: opacity .2s, transform .15s; border: none; cursor: pointer;
+  text-decoration: none; border-radius: 0;
+}
+.btn-cta-primary:hover { opacity: 0.88; transform: translateY(-2px); }
+.btn-cta-primary svg { width: 15px; height: 15px; transition: transform .2s; }
+.btn-cta-primary:hover svg { transform: translateX(4px); }
+
+.btn-cta-wa {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: transparent;
+  border: 1px solid rgba(196,146,42,0.32);
+  color: rgba(240,232,216,0.65);
+  padding: 15px 28px;
+  font-family: 'DM Sans', sans-serif; font-size: 11px;
+  letter-spacing: 2px; text-transform: uppercase; font-weight: 600;
+  transition: border-color .2s, color .2s, transform .15s;
+  text-decoration: none;
+}
+.btn-cta-wa:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+.btn-cta-wa svg { width: 15px; height: 15px; }
+
+.cta-note {
+  font-size: 11px; color: var(--faint); font-weight: 300;
+  letter-spacing: 0.3px; margin-top: 18px;
+}
+
+.btn-reset {
+  display: block; margin: 0 auto;
+  background: none; border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; color: var(--faint); font-weight: 300;
+  letter-spacing: 0.3px; text-decoration: underline;
+  transition: color .2s;
+}
+.btn-reset:hover { color: rgba(196,146,42,0.55); }
+
+/* ─── FOOTER ─── */
+.forge-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px; text-align: center;
+  font-size: 11px; color: var(--faint); font-weight: 300; letter-spacing: 0.3px;
+  position: relative; z-index: 1;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.35; transform: scale(0.8); }
+}
+@keyframes floatParticle {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.25; }
+  50%       { transform: translateY(-28px) scale(1.5); opacity: 0.7; }
+}
+@keyframes floatScroll {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(9px); }
+}
+@keyframes spinCW  { to { transform: rotate(360deg);  } }
+@keyframes spinCCW { to { transform: rotate(-360deg); } }
+@keyframes glowPulse {
+  0%, 100% { transform: translate(-50%,-50%) scale(1);    opacity: 0.5; }
+  50%       { transform: translate(-50%,-50%) scale(1.18); opacity: 1;   }
+}
+@keyframes blinkCursor {
+  from, to { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 560px) {
+  .form-wrap, .output-wrap { padding-left: 16px; padding-right: 16px; }
+  .cta-block { padding: 28px 16px; }
+  .sys-block { padding: 24px 16px; }
+  .convo-card { padding: 18px 14px; }
+  .forge-header { padding: 0 16px; }
+  .form-h2, .out-h2 { letter-spacing: 1px; }
+}
+</style>
+</head>
+<body class="noscroll">
+
+<!-- ═══════════════════════════════════════
+     FASE 1: INTRO
+════════════════════════════════════════ -->
+<div id="phase-intro" class="phase active">
+
+  <div class="intro-bg-overlay"></div>
+
+  <!-- Geometric lines decoration -->
+  <div class="intro-lines">
+    <svg viewBox="0 0 600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="600" y1="0" x2="0" y2="900" stroke="#C4922A" stroke-width="0.5"/>
+      <line x1="500" y1="0" x2="0" y2="700" stroke="#C4922A" stroke-width="0.5"/>
+      <line x1="400" y1="0" x2="0" y2="500" stroke="#C4922A" stroke-width="0.5"/>
+      <line x1="300" y1="0" x2="0" y2="300" stroke="#C4922A" stroke-width="0.5"/>
+      <rect x="440" y="180" width="90" height="90" fill="none" stroke="#C4922A" stroke-width="0.7"/>
+      <rect x="462" y="202" width="46" height="46" fill="#C4922A" opacity="0.04"/>
+    </svg>
+  </div>
+  <div class="intro-glow"></div>
+
+  <!-- Particles -->
+  <div class="particle" style="left:11%;top:19%;--dur:3.2s;--del:0s"></div>
+  <div class="particle" style="left:84%;top:14%;--dur:2.8s;--del:0.5s"></div>
+  <div class="particle" style="left:24%;top:74%;--dur:3.5s;--del:1s"></div>
+  <div class="particle" style="left:69%;top:63%;--dur:2.5s;--del:0.3s"></div>
+  <div class="particle" style="left:50%;top:9%;--dur:3.8s;--del:0.8s"></div>
+  <div class="particle" style="left:91%;top:48%;--dur:2.9s;--del:1.2s"></div>
+  <div class="particle" style="left:7%;top:55%;--dur:3.3s;--del:0.2s"></div>
+  <div class="particle" style="left:60%;top:83%;--dur:2.7s;--del:0.7s"></div>
+  <div class="particle" style="left:36%;top:32%;--dur:3.6s;--del:1.5s"></div>
+  <div class="particle" style="left:78%;top:38%;--dur:3.1s;--del:0.4s"></div>
+  <div class="particle" style="left:44%;top:60%;--dur:2.6s;--del:0.9s"></div>
+  <div class="particle" style="left:18%;top:42%;--dur:3.4s;--del:1.1s"></div>
+
+  <!-- Content -->
+  <div class="intro-content">
+
+    <div class="forge-badge">
+      <span class="pulse-dot"></span>
+      VELOXIA FORGE · SISTEMA ACTIVO
+    </div>
+
+    <h1 class="intro-h1">
+      <span class="white">FORJA TU</span><br>
+      <span class="gold">SETTER IA</span>
+    </h1>
+
+    <p class="intro-sub">Dinos cómo es tu negocio.</p>
+    <p class="intro-sub2">En 3 minutos te mostramos cómo respondería ARIA a tus leads reales.</p>
+
+    <button class="btn-forge" onclick="startForge()">
+      INICIAR CONFIGURACIÓN
+      <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </button>
+
+    <p class="intro-caption">Sin registro previo · Sin tarjeta · 100% gratuito</p>
+  </div>
+
+  <!-- Scroll chevron -->
+  <div class="scroll-ind">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(196,146,42,0.4)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     FASE 2: FORMULARIO
+════════════════════════════════════════ -->
+<div id="phase-form" class="phase">
+
+  <header class="forge-header">
+    <div class="forge-header-inner">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <button class="btn-back" onclick="goBack()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+          </svg>
+          Volver
+        </button>
+        <a href="/" class="forge-wordmark">
+          <span class="v">V</span>ELOXIA<span class="dot">.</span><span class="sub">FORGE™</span>
+        </a>
+      </div>
+      <div class="forge-status">
+        <span class="pulse-dot"></span>
+        SISTEMA ACTIVO
+      </div>
+    </div>
+  </header>
+
+  <div class="form-wrap">
+    <p class="form-eyebrow">FORGE™ · CONFIGURACIÓN DE SETTER IA</p>
+    <h2 class="form-h2">Cuéntanos cómo es<br><span class="gold">tu negocio.</span></h2>
+    <p class="form-desc">En 3 minutos te mostramos cómo respondería ARIA a tus leads reales.</p>
+
+    <form id="forge-form" onsubmit="handleSubmit(event)" novalidate>
+
+      <!-- 01 Nombre -->
+      <div class="field-group">
+        <label class="field-label" for="f-nombre">01 // TU NOMBRE O MARCA<span class="req">*</span></label>
+        <input class="field-input" id="f-nombre" type="text"
+          placeholder="Ej: Carlos García / FitCoach Madrid" autocomplete="off">
+        <div class="field-error" id="err-nombre">Este campo es obligatorio.</div>
+      </div>
+
+      <!-- 02 Instagram -->
+      <div class="field-group">
+        <label class="field-label" for="f-instagram">02 // TU @ DE INSTAGRAM</label>
+        <input class="field-input" id="f-instagram" type="text"
+          placeholder="@tuusuario" autocomplete="off">
+      </div>
+
+      <!-- 03 Nicho -->
+      <div class="field-group">
+        <label class="field-label" for="f-nicho">03 // TU NICHO<span class="req">*</span></label>
+        <input class="field-input" id="f-nicho" type="text"
+          placeholder="Ej: Coach fitness femenino / Clínica estética / Agencia de marketing" autocomplete="off">
+        <div class="field-error" id="err-nicho">Este campo es obligatorio.</div>
+      </div>
+
+      <!-- 04 Oferta -->
+      <div class="field-group">
+        <label class="field-label" for="f-oferta">04 // TU OFERTA PRINCIPAL<span class="req">*</span></label>
+        <input class="field-input" id="f-oferta" type="text"
+          placeholder="Ej: Programa de transformación física de 3 meses / Mentoría de negocio" autocomplete="off">
+        <div class="field-error" id="err-oferta">Este campo es obligatorio.</div>
+      </div>
+
+      <!-- 05 Ticket -->
+      <div class="field-group">
+        <label class="field-label" for="f-ticket">05 // PRECIO APROXIMADO</label>
+        <input class="field-input" id="f-ticket" type="text"
+          placeholder="Ej: 1.500€ / 297€/mes / 500€ sesión" autocomplete="off">
+      </div>
+
+      <!-- 06 Canales -->
+      <div class="field-group">
+        <label class="field-label">06 // ¿POR DÓNDE TE LLEGAN LOS LEADS?<span class="req">*</span></label>
+        <div class="channels-grid" id="channels-grid">
+          <button type="button" class="channel-btn" data-channel="Instagram DM" onclick="toggleChannel(this)">
+            <span class="ch-check">○</span> Instagram DM
+          </button>
+          <button type="button" class="channel-btn" data-channel="WhatsApp" onclick="toggleChannel(this)">
+            <span class="ch-check">○</span> WhatsApp
+          </button>
+          <button type="button" class="channel-btn" data-channel="Formulario web" onclick="toggleChannel(this)">
+            <span class="ch-check">○</span> Formulario web
+          </button>
+          <button type="button" class="channel-btn" data-channel="Email" onclick="toggleChannel(this)">
+            <span class="ch-check">○</span> Email
+          </button>
+          <button type="button" class="channel-btn" data-channel="Llamada directa" onclick="toggleChannel(this)">
+            <span class="ch-check">○</span> Llamada directa
+          </button>
+          <button type="button" class="channel-btn" data-channel="Referidos" onclick="toggleChannel(this)">
+            <span class="ch-check">○</span> Referidos
+          </button>
+        </div>
+        <div class="field-error" id="err-canales">Selecciona al menos un canal.</div>
+      </div>
+
+      <!-- 07 Leads al mes -->
+      <div class="field-group">
+        <label class="field-label" for="f-leads">07 // LEADS AL MES (APROXIMADO)</label>
+        <input class="field-input" id="f-leads" type="text"
+          placeholder="Ej: 20-30 / Más de 50 / Menos de 10" autocomplete="off">
+      </div>
+
+      <!-- 08 Tono -->
+      <div class="field-group">
+        <label class="field-label" for="f-tono">08 // TONO DE TU MARCA — opcional</label>
+        <input class="field-input" id="f-tono" type="text"
+          placeholder="Ej: Directo y sin rodeos / Cercano y empático / Profesional y técnico" autocomplete="off">
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-submit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+        FORJAR MI SETTER IA
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+      <p class="form-disclaimer">Tus datos se usan únicamente para personalizar el resultado. Sin spam.</p>
+    </form>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     FASE 3: PROCESANDO
+════════════════════════════════════════ -->
+<div id="phase-processing" class="phase">
+
+  <div class="proc-glow"></div>
+
+  <div class="proc-content">
+    <div class="spinner-wrap">
+      <div class="sp-outer"></div>
+      <div class="sp-inner"></div>
+      <div class="sp-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      </div>
+    </div>
+
+    <h3 class="proc-h3">Forjando tu Setter IA</h3>
+    <p class="proc-sub">Calibrando ARIA para tu negocio...</p>
+
+    <div class="steps-list" id="steps-list">
+      <div class="step-item" data-step="0">
+        <div class="step-dot"></div>
+        <span class="step-label">Analizando tu nicho y tipo de negocio...</span>
+      </div>
+      <div class="step-item" data-step="1">
+        <div class="step-dot"></div>
+        <span class="step-label">Cargando base de conocimiento de ARIA...</span>
+      </div>
+      <div class="step-item" data-step="2">
+        <div class="step-dot"></div>
+        <span class="step-label">Generando conversaciones tipo para tu caso...</span>
+      </div>
+      <div class="step-item" data-step="3">
+        <div class="step-dot"></div>
+        <span class="step-label">Calibrando tono y cualificación...</span>
+      </div>
+      <div class="step-item" data-step="4">
+        <div class="step-dot"></div>
+        <span class="step-label">Construyendo tu preview personalizada...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     FASE 4: OUTPUT
+════════════════════════════════════════ -->
+<div id="phase-output" class="phase">
+
+  <header class="forge-header">
+    <div class="forge-header-inner">
+      <a href="/" class="forge-wordmark">
+        <span class="v">V</span>ELOXIA<span class="dot">.</span><span class="sub">FORGE™</span>
+      </a>
+      <div class="forge-status">
+        <span class="pulse-dot"></span>
+        SETTER FORJADO · LISTO
+      </div>
+    </div>
+  </header>
+
+  <div class="output-wrap">
+
+    <!-- Header output -->
+    <div class="out-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+      <span id="out-badge-txt">SETTER IA CONFIGURADO</span>
+    </div>
+
+    <h2 class="out-h2">Así respondería <span class="gold">ARIA</span><br>a tus leads</h2>
+
+    <p class="out-meta">
+      Nicho detectado: <span class="hl" id="out-nicho">—</span> ·
+      Canales: <span class="hl" id="out-canales">—</span>
+    </p>
+
+    <!-- Conversations -->
+    <p class="convos-label">PREVIEW // 3 CONVERSACIONES TIPO</p>
+    <div id="convos-container"></div>
+
+    <!-- Sistema -->
+    <div class="sys-block">
+      <p class="sys-label">SISTEMA QUE MONTARÍAMOS PARA TI</p>
+      <div class="sys-grid">
+        <div>
+          <div class="sys-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <div class="sys-item-title">Respuesta Inmediata</div>
+          <div class="sys-item-desc" id="sys-canales">ARIA responde en &lt;3s en Instagram y WhatsApp, 24/7, con tu tono.</div>
+        </div>
+        <div>
+          <div class="sys-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+          </div>
+          <div class="sys-item-title">Cualificación Automática</div>
+          <div class="sys-item-desc" id="sys-nicho">Filtra curiosos de clientes reales con preguntas calibradas para tu nicho.</div>
+        </div>
+        <div>
+          <div class="sys-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8"  y1="2" x2="8"  y2="6"/>
+              <line x1="3"  y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <div class="sys-item-title">Agenda Automática</div>
+          <div class="sys-item-desc">Envía tu Calendly en el momento exacto y hace seguimiento si no agenda.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-block">
+      <h3 class="cta-h3">¿Quieres esto en tu negocio?</h3>
+      <p class="cta-p">Lo que acabas de ver es una preview. En una demo de 15 minutos te mostramos el sistema real funcionando con tus leads y tu tono exacto.</p>
+      <div class="cta-btns">
+        <a href="https://calendly.com/hola-veloxia/30min" target="_blank" rel="noopener" class="btn-cta-primary">
+          AGENDAR DEMO GRATUITA
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+        <a href="https://wa.me/34684376021" target="_blank" rel="noopener" class="btn-cta-wa">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          Escribir por WhatsApp
+        </a>
+      </div>
+      <p class="cta-note" id="cta-note">Sin compromiso · Demo en 48h · Personalizada para tu nicho</p>
+    </div>
+
+    <button class="btn-reset" onclick="resetForge()">Configurar para otro negocio</button>
+  </div>
+
+  <footer class="forge-footer">
+    © 2026 <span style="color:var(--gold);">V</span>ELOXIA<span style="color:var(--gold);">.</span> — Sistemas de venta con IA para negocios high ticket
+  </footer>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ── DATA ── */
+
+var NICHE_CONVERSATIONS = {
+  "coach-fitness": [
+    {
+      lead: "Hola, vi tu post sobre transformación. ¿Cuánto cuesta tu programa?",
+      aria: "¡Hola! Me alegra que hayas llegado aquí. Antes de darte información sobre el programa, quiero asegurarme de que sea lo que necesitas. ¿Cuál es tu objetivo principal ahora mismo: perder grasa, ganar músculo o mejorar tu rendimiento general?"
+    },
+    {
+      lead: "Quiero perder unos 10kg, llevo años intentándolo sin éxito.",
+      aria: "Entiendo, y eso es más común de lo que crees. Cuando dices que lo has intentado antes, ¿qué has probado hasta ahora? ¿Dietas, gym por tu cuenta, algún otro programa? Esto me ayuda a entender qué no ha funcionado para ti."
+    },
+    {
+      lead: "He probado de todo. Dietas, gym, incluso un coach antes pero lo dejé.",
+      aria: "Gracias por ser honesto/a. Eso me dice que el problema no es la voluntad, sino el sistema. Nuestro programa está diseñado específicamente para personas que ya han intentado otras cosas y no han conseguido resultados duraderos. ¿Tienes 15 minutos esta semana para una llamada de valoración gratuita? Sin compromiso, solo para ver si encajamos."
+    }
+  ],
+  "infoproductor": [
+    {
+      lead: "Vi tu contenido sobre negocios online. ¿Tienes algún curso o mentoría?",
+      aria: "¡Hola! Sí, trabajo con emprendedores que quieren construir un negocio digital sostenible. Para orientarte bien, ¿en qué punto estás ahora? ¿Estás empezando desde cero o ya tienes algo montado pero quieres escalarlo?"
+    },
+    {
+      lead: "Tengo una pequeña comunidad pero no sé cómo monetizarla.",
+      aria: "Perfecto, ese es exactamente el punto en el que más ayudo. Tener comunidad y no saber monetizarla es el problema más común. ¿Cuántas personas tienes en tu comunidad aproximadamente, y en qué plataforma está más activa?"
+    },
+    {
+      lead: "Unos 3.000 seguidores en Instagram y una lista de email de 500 personas.",
+      aria: "Con esos números ya tienes suficiente para generar ingresos consistentes. He visto casos similares pasar de 0 a 3.000€/mes en 60 días con el sistema correcto. ¿Quieres que te explique cómo en una llamada de 20 minutos esta semana?"
+    }
+  ],
+  "clinica-estetica": [
+    {
+      lead: "Hola, ¿cuánto cuesta el tratamiento de láser facial?",
+      aria: "¡Hola! Gracias por contactarnos. El precio varía según el tipo de piel y el área a tratar. Para darte una valoración exacta y personalizada, ¿podrías decirme cuál es tu principal preocupación? ¿Manchas, flacidez, poros, acné...?"
+    },
+    {
+      lead: "Tengo manchas por el sol y algunas marcas de acné.",
+      aria: "Entendido. Para ese tipo de afectación tenemos dos protocolos muy efectivos. Antes de recomendarte uno, ¿has tenido algún tratamiento previo para esto o sería tu primera vez? Así puedo orientarte mejor sobre cuál se adapta más a ti."
+    },
+    {
+      lead: "Primera vez, tengo un poco de miedo a que duela.",
+      aria: "Es completamente normal tenerlo. Nuestros tratamientos son muy tolerables y siempre hacemos una valoración previa gratuita donde te explicamos todo. ¿Te vendría bien esta semana para que puedas conocer la clínica y resolver todas tus dudas sin compromiso?"
+    }
+  ],
+  "agencia": [
+    {
+      lead: "Hola, vi tu agencia. ¿Trabajáis con empresas de mi sector?",
+      aria: "¡Hola! Sí, trabajamos con empresas de varios sectores. Para entender si podemos ayudarte, ¿cuál es tu mayor reto ahora mismo en marketing o ventas? ¿Generar más leads, mejorar conversión, escalar lo que ya funciona...?"
+    },
+    {
+      lead: "Generamos leads pero no los convertimos bien. Muchos se enfrían.",
+      aria: "Ese es un problema muy habitual y tiene solución clara. Cuando dices que se enfrían, ¿en qué punto del proceso ocurre? ¿Después del primer contacto, durante el seguimiento, o en la llamada de venta?"
+    },
+    {
+      lead: "Principalmente en el seguimiento. No tenemos sistema.",
+      aria: "Perfecto, eso es lo que más impacto tiene y también lo más fácil de resolver con el sistema correcto. ¿Tienes 20 minutos esta semana para una auditoría gratuita de tu proceso actual? Te damos un diagnóstico concreto sin compromiso."
+    }
+  ],
+  "default": [
+    {
+      lead: "Hola, me interesa lo que ofreces. ¿Puedes contarme más?",
+      aria: "¡Hola! Claro que sí. Para orientarte bien y no perderte el tiempo, ¿cuál es el mayor problema que tienes ahora mismo en tu negocio con los leads o las ventas?"
+    },
+    {
+      lead: "Recibo consultas pero no tengo tiempo para responderlas todas.",
+      aria: "Entiendo perfectamente. Eso significa que tienes demanda pero el cuello de botella está en la gestión. ¿Cuántas consultas aproximadamente recibes a la semana y por qué canales te llegan principalmente?"
+    },
+    {
+      lead: "Unas 20-30 por semana, principalmente por Instagram y WhatsApp.",
+      aria: "Con ese volumen, un sistema automatizado de cualificación y agenda puede ahorrarte 10-15 horas semanales y asegurarte de que ningún lead se pierda. ¿Quieres ver cómo funcionaría exactamente en tu caso en una demo de 15 minutos?"
+    }
+  ]
+};
+
+function getNicheKey(nicho) {
+  var n = (nicho || '').toLowerCase();
+  if (n.indexOf('fitness')  >= 0 || n.indexOf('coach')          >= 0 ||
+      n.indexOf('entrenador') >= 0 || n.indexOf('personal trainer') >= 0) return 'coach-fitness';
+  if (n.indexOf('infoprod') >= 0 || n.indexOf('mentor')         >= 0 ||
+      n.indexOf('curso')    >= 0 || n.indexOf('formaci')         >= 0 ||
+      n.indexOf('online')   >= 0) return 'infoproductor';
+  if (n.indexOf('clínica') >= 0 || n.indexOf('clinica') >= 0 ||
+      n.indexOf('estética') >= 0 || n.indexOf('estetica') >= 0 ||
+      n.indexOf('belleza') >= 0 || n.indexOf('dental') >= 0) return 'clinica-estetica';
+  if (n.indexOf('agencia') >= 0 || n.indexOf('marketing') >= 0 ||
+      n.indexOf('consultor') >= 0) return 'agencia';
+  return 'default';
+}
+
+/* ── STATE ── */
+var selectedChannels = [];
+var forgeData = {};
+
+/* ── PHASE MANAGEMENT ── */
+function showPhase(id) {
+  var phases = document.querySelectorAll('.phase');
+  for (var i = 0; i < phases.length; i++) {
+    phases[i].classList.remove('active');
+  }
+  document.getElementById(id).classList.add('active');
+
+  if (id === 'phase-intro' || id === 'phase-processing') {
+    document.body.classList.add('noscroll');
+  } else {
+    document.body.classList.remove('noscroll');
+    window.scrollTo(0, 0);
+  }
+}
+
+function startForge() {
+  showPhase('phase-form');
+}
+
+function goBack() {
+  showPhase('phase-intro');
+}
+
+/* ── CHANNEL TOGGLE ── */
+function toggleChannel(btn) {
+  var channel = btn.getAttribute('data-channel');
+  var idx = selectedChannels.indexOf(channel);
+  if (idx === -1) {
+    selectedChannels.push(channel);
+    btn.classList.add('selected');
+    btn.querySelector('.ch-check').textContent = '✓';
+  } else {
+    selectedChannels.splice(idx, 1);
+    btn.classList.remove('selected');
+    btn.querySelector('.ch-check').textContent = '○';
+  }
+  if (selectedChannels.length > 0) {
+    document.getElementById('err-canales').classList.remove('show');
+  }
+}
+
+/* ── VALIDATION ── */
+function validateForm() {
+  var ok = true;
+  var nombre = document.getElementById('f-nombre').value.trim();
+  var nicho  = document.getElementById('f-nicho').value.trim();
+  var oferta = document.getElementById('f-oferta').value.trim();
+
+  setError('err-nombre', !nombre);
+  setError('err-nicho',  !nicho);
+  setError('err-oferta', !oferta);
+  setError('err-canales', selectedChannels.length === 0);
+
+  if (!nombre || !nicho || !oferta || selectedChannels.length === 0) ok = false;
+  return ok;
+}
+
+function setError(id, show) {
+  var el = document.getElementById(id);
+  if (show) el.classList.add('show'); else el.classList.remove('show');
+}
+
+/* ── SUBMIT ── */
+function handleSubmit(e) {
+  e.preventDefault();
+  if (!validateForm()) return;
+
+  forgeData = {
+    nombre:    document.getElementById('f-nombre').value.trim(),
+    instagram: document.getElementById('f-instagram').value.trim(),
+    nicho:     document.getElementById('f-nicho').value.trim(),
+    oferta:    document.getElementById('f-oferta').value.trim(),
+    ticket:    document.getElementById('f-ticket').value.trim(),
+    canales:   selectedChannels.slice(),
+    leadsAlMes: document.getElementById('f-leads').value.trim(),
+    tono:      document.getElementById('f-tono').value.trim()
+  };
+
+  showPhase('phase-processing');
+  runProcessing();
+}
+
+/* ── PROCESSING ── */
+function runProcessing() {
+  var steps = document.querySelectorAll('#steps-list .step-item');
+  for (var i = 0; i < steps.length; i++) {
+    steps[i].classList.remove('done');
+    steps[i].querySelector('.step-dot').classList.remove('done');
+    steps[i].querySelector('.step-dot').textContent = '';
+  }
+
+  var idx = 0;
+  function next() {
+    if (idx >= steps.length) {
+      setTimeout(buildOutput, 600);
+      return;
+    }
+    var s = steps[idx];
+    s.classList.add('done');
+    var dot = s.querySelector('.step-dot');
+    dot.classList.add('done');
+    dot.textContent = '✓';
+    idx++;
+    setTimeout(next, 900);
+  }
+  setTimeout(next, 900);
+}
+
+/* ── OUTPUT BUILDER ── */
+function buildOutput() {
+  var d = forgeData;
+  var nicheKey = getNicheKey(d.nicho);
+  var convos   = NICHE_CONVERSATIONS[nicheKey];
+
+  /* Meta */
+  var badgeName = d.nombre ? d.nombre.toUpperCase() : 'TU NEGOCIO';
+  document.getElementById('out-badge-txt').textContent = 'SETTER IA CONFIGURADO PARA ' + badgeName;
+
+  var nichoDisplay = d.nicho || 'Negocio high ticket';
+  document.getElementById('out-nicho').textContent = nichoDisplay;
+  document.getElementById('out-canales').textContent =
+    d.canales.length > 0 ? d.canales.join(', ') : 'Instagram / WhatsApp';
+
+  /* System items */
+  var ch2 = d.canales.length > 0 ? d.canales.slice(0,2).join(' y ') : 'Instagram y WhatsApp';
+  document.getElementById('sys-canales').textContent =
+    'ARIA responde en <3s en ' + ch2 + ', 24/7, con tu tono.';
+  document.getElementById('sys-nicho').textContent =
+    'Filtra curiosos de clientes reales con preguntas calibradas para ' + nichoDisplay + '.';
+
+  /* CTA footnote */
+  document.getElementById('cta-note').textContent =
+    'Sin compromiso · Demo en 48h · ' +
+    (d.nicho ? 'Especializada en ' + d.nicho : 'Personalizada para tu nicho');
+
+  /* Build conversation cards */
+  var container = document.getElementById('convos-container');
+  container.innerHTML = '';
+  for (var i = 0; i < convos.length; i++) {
+    var conv = convos[i];
+    var card = document.createElement('div');
+    card.className = 'convo-card';
+    card.style.animationDelay = (i * 0.22) + 's';
+    card.innerHTML =
+      '<div class="convo-num">CONVERSACIÓN ' + (i + 1) + '</div>' +
+      '<div class="brow lead">' +
+        '<div class="bwrap">' +
+          '<div class="bsender">LEAD</div>' +
+          '<div class="bubble blead">' + esc(conv.lead) + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="brow aria">' +
+        '<div class="bwrap">' +
+          '<div class="bsender">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+              '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>' +
+            '</svg>' +
+            'ARIA · SETTER IA' +
+          '</div>' +
+          '<div class="bubble baria" id="aria-' + i + '"></div>' +
+          '<div class="aria-foot">Respuesta en &lt;3 segundos · 24/7</div>' +
+        '</div>' +
+      '</div>';
+    container.appendChild(card);
+  }
+
+  showPhase('phase-output');
+
+  /* Staggered typewriters */
+  for (var j = 0; j < convos.length; j++) {
+    (function(idx) {
+      var delay = 350 + idx * 1500;
+      setTimeout(function() { typeWrite('aria-' + idx, convos[idx].aria); }, delay);
+    })(j);
+  }
+}
+
+/* ── TYPEWRITER ── */
+function typeWrite(elId, text, speed) {
+  speed = speed || 20;
+  var el = document.getElementById(elId);
+  if (!el) return;
+  el.innerHTML = '<span class="tw-cursor"></span>';
+  var i = 0;
+  function tick() {
+    if (i < text.length) {
+      el.innerHTML = esc(text.slice(0, i + 1)) + '<span class="tw-cursor"></span>';
+      i++;
+      setTimeout(tick, speed);
+    } else {
+      el.innerHTML = esc(text);
+    }
+  }
+  tick();
+}
+
+/* ── UTILS ── */
+function esc(s) {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ── RESET ── */
+function resetForge() {
+  ['f-nombre','f-instagram','f-nicho','f-oferta','f-ticket','f-leads','f-tono']
+    .forEach(function(id) { document.getElementById(id).value = ''; });
+
+  selectedChannels = [];
+  var btns = document.querySelectorAll('.channel-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.remove('selected');
+    btns[i].querySelector('.ch-check').textContent = '○';
+  }
+
+  var errs = document.querySelectorAll('.field-error');
+  for (var j = 0; j < errs.length; j++) errs[j].classList.remove('show');
+
+  showPhase('phase-form');
+}
+</script>
+</body>
+</html>
