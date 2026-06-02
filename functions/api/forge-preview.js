@@ -1,3 +1,24 @@
+const RATE_LIMIT    = 5;   // máx peticiones por IP
+const RATE_WINDOW   = 60;  // segundos
+
+const ipTimestamps = new Map();
+
+function isRateLimited(ip) {
+  const now  = Date.now();
+  const cutoff = now - RATE_WINDOW * 1000;
+  const hits = (ipTimestamps.get(ip) || []).filter(function(t) { return t > cutoff; });
+  if (hits.length >= RATE_LIMIT) return true;
+  hits.push(now);
+  ipTimestamps.set(ip, hits);
+  // Purga IPs sin actividad reciente para no crecer indefinidamente
+  if (ipTimestamps.size > 500) {
+    ipTimestamps.forEach(function(ts, key) {
+      if (ts.every(function(t) { return t <= cutoff; })) ipTimestamps.delete(key);
+    });
+  }
+  return false;
+}
+
 export async function onRequest(context) {
   const { env, request } = context;
 
@@ -19,6 +40,10 @@ export async function onRequest(context) {
 
   // Honeypot
   if (website) return json(200, { ok: false });
+
+  // Rate limit por IP
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  if (isRateLimited(ip)) return json(200, { ok: false });
 
   // Campos mínimos
   if (!nicho || !oferta) return json(200, { ok: false });
