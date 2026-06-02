@@ -764,8 +764,14 @@ a { text-decoration: none; color: inherit; }
           placeholder="Ej: Directo y sin rodeos / Cercano y empático / Profesional y técnico" autocomplete="off">
       </div>
 
+      <!-- Honeypot antispam (oculto para humanos) -->
+      <div style="position:absolute;left:-9999px;opacity:0;pointer-events:none;" aria-hidden="true">
+        <label for="f-website">Deja este campo vacío</label>
+        <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
       <!-- Submit -->
-      <button type="submit" class="btn-submit">
+      <button type="submit" id="btn-submit" class="btn-submit">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
         </svg>
@@ -1031,6 +1037,7 @@ function getNicheKey(nicho) {
 /* ── STATE ── */
 var selectedChannels = [];
 var forgeData = {};
+var submitting = false;
 
 /* ── PHASE MANAGEMENT ── */
 function showPhase(id) {
@@ -1098,17 +1105,24 @@ function setError(id, show) {
 /* ── SUBMIT ── */
 function handleSubmit(e) {
   e.preventDefault();
+  if (submitting) return;
   if (!validateForm()) return;
 
+  submitting = true;
+  var btn = document.getElementById('btn-submit');
+  if (btn) btn.disabled = true;
+
   forgeData = {
-    nombre:    document.getElementById('f-nombre').value.trim(),
-    instagram: document.getElementById('f-instagram').value.trim(),
-    nicho:     document.getElementById('f-nicho').value.trim(),
-    oferta:    document.getElementById('f-oferta').value.trim(),
-    ticket:    document.getElementById('f-ticket').value.trim(),
-    canales:   selectedChannels.slice(),
-    leadsAlMes: document.getElementById('f-leads').value.trim(),
-    tono:      document.getElementById('f-tono').value.trim()
+    nombre:         document.getElementById('f-nombre').value.trim(),
+    instagram:      document.getElementById('f-instagram').value.trim(),
+    nicho:          document.getElementById('f-nicho').value.trim(),
+    oferta:         document.getElementById('f-oferta').value.trim(),
+    ticket:         document.getElementById('f-ticket').value.trim(),
+    canales:        selectedChannels.slice(),
+    leadsAlMes:     document.getElementById('f-leads').value.trim(),
+    tono:           document.getElementById('f-tono').value.trim(),
+    nichoDetectado: getNicheKey(document.getElementById('f-nicho').value.trim()),
+    website:        document.getElementById('f-website').value
   };
 
   showPhase('phase-processing');
@@ -1123,6 +1137,9 @@ function runProcessing() {
     steps[i].querySelector('.step-dot').classList.remove('done');
     steps[i].querySelector('.step-dot').textContent = '';
   }
+
+  // Lanza el fetch en paralelo — no bloquea la animación
+  sendToAirtable(forgeData);
 
   var idx = 0;
   function next() {
@@ -1139,6 +1156,22 @@ function runProcessing() {
     setTimeout(next, 900);
   }
   setTimeout(next, 900);
+}
+
+/* ── AIRTABLE FETCH (fire & forget — el UX no depende de él) ── */
+function sendToAirtable(data) {
+  fetch('/api/lead', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(res) {
+    if (!res.ok) console.warn('Forge API:', res.error || res);
+  })
+  .catch(function(err) {
+    console.warn('Forge API network error:', err.message);
+  });
 }
 
 /* ── OUTPUT BUILDER ── */
@@ -1242,6 +1275,10 @@ function esc(s) {
 function resetForge() {
   ['f-nombre','f-instagram','f-nicho','f-oferta','f-ticket','f-leads','f-tono']
     .forEach(function(id) { document.getElementById(id).value = ''; });
+
+  submitting = false;
+  var submitBtn = document.getElementById('btn-submit');
+  if (submitBtn) submitBtn.disabled = false;
 
   selectedChannels = [];
   var btns = document.querySelectorAll('.channel-btn');
