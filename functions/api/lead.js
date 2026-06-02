@@ -26,14 +26,31 @@ export async function onRequest(context) {
 
   // Diagnóstico temporal (eliminar tras verificar)
   if (nombre === '__diag__') {
+    const t  = encodeURIComponent(env.AIRTABLE_TABLE_LEADS || '');
+    const u  = `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/${t}`;
+    let fetchResult = 'not_tried';
+    try {
+      const r = await fetch(u, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${env.AIRTABLE_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ typecast: true, fields: { Nombre: 'diag-test', Origen: 'Forge', Estado: 'Nuevo' } }),
+      });
+      const txt = await r.text();
+      fetchResult = { status: r.status, body: txt.slice(0, 200) };
+    } catch (e) {
+      fetchResult = { threw: e.message };
+    }
     return json(200, {
       ok: true,
       diag: {
-        hasToken:  !!env.AIRTABLE_TOKEN,
-        hasBase:   !!env.AIRTABLE_BASE_ID,
-        hasTable:  !!env.AIRTABLE_TABLE_LEADS,
-        baseLen:   (env.AIRTABLE_BASE_ID || '').length,
-        tableLen:  (env.AIRTABLE_TABLE_LEADS || '').length,
+        url:        u,
+        tokenStart: (env.AIRTABLE_TOKEN || '').slice(0, 8),
+        baseLen:    (env.AIRTABLE_BASE_ID || '').length,
+        tableLen:   (env.AIRTABLE_TABLE_LEADS || '').length,
+        fetch:      fetchResult,
       },
     });
   }
