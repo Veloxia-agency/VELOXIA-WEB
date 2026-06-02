@@ -46,9 +46,8 @@ export async function onRequest(context) {
   const table = encodeURIComponent(env.AIRTABLE_TABLE_LEADS);
   const url   = `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/${table}`;
 
-  let airtableRes;
   try {
-    airtableRes = await fetch(url, {
+    const airtableRes = await fetch(url, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${env.AIRTABLE_TOKEN}`,
@@ -71,19 +70,21 @@ export async function onRequest(context) {
         },
       }),
     });
+
+    const responseText = await airtableRes.text();
+
+    if (!airtableRes.ok) {
+      console.log('Airtable error:', airtableRes.status, responseText);
+      return json(502, { ok: false, error: 'Airtable rejected the record', status: airtableRes.status });
+    }
+
+    const data = JSON.parse(responseText);
+    return json(200, { ok: true, id: data.id });
+
   } catch (err) {
-    console.log('Airtable fetch error:', err.message);
-    return json(502, { ok: false, error: 'Error connecting to Airtable' });
+    console.log('Airtable exception:', err.message);
+    return json(502, { ok: false, error: err.message });
   }
-
-  if (!airtableRes.ok) {
-    const errBody = await airtableRes.text();
-    console.log('Airtable error response:', airtableRes.status, errBody);
-    return json(502, { ok: false, error: 'Airtable rejected the record' });
-  }
-
-  const data = await airtableRes.json();
-  return json(200, { ok: true, id: data.id });
 }
 
 function json(status, payload) {
