@@ -65,12 +65,39 @@ export async function onRequest(context) {
     }
 
     const data = JSON.parse(responseText);
+
+    // Aviso Telegram — fire & forget, no bloquea la respuesta
+    notifyTelegram(env, { nombre, instagram, nicho, oferta, ticket, canales, leadsAlMes, tono });
+
     return json(200, { ok: true, id: data.id });
 
   } catch (err) {
     console.log('Airtable exception:', err.message);
     return json(502, { ok: false, error: err.message });
   }
+}
+
+function notifyTelegram(env, lead) {
+  if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return;
+
+  const lines = [
+    '🔥 <b>NUEVO LEAD · FORGE</b>',
+    '',
+    `👤 <b>Nombre:</b> ${lead.nombre}`,
+    lead.instagram ? `📸 <b>Instagram:</b> ${lead.instagram}` : null,
+    `🎯 <b>Nicho:</b> ${lead.nicho}`,
+    `💼 <b>Oferta:</b> ${lead.oferta}`,
+    lead.ticket    ? `💶 <b>Ticket:</b> ${lead.ticket}` : null,
+    lead.canales && lead.canales.length ? `📲 <b>Canales:</b> ${lead.canales.join(' · ')}` : null,
+    lead.leadsAlMes ? `📊 <b>Leads/mes:</b> ${lead.leadsAlMes}` : null,
+    lead.tono      ? `🗣 <b>Tono:</b> ${lead.tono}` : null,
+  ].filter(Boolean).join('\n');
+
+  fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: env.TELEGRAM_CHAT_ID, text: lines, parse_mode: 'HTML' }),
+  }).catch(function(err) { console.warn('Telegram notify failed:', err.message); });
 }
 
 function json(status, payload) {
