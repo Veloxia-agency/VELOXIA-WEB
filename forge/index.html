@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/veloxia-base.css">
+<link rel="stylesheet" href="/assets/css/aria-chat.css">
 <style>
 /* ─── BASE ─── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -402,136 +403,7 @@ a { text-decoration: none; color: inherit; }
   color: rgba(240,232,216,0.28); font-weight: 500;
   margin-bottom: 20px; align-self: flex-start;
 }
-.phone {
-  width: 392px; max-width: 100%; height: 812px; position: relative;
-  border-radius: 54px; padding: 13px;
-  background: linear-gradient(160deg, #3a2f20, #15110b);
-  box-shadow:
-    0 0 0 1px rgba(196,146,42,.10),
-    0 40px 80px -20px rgba(0,0,0,.8),
-    0 0 120px -40px rgba(196,146,42,.25);
-}
-.p-screen {
-  position: relative; width: 100%; height: 100%; border-radius: 42px; overflow: hidden;
-  background: #1E1810; display: flex; flex-direction: column;
-}
-.p-island {
-  position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
-  width: 108px; height: 30px; background: #000; border-radius: 18px; z-index: 30;
-}
-.p-statusbar {
-  height: 52px; flex: 0 0 auto; display: flex; align-items: flex-end; justify-content: space-between;
-  padding: 0 26px 6px; font-size: 14px; font-weight: 600; letter-spacing: .02em;
-  z-index: 20; color: var(--cream);
-}
-.p-statusbar .p-sb-right { display: flex; align-items: center; gap: 6px; }
-.p-chead {
-  flex: 0 0 auto; display: flex; align-items: center; gap: 12px;
-  padding: 8px 16px 12px; border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(42,33,24,.6), transparent);
-  backdrop-filter: blur(6px);
-}
-.p-chead .p-back { color: var(--gold); display: flex; }
-.p-avatar {
-  width: 40px; height: 40px; border-radius: 50%; flex: 0 0 auto; position: relative;
-  background: radial-gradient(circle at 35% 30%, var(--gold-l), var(--gold) 70%);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 0 1px rgba(240,232,216,.15), 0 4px 14px -4px rgba(196,146,42,.6);
-}
-.p-avatar svg { width: 18px; height: 18px; color: #1E1810; }
-.p-avatar .p-ring {
-  position: absolute; right: -1px; bottom: -1px; width: 11px; height: 11px; border-radius: 50%;
-  background: #3ad17a; border: 2px solid #1E1810;
-}
-.p-chead .p-who { flex: 1; min-width: 0; }
-.p-chead .p-who .p-nm {
-  display: flex; align-items: center; gap: 5px; font-weight: 600; font-size: 16px; color: var(--cream);
-}
-.p-chead .p-who .p-nm .p-verif { width: 14px; height: 14px; color: var(--gold); }
-.p-chead .p-who .p-st { font-size: 12px; color: var(--muted); margin-top: 1px; }
-.p-chead .p-acts { display: flex; gap: 18px; color: var(--muted); }
-.p-chead .p-acts svg { width: 20px; height: 20px; }
-.p-thread {
-  flex: 1; overflow-y: auto; padding: 18px 16px 8px; display: flex; flex-direction: column; gap: 3px;
-  scrollbar-width: none;
-}
-.p-thread::-webkit-scrollbar { display: none; }
-.p-daystamp {
-  align-self: center; font-size: 11px; color: var(--muted); letter-spacing: .06em; margin: 4px 0 12px;
-}
-.p-row {
-  display: flex; width: 100%; margin-top: 9px;
-  opacity: 0; transform: translateY(8px); transition: opacity .35s ease, transform .35s ease;
-}
-.p-row.show { opacity: 1; transform: none; }
-.p-lead { justify-content: flex-start; }
-.p-aria  { justify-content: flex-end; }
-.p-row.tight { margin-top: 2px; }
-.p-wrap { display: flex; flex-direction: column; max-width: 82%; }
-.p-aria.p-row .p-wrap { align-items: flex-end; }
-.p-lead.p-row .p-wrap { align-items: flex-start; }
-.p-bubble {
-  max-width: 100%; padding: 11px 15px; font-size: 14px; line-height: 1.42;
-  border-radius: 22px; position: relative;
-}
-.p-lead .p-bubble {
-  background: rgba(240,232,216,.07);
-  border: 1px solid rgba(240,232,216,.08);
-  color: var(--cream); border-bottom-left-radius: 7px;
-}
-.p-aria .p-bubble {
-  background: linear-gradient(155deg, var(--gold-l), var(--gold));
-  color: #241B11; border-bottom-right-radius: 7px; font-weight: 500;
-  box-shadow: 0 8px 22px -10px rgba(196,146,42,.7);
-}
-.p-meta {
-  display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted);
-  margin-top: 4px; padding: 0 6px;
-}
-.p-meta .p-read { color: var(--gold); }
-.p-meta .p-read svg { width: 14px; height: 14px; vertical-align: middle; }
-.p-senderchip {
-  font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold);
-  display: flex; align-items: center; gap: 5px; margin: 0 6px 4px;
-}
-.p-senderchip svg { width: 11px; height: 11px; }
-.p-typing .p-bubble {
-  background: rgba(240,232,216,.07); border: 1px solid rgba(240,232,216,.08);
-  border-bottom-left-radius: 7px; padding: 14px 16px;
-}
-.p-dots { display: flex; gap: 5px; }
-.p-dots i {
-  width: 7px; height: 7px; border-radius: 50%; background: var(--muted); font-style: normal;
-  animation: pDotBlink 1.2s infinite;
-}
-.p-dots i:nth-child(2) { animation-delay: .2s; }
-.p-dots i:nth-child(3) { animation-delay: .4s; }
-@keyframes pDotBlink {
-  0%, 60%, 100% { opacity: .3; transform: translateY(0); }
-  30%            { opacity: 1; transform: translateY(-3px); }
-}
-.p-inputbar {
-  flex: 0 0 auto; display: flex; align-items: center; gap: 10px; padding: 12px 14px 26px;
-  border-top: 1px solid var(--border);
-}
-.p-inputbar .p-field {
-  flex: 1; height: 40px; border-radius: 20px; background: rgba(240,232,216,.06);
-  border: 1px solid var(--border); display: flex; align-items: center; padding: 0 16px;
-  font-size: 14px; color: var(--muted); font-family: 'DM Sans', sans-serif;
-}
-.p-inputbar .p-send {
-  width: 40px; height: 40px; border-radius: 50%; flex: 0 0 auto;
-  background: linear-gradient(155deg, var(--gold-l), var(--gold));
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 6px 16px -6px rgba(196,146,42,.7);
-}
-.p-inputbar .p-send svg { width: 18px; height: 18px; color: #1E1810; }
-.btn-replay {
-  margin-top: 14px; font-size: 12px; color: var(--muted); background: none; border: none;
-  cursor: pointer; text-decoration: underline; font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0.3px; font-weight: 300;
-}
-.btn-replay:hover { color: var(--gold); }
+/* phone frame styles → /assets/css/aria-chat.css */
 
 /* System block */
 .sys-block {
@@ -1064,6 +936,7 @@ a { text-decoration: none; color: inherit; }
 <!-- ═══════════════════════════════════════
      JAVASCRIPT
 ════════════════════════════════════════ -->
+<script src="/assets/js/aria-chat.js"></script>
 <script>
 'use strict';
 
@@ -1363,79 +1236,14 @@ async function buildOutput() {
   }
 
   showPhase('phase-output');
-  playChat(currentConvos);
+  playChat('chat-thread', currentConvos);
 }
 
 /* ── CHAT ANIMATION ── */
 var currentConvos = [];
 
-function pWait(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
-
-function chatBubble(m, firstAria) {
-  var thread = document.getElementById('chat-thread');
-  var row = document.createElement('div');
-  row.className = 'p-row p-' + m.s;
-  var wrap = document.createElement('div');
-  wrap.className = 'p-wrap';
-  if (m.s === 'aria' && firstAria) {
-    var chip = document.createElement('div');
-    chip.className = 'p-senderchip';
-    chip.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg> ARIA · Setter IA';
-    wrap.appendChild(chip);
-  }
-  var b = document.createElement('div');
-  b.className = 'p-bubble';
-  b.textContent = m.t;
-  wrap.appendChild(b);
-  var meta = document.createElement('div');
-  meta.className = 'p-meta';
-  if (m.s === 'aria') {
-    meta.innerHTML = 'Entregado <span class="p-read"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12l5 5 7-9"/><path d="M11 16l2 1 7-9"/></svg> Leído</span>';
-  } else {
-    var mins = ['41','42','43','44','45','46','47'];
-    meta.textContent = '9:' + mins[Math.floor(Math.random() * mins.length)];
-  }
-  wrap.appendChild(meta);
-  row.appendChild(wrap);
-  thread.appendChild(row);
-  requestAnimationFrame(function() { row.classList.add('show'); });
-  thread.scrollTop = thread.scrollHeight;
-}
-
-function chatTyping() {
-  var thread = document.getElementById('chat-thread');
-  var row = document.createElement('div');
-  row.className = 'p-row p-lead p-typing show';
-  row.innerHTML = '<div class="p-bubble"><div class="p-dots"><i></i><i></i><i></i></div></div>';
-  thread.appendChild(row);
-  thread.scrollTop = thread.scrollHeight;
-  return row;
-}
-
-async function playChat(msgs) {
-  var thread = document.getElementById('chat-thread');
-  var rows = thread.querySelectorAll('.p-row');
-  for (var i = 0; i < rows.length; i++) rows[i].remove();
-  var firstAria = true;
-  await pWait(400);
-  for (var j = 0; j < msgs.length; j++) {
-    var m = msgs[j];
-    if (m.s === 'aria') {
-      var t = chatTyping();
-      await pWait(1100);
-      t.remove();
-      chatBubble(m, firstAria);
-      if (firstAria) firstAria = false;
-    } else {
-      await pWait(550);
-      chatBubble(m, false);
-    }
-    await pWait(450);
-  }
-}
-
 function replayChat() {
-  playChat(currentConvos);
+  playChat('chat-thread', currentConvos);
 }
 
 /* ── UTILS ── */
