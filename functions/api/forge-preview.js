@@ -40,6 +40,11 @@ export async function onRequest(context) {
   // Honeypot
   if (website) return json(200, { ok: false });
 
+  // Diagnóstico KV (eliminar tras verificar)
+  if (nicho === '__kv_diag__') {
+    return json(200, { ok: true, kvBound: !!(env.FORGE_RATELIMIT), kvType: typeof env.FORGE_RATELIMIT });
+  }
+
   // Rate limit por IP (KV distribuido)
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   if (await isRateLimited(env.FORGE_RATELIMIT, ip)) return json(200, { ok: false });
