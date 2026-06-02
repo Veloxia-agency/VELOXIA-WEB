@@ -1161,6 +1161,7 @@ function getNicheKey(nicho) {
 var selectedChannels = [];
 var forgeData = {};
 var submitting = false;
+var previewPromise = null;
 
 /* ── PHASE MANAGEMENT ── */
 function showPhase(id) {
@@ -1261,8 +1262,9 @@ function runProcessing() {
     steps[i].querySelector('.step-dot').textContent = '';
   }
 
-  // Lanza el fetch en paralelo — no bloquea la animación
+  // Ambos fetches en paralelo — no bloquean la animación
   sendToAirtable(forgeData);
+  previewPromise = fetchPreview(forgeData);
 
   var idx = 0;
   function next() {
@@ -1297,11 +1299,40 @@ function sendToAirtable(data) {
   });
 }
 
+/* ── AI PREVIEW FETCH (retorna promesa; buildOutput la awaita) ── */
+function fetchPreview(data) {
+  return fetch('/api/forge-preview', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      nombre:     data.nombre,
+      nicho:      data.nicho,
+      oferta:     data.oferta,
+      ticket:     data.ticket,
+      tono:       data.tono,
+      canales:    data.canales,
+      leadsAlMes: data.leadsAlMes,
+      website:    data.website,
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .catch(function() { return null; });
+}
+
 /* ── OUTPUT BUILDER ── */
-function buildOutput() {
+async function buildOutput() {
   var d = forgeData;
   var nicheKey = getNicheKey(d.nicho);
   var convos   = NICHE_CONVERSATIONS[nicheKey];
+
+  /* Conversación generada por IA (fallback a plantilla si falla o tarda) */
+  try {
+    var timeoutP = new Promise(function(resolve) { setTimeout(function() { resolve(null); }, 1500); });
+    var aiResult = await Promise.race([previewPromise, timeoutP]);
+    if (aiResult && aiResult.ok && Array.isArray(aiResult.conversation) && aiResult.conversation.length === 3) {
+      convos = aiResult.conversation;
+    }
+  } catch (e) { /* usa plantilla local */ }
 
   /* Meta */
   var badgeName = d.nombre ? d.nombre.toUpperCase() : 'TU NEGOCIO';
