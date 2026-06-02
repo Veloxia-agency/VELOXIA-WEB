@@ -36,13 +36,13 @@ html { scroll-behavior: smooth; }
 
   /* Vault palette */
   --black:       #040404;
-  --black-2:     #060606;
-  --black-3:     #080808;
+  --black-2:     #111111;
+  --black-3:     #040404;
   --gold-light:  #E8B84A;
   --gold-border: rgba(196,146,42,0.25);
   --gold-glow:   rgba(196,146,42,0.08);
-  --text:        #F0E8D8;
-  --text-muted:  #9A8C78;
+  --text:        #FFFFFF;
+  --text-muted:  #A1A1AA;
   --text-dim:    #6B5F4E;
   --green:       #4AFF8A;
   --red:         #FF6666;

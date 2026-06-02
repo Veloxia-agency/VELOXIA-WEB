@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vault — Acceso · VELOXIA</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="alternate icon" href="/assets/favicon.ico">
+  <meta name="theme-color" content="#040404">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/veloxia-base.css">
+  <style>
+
+    /* ===================== HERO ===================== */
+    .hero {
+      padding: 72px 0 56px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      opacity: 0.7;
+      border: 1px solid var(--gold-border);
+      padding: 6px 16px;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 9vw, 108px);
+      line-height: 0.92;
+      letter-spacing: 2px;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 em {
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    .hero-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.85;
+      font-weight: 300;
+    }
+
+    /* ===================== STATUS BAR ===================== */
+    .status-bar {
+      max-width: 1100px;
+      margin: 0 auto 48px;
+      padding: 0 24px;
+    }
+
+    .status-inner {
+      border: 1px solid var(--gold-border);
+      background: rgba(196,146,42,0.04);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .status-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .status-text {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .status-progress {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* ===================== GRID ===================== */
+    .resources-section {
+      padding: 0 0 100px;
+    }
+
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .resources-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 560px) {
+      .resources-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===================== CARD ===================== */
+    .resource-card {
+      display: block;
+      border: 1px solid var(--gold-border);
+      background: var(--black-2);
+      padding: 28px 28px 24px;
+      position: relative;
+      text-decoration: none;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+      overflow: hidden;
+    }
+
+    .resource-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(196,146,42,0.04) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .resource-card:hover {
+      border-color: rgba(196,146,42,0.6);
+      box-shadow: 0 0 48px rgba(196,146,42,0.1);
+      transform: translateY(-2px);
+    }
+
+    .resource-card:hover::before {
+      opacity: 1;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .card-id {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--gold);
+      opacity: 0.5;
+    }
+
+    .badge-open {
+      font-size: 9px;
+      letter-spacing: 2px;
+      padding: 3px 10px;
+      text-transform: uppercase;
+      background: rgba(42,122,74,0.15);
+      color: #4AFF8A;
+      border: 1px solid rgba(74,255,138,0.25);
+    }
+
+    .card-category {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      opacity: 0.55;
+    }
+
+    .card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 21px;
+      letter-spacing: 1.5px;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.15;
+    }
+
+    .card-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .card-cta {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      opacity: 0.65;
+      transition: opacity 0.2s;
+    }
+
+    .resource-card:hover .card-cta {
+      opacity: 1;
+    }
+
+    .card-done-tag {
+      display: none;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #4AFF8A;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    /* ===================== FOOTER ===================== */
+    .footer {
+      padding: 56px 0 40px;
+      border-top: 1px solid var(--gold-border);
+      text-align: center;
+    }
+
+    .footer-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 7px;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .footer-sub {
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .footer-cta {
+      margin-top: 32px;
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-decoration: none;
+      border: 1px solid var(--gold-border);
+      padding: 12px 28px;
+      text-transform: uppercase;
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
+    }
+
+    .footer-cta:hover {
+      background: var(--gold);
+      color: #000;
+      border-color: var(--gold);
+    }
+
+    .footer-hash {
+      font-size: 9px;
+      color: rgba(196,146,42,0.18);
+      letter-spacing: 2px;
+      margin-top: 36px;
+    }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 768px) {
+      .hero  { padding: 56px 0 40px; }
+      .status-inner { padding: 12px 16px; }
+    }
+
+  </style>
+</head>
+<body>
+<script>if(localStorage.getItem('veloxia_vault_access')!=='true'){window.location.replace('/vault/');}</script>
+
+  <!-- ====== TOP BAR ====== -->
+  <div class="top-bar">
+    <span class="blink-dot"></span>
+    <span class="top-bar-text">ACCESO ACTIVO · VAULT DESBLOQUEADO · VX—01 / MADRID NODE</span>
+    <span class="blink-dot"></span>
+  </div>
+
+  <!-- ====== HERO ====== -->
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">[ VAULT // ACCESO DESBLOQUEADO ]</p>
+      <h1 id="greeting">Bienvenido al <em>Vault.</em></h1>
+      <p class="hero-sub">Tienes acceso a todos los recursos. Completa cada uno y marca tu progreso.</p>
+    </div>
+  </section>
+
+  <!-- ====== STATUS BAR ====== -->
+  <div class="status-bar">
+    <div class="status-inner">
+      <div class="status-left">
+        <span class="status-dot"></span>
+        <span class="status-text">Vault desbloqueado · 6 recursos disponibles</span>
+      </div>
+      <span class="status-progress" id="statusProgress">0 / 6 completados</span>
+    </div>
+  </div>
+
+  <!-- ====== RECURSOS ====== -->
+  <section class="resources-section">
+    <div class="container">
+      <div class="resources-grid">
+
+        <a href="/vault/exp001/" class="resource-card" data-exp="exp001">
+          <div class="card-top">
+            <span class="card-id">EXP.001</span>
+            <span class="badge-open">OPEN</span>
+          </div>
+          <p class="card-category">STUDIO // CHECKLIST</p>
+          <h3 class="card-title">Checklist de presencia que vende</h3>
+          <p class="card-desc">Detecta en 10 minutos por qué tu web no genera contactos.</p>
+          <span class="card-cta">Abrir recurso →</span>
+          <div class="card-done-tag">✓ Completado</div>
+        </a>
+
+        <a href="/vault/exp002/" class="resource-card" data-exp="exp002">
+          <div class="card-top">
+            <span class="card-id">EXP.002</span>
+            <span class="badge-open">OPEN</span>
+          </div>
+          <p class="card-category">SETTER // FRAMEWORK</p>
+          <h3 class="card-title">Cómo no perder leads por responder tarde</h3>
+          <p class="card-desc">El sistema para responder y filtrar antes de que el cliente llame a otro.</p>
+          <span class="card-cta">Abrir recurso →</span>
+          <div class="card-done-tag">✓ Completado</div>
+        </a>
+
+        <a href="/vault/exp003/" class="resource-card" data-exp="exp003">
+          <div class="card-top">
+            <span class="card-id">EXP.003</span>
+            <span class="badge-open">OPEN</span>
+          </div>
+          <p class="card-category">CONTENT // PROMPTS</p>
+          <h3 class="card-title">30 ideas de contenido para negocios premium</h3>
+          <p class="card-desc">Prompts listos para clínicas, despachos, coaches e inmobiliarias.</p>
+          <span class="card-cta">Abrir recurso →</span>
+          <div class="card-done-tag">✓ Completado</div>
+        </a>
+
+        <a href="/vault/exp004/" class="resource-card" data-exp="exp004">
+          <div class="card-top">
+            <span class="card-id">EXP.004</span>
+            <span class="badge-open">OPEN</span>
+          </div>
+          <p class="card-category">AUDIT // TEMPLATE</p>
+          <h3 class="card-title">Plantilla de mini auditoría digital</h3>
+          <p class="card-desc">El esquema que usamos para revisar web, contenido, captación y seguimiento.</p>
+          <span class="card-cta">Abrir recurso →</span>
+          <div class="card-done-tag">✓ Completado</div>
+        </a>
+
+        <a href="/vault/exp005/" class="resource-card" data-exp="exp005">
+          <div class="card-top">
+            <span class="card-id">EXP.005</span>
+            <span class="badge-open">OPEN</span>
+          </div>
+          <p class="card-category">CRM // DASHBOARD</p>
+          <h3 class="card-title">Cómo debería verse tu sistema de oportunidades</h3>
+          <p class="card-desc">Guía visual para entender leads, citas, propuestas y clientes.</p>
+          <span class="card-cta">Abrir recurso →</span>
+          <div class="card-done-tag">✓ Completado</div>
+        </a>
+
+        <a href="/vault/exp006/" class="resource-card" data-exp="exp006">
+          <div class="card-top">
+            <span class="card-id">EXP.006</span>
+            <span class="badge-open">OPEN</span>
+          </div>
+          <p class="card-category">GROWTH SYSTEM // COMPLETO</p>
+          <h3 class="card-title">Sistema completo de captación</h3>
+          <p class="card-desc">El flujo completo para convertir visitas, DMs y formularios en clientes reales.</p>
+          <span class="card-cta">Abrir recurso →</span>
+          <div class="card-done-tag">✓ Completado</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-title">VELOXIA VAULT · ACCESO ACTIVO</p>
+      <p class="footer-sub">Presencia · Automatización · Contenido</p>
+      <a href="https://calendly.com/hola-veloxia/30min" class="footer-cta" target="_blank" rel="noopener">
+        Hablar con Veloxia →
+      </a>
+      <p class="footer-hash">VX.VAULT.v1.1 // NODE:MDR-01 // ACCESO DESBLOQUEADO</p>
+    </div>
+  </footer>
+
+  <script>
+    // Personalized greeting
+    const name = localStorage.getItem('veloxia_vault_name');
+    if (name) {
+      const first = name.split(' ')[0];
+      document.getElementById('greeting').innerHTML =
+        'Hola, <em>' + first + '.</em>';
+    }
+
+    // Mark completed resources
+    const completed = JSON.parse(localStorage.getItem('veloxia_completed') || '[]');
+    const count = Math.min(completed.length, 6);
+
+    document.getElementById('statusProgress').textContent =
+      count === 6
+        ? '6 / 6 completados ✓'
+        : count + ' / 6 completados';
+
+    document.querySelectorAll('.resource-card').forEach(function(card) {
+      const expId = card.getAttribute('data-exp');
+      if (completed.includes(expId)) {
+        card.querySelector('.card-done-tag').style.display = 'block';
+        card.style.borderColor = 'rgba(74,255,138,0.25)';
+      }
+    });
+  </script>
+
+</body>
+</html>

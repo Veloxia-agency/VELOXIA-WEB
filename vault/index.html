@@ -613,13 +613,13 @@
             <label class="form-label" for="vWeb">// WEB O INSTAGRAM</label>
             <input class="form-input" type="text" id="vWeb" name="website_or_instagram" placeholder="tudominio.com o @tuinstagram">
           </div>
-          <button type="submit" class="submit-btn" id="submitBtn">SOLICITAR ACCESO →</button>
+          <button type="submit" class="submit-btn" id="submitBtn">DESBLOQUEAR ACCESO →</button>
         </form>
 
         <div class="form-message" id="formMessage"></div>
 
         <p class="microcopy">
-          <span>Sin spam</span>·<span>Acceso privado</span>·<span>Recursos actualizados semanalmente</span>
+          <span>Acceso inmediato</span>·<span>Sin spam</span>·<span>Recursos actualizados semanalmente</span>
         </p>
       </div>
     </div>
@@ -660,7 +660,7 @@
         <div class="resource-card">
           <div class="card-top">
             <span class="card-id">EXP.001</span>
-            <span class="badge badge-open">OPEN</span>
+            <span class="badge badge-locked">LOCKED</span>
           </div>
           <p class="card-category">STUDIO // CHECKLIST</p>
           <h3 class="card-title">Checklist de presencia que vende</h3>
@@ -670,7 +670,7 @@
         <div class="resource-card">
           <div class="card-top">
             <span class="card-id">EXP.002</span>
-            <span class="badge badge-open">OPEN</span>
+            <span class="badge badge-locked">LOCKED</span>
           </div>
           <p class="card-category">SETTER // FRAMEWORK</p>
           <h3 class="card-title">Cómo no perder leads por responder tarde</h3>
@@ -680,7 +680,7 @@
         <div class="resource-card">
           <div class="card-top">
             <span class="card-id">EXP.003</span>
-            <span class="badge badge-open">OPEN</span>
+            <span class="badge badge-locked">LOCKED</span>
           </div>
           <p class="card-category">CONTENT // PROMPTS</p>
           <h3 class="card-title">30 ideas de contenido para negocios premium</h3>
@@ -690,7 +690,7 @@
         <div class="resource-card">
           <div class="card-top">
             <span class="card-id">EXP.004</span>
-            <span class="badge badge-open">OPEN</span>
+            <span class="badge badge-locked">LOCKED</span>
           </div>
           <p class="card-category">AUDIT // TEMPLATE</p>
           <h3 class="card-title">Plantilla de mini auditoría digital</h3>
@@ -700,24 +700,22 @@
         <div class="resource-card">
           <div class="card-top">
             <span class="card-id">EXP.005</span>
-            <span class="badge badge-open">OPEN</span>
+            <span class="badge badge-locked">LOCKED</span>
           </div>
           <p class="card-category">CRM // DASHBOARD</p>
           <h3 class="card-title">Cómo debería verse tu sistema de oportunidades</h3>
           <p class="card-desc">Guía visual para entender leads, citas, propuestas y clientes.</p>
         </div>
 
-        <a href="/vault/exp006/" style="text-decoration:none;display:block;">
         <div class="resource-card">
           <div class="card-top">
             <span class="card-id">EXP.006</span>
-            <span class="badge badge-open">OPEN</span>
+            <span class="badge badge-locked">LOCKED</span>
           </div>
           <p class="card-category">GROWTH SYSTEM // COMPLETO</p>
           <h3 class="card-title">Sistema completo de captación</h3>
           <p class="card-desc">El flujo completo para convertir visitas, DMs y formularios en clientes reales.</p>
         </div>
-        </a>
 
       </div>
     </div>
@@ -781,47 +779,47 @@
       setTimeout(() => document.getElementById('vName').focus(), 600);
     }
 
-    document.getElementById('vaultForm').addEventListener('submit', async function (e) {
+    document.getElementById('vaultForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
-      const btn = document.getElementById('submitBtn');
-      const msg = document.getElementById('formMessage');
+      const btn   = document.getElementById('submitBtn');
+      const name  = document.getElementById('vName').value.trim();
+      const email = document.getElementById('vEmail').value.trim();
 
-      btn.disabled = true;
-      btn.textContent = 'PROCESANDO...';
+      btn.disabled    = true;
+      btn.textContent = 'DESBLOQUEANDO...';
 
       const payload = {
-        name:                document.getElementById('vName').value.trim(),
-        email:               document.getElementById('vEmail').value.trim(),
-        business_type:       document.getElementById('vType').value,
-        website_or_instagram:document.getElementById('vWeb').value.trim(),
-        ref:                 getRef(),
-        source:              'veloxia_vault',
-        submitted_at:        new Date().toISOString()
+        name,
+        email,
+        business_type:        document.getElementById('vType').value,
+        website_or_instagram: document.getElementById('vWeb').value.trim(),
+        ref:                  getRef(),
+        source:               'veloxia_vault',
+        submitted_at:         new Date().toISOString()
       };
 
+      // Fire-and-forget: capture lead even as the page navigates away
       try {
-        const res = await fetch(VAULT_WEBHOOK, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(payload)
-        });
-
-        if (res.ok) {
-          document.getElementById('vaultForm').style.display = 'none';
-          msg.textContent   = 'ACCESO SOLICITADO. Revisa tu email.';
-          msg.className     = 'form-message success';
-          msg.style.display = 'block';
-        } else {
-          throw new Error('server error');
+        const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+        if (!navigator.sendBeacon(VAULT_WEBHOOK, blob)) {
+          fetch(VAULT_WEBHOOK, { method: 'POST', body: blob, keepalive: true }).catch(() => {});
         }
-      } catch {
-        msg.innerHTML     = 'ERROR. Escríbenos a <a href="mailto:hola@veloxia.agency">hola@veloxia.agency</a>';
-        msg.className     = 'form-message error';
-        msg.style.display = 'block';
-        btn.disabled      = false;
-        btn.textContent   = 'SOLICITAR ACCESO →';
+      } catch (_) {
+        fetch(VAULT_WEBHOOK, {
+          method:    'POST',
+          headers:   { 'Content-Type': 'application/json' },
+          body:      JSON.stringify(payload),
+          keepalive: true
+        }).catch(() => {});
       }
+
+      // Grant access immediately — no server response required
+      localStorage.setItem('veloxia_vault_access', 'true');
+      localStorage.setItem('veloxia_vault_name',   name);
+      localStorage.setItem('veloxia_vault_email',  email);
+
+      window.location.href = '/vault/acceso/';
     });
   </script>
 
