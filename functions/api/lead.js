@@ -24,6 +24,20 @@ export async function onRequest(context) {
   // Honeypot — bots rellenan este campo, humanos no
   if (website) return json(200, { ok: true });
 
+  // Diagnóstico temporal (eliminar tras verificar)
+  if (nombre === '__diag__') {
+    return json(200, {
+      ok: true,
+      diag: {
+        hasToken:  !!env.AIRTABLE_TOKEN,
+        hasBase:   !!env.AIRTABLE_BASE_ID,
+        hasTable:  !!env.AIRTABLE_TABLE_LEADS,
+        baseLen:   (env.AIRTABLE_BASE_ID || '').length,
+        tableLen:  (env.AIRTABLE_TABLE_LEADS || '').length,
+      },
+    });
+  }
+
   // Validación de requeridos
   if (!nombre || !nicho || !oferta) {
     return json(400, { ok: false, error: 'Faltan campos obligatorios: nombre, nicho, oferta' });
