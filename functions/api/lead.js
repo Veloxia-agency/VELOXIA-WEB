@@ -24,6 +24,25 @@ export async function onRequest(context) {
   // Honeypot — bots rellenan este campo, humanos no
   if (website) return json(200, { ok: true });
 
+  // Diagnóstico Telegram (eliminar tras verificar)
+  if (nombre === '__tg_diag__') {
+    const hasToken  = !!(env.TELEGRAM_BOT_TOKEN);
+    const hasChatId = !!(env.TELEGRAM_CHAT_ID);
+    let fetchResult = 'not_tried';
+    if (hasToken && hasChatId) {
+      try {
+        const r = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: env.TELEGRAM_CHAT_ID, text: '🔧 Test diagnóstico VELOXIA FORGE', parse_mode: 'HTML' }),
+        });
+        const txt = await r.text();
+        fetchResult = { status: r.status, body: txt.slice(0, 300) };
+      } catch (e) { fetchResult = { threw: e.message }; }
+    }
+    return json(200, { ok: true, diag: { hasToken, hasChatId, fetchResult } });
+  }
+
   // Validación de requeridos
   if (!nombre || !nicho || !oferta) {
     return json(400, { ok: false, error: 'Faltan campos obligatorios: nombre, nicho, oferta' });
