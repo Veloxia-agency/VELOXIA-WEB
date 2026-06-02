@@ -1,5 +1,12 @@
-export async function onRequestPost(context) {
+export async function onRequest(context) {
   const { env, request } = context;
+
+  if (request.method !== 'POST') {
+    return new Response('Method Not Allowed', {
+      status: 405,
+      headers: { Allow: 'POST', 'Content-Type': 'text/plain' },
+    });
+  }
 
   let body;
   try {
@@ -37,14 +44,14 @@ export async function onRequestPost(context) {
         typecast: true,
         fields: {
           Nombre:         nombre,
-          Instagram:      instagram    || '',
+          Instagram:      instagram       || '',
           Nicho:          nicho,
           Oferta:         oferta,
-          Ticket:         ticket       || '',
+          Ticket:         ticket          || '',
           Canales:        (canales || []).join(' · '),
-          LeadsAlMes:     leadsAlMes   || '',
-          Tono:           tono         || '',
-          NichoDetectado: nichoDetectado || '',
+          LeadsAlMes:     leadsAlMes      || '',
+          Tono:           tono            || '',
+          NichoDetectado: nichoDetectado  || '',
           Origen:         'Forge',
           Estado:         'Nuevo',
         },
@@ -63,13 +70,6 @@ export async function onRequestPost(context) {
 
   const data = await airtableRes.json();
   return json(200, { ok: true, id: data.id });
-}
-
-export function onRequest(context) {
-  return new Response('Method Not Allowed', {
-    status: 405,
-    headers: { Allow: 'POST' },
-  });
 }
 
 function json(status, payload) {
