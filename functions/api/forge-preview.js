@@ -1,21 +1,20 @@
-const RATE_LIMIT    = 5;   // máx peticiones por IP
-const RATE_WINDOW   = 60;  // segundos
+const RATE_LIMIT  = 5;   // máx peticiones por IP
+const RATE_WINDOW = 60;  // segundos
 
-const ipTimestamps = new Map();
-
-function isRateLimited(ip) {
-  const now  = Date.now();
+async function isRateLimited(kv, ip) {
+  if (!kv) return false;          // si el binding no existe, no bloquear
+  const now    = Date.now();
   const cutoff = now - RATE_WINDOW * 1000;
-  const hits = (ipTimestamps.get(ip) || []).filter(function(t) { return t > cutoff; });
+  const key    = 'rl:' + ip;
+
+  const stored = await kv.get(key, { type: 'json' });
+  const hits   = Array.isArray(stored) ? stored.filter(function(t) { return t > cutoff; }) : [];
+
   if (hits.length >= RATE_LIMIT) return true;
+
   hits.push(now);
-  ipTimestamps.set(ip, hits);
-  // Purga IPs sin actividad reciente para no crecer indefinidamente
-  if (ipTimestamps.size > 500) {
-    ipTimestamps.forEach(function(ts, key) {
-      if (ts.every(function(t) { return t <= cutoff; })) ipTimestamps.delete(key);
-    });
-  }
+  // TTL = ventana +5s de margen para que KV limpie solo
+  await kv.put(key, JSON.stringify(hits), { expirationTtl: RATE_WINDOW + 5 });
   return false;
 }
 
@@ -41,9 +40,9 @@ export async function onRequest(context) {
   // Honeypot
   if (website) return json(200, { ok: false });
 
-  // Rate limit por IP
+  // Rate limit por IP (KV distribuido)
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-  if (isRateLimited(ip)) return json(200, { ok: false });
+  if (await isRateLimited(env.FORGE_RATELIMIT, ip)) return json(200, { ok: false });
 
   // Campos mínimos
   if (!nicho || !oferta) return json(200, { ok: false });
