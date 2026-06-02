@@ -469,6 +469,98 @@ footer { background: var(--noir); border-top: 1px solid var(--border); padding: 
 .footer-links a:hover { color: var(--gold); }
 .footer-copy { font-size: 11px; color: var(--faint); letter-spacing: 1.5px; }
 
+/* ─── EJEMPLOS ─── */
+#ejemplos {
+  padding: 140px 40px;
+  background: var(--noir);
+  border-top: 1px solid var(--ob);
+  border-bottom: 1px solid var(--ob);
+}
+.ej-header { margin-bottom: 80px; }
+.ej-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(44px, 6.5vw, 90px);
+  letter-spacing: 2px; line-height: 0.9;
+  color: var(--cream); margin-top: 20px;
+}
+.ej-h2 .accent { color: var(--orange); }
+.ej-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: 24px; color: var(--muted); margin-top: 12px;
+}
+.ej-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 0; margin-bottom: 48px;
+}
+.ej-card {
+  background: var(--dusk);
+  border: 1px solid var(--ob);
+  overflow: hidden; transition: border-color .3s; position: relative;
+}
+.ej-card:hover { border-color: var(--ob-h); }
+.ej-thumb {
+  width: 100%; aspect-ratio: 16/9;
+  background: var(--obsidian);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.ej-thumb-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,106,0,0.11) 0%, rgba(4,4,4,0.65) 70%);
+}
+/* Scanlines texture */
+.ej-thumb::after {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px);
+  opacity: 0.4;
+}
+.ej-play {
+  position: relative; z-index: 2;
+  width: 60px; height: 60px; border-radius: 50%;
+  border: 2px solid rgba(255,106,0,0.55);
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,106,0,0.12); backdrop-filter: blur(6px);
+  transition: border-color .2s, background .2s, transform .2s;
+}
+.ej-card:hover .ej-play { border-color: var(--orange); background: rgba(255,106,0,0.22); transform: scale(1.06); }
+.ej-play svg { width: 22px; height: 22px; color: var(--orange); margin-left: 4px; }
+.ej-format {
+  position: absolute; top: 12px; left: 12px; z-index: 2;
+  font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
+  font-weight: 700; color: #fff; background: var(--orange); padding: 5px 11px;
+}
+.ej-dur {
+  position: absolute; bottom: 10px; right: 12px; z-index: 2;
+  font-size: 11px; font-weight: 600; color: rgba(240,232,216,0.75);
+  background: rgba(0,0,0,0.55); padding: 3px 8px; letter-spacing: 0.5px;
+}
+.ej-coming {
+  position: absolute; top: 12px; right: 12px; z-index: 2;
+  font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+  font-weight: 600; color: rgba(255,106,0,0.6);
+  border: 1px solid rgba(255,106,0,0.3); padding: 4px 9px;
+}
+.ej-info { padding: 24px 28px 28px; }
+.ej-sector {
+  font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--orange); font-weight: 700; margin-bottom: 8px; display: block;
+}
+.ej-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 2px; color: var(--cream); margin-bottom: 8px; line-height: 1;
+}
+.ej-desc {
+  font-size: 13px; color: var(--muted); line-height: 1.65; font-weight: 300; margin-bottom: 14px;
+}
+.ej-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.ej-chip {
+  font-size: 10px; letter-spacing: 1.5px; padding: 3px 9px;
+  border: 1px solid var(--ob); color: var(--faint);
+  text-transform: uppercase; font-weight: 500;
+}
+
 /* ─── REVEAL ─── */
 .reveal { opacity: 0; transform: translateY(30px); transition: opacity .75s ease, transform .75s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -477,6 +569,7 @@ footer { background: var(--noir); border-top: 1px solid var(--border); padding: 
 @media (max-width: 960px) {
   .pq-grid { grid-template-columns: 1fr 1fr; }
   .prod-grid { grid-template-columns: 1fr; }
+  .ej-grid { grid-template-columns: 1fr; }
   .tools-grid { grid-template-columns: 1fr 1fr; }
   .propuesta-cards { grid-template-columns: 1fr; }
   .tools-nota { flex-direction: column; gap: 28px; }
@@ -485,7 +578,7 @@ footer { background: var(--noir); border-top: 1px solid var(--border); padding: 
   nav { padding: 0 24px; }
   .nav-links { display: none; }
   .nav-burger { display: flex; }
-  #hero, #para-quien, #producimos, #herramientas, #propuesta, #faq, #cta-final, footer { padding-left: 24px; padding-right: 24px; }
+  #hero, #para-quien, #producimos, #ejemplos, #herramientas, #propuesta, #faq, #cta-final, footer { padding-left: 24px; padding-right: 24px; }
   .pq-grid { grid-template-columns: 1fr; }
   .prod-grid { grid-template-columns: 1fr; }
   .tools-grid { grid-template-columns: 1fr; }
@@ -703,6 +796,115 @@ footer { background: var(--noir); border-top: 1px solid var(--border); padding: 
           <li>Calendrización de publicación incluida</li>
           <li>Entrega en 72h por pack</li>
         </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EJEMPLOS ═══ -->
+<section id="ejemplos">
+  <div class="wrap">
+    <div class="ej-header">
+      <div class="eyebrow reveal">Ejemplos de contenido</div>
+      <h2 class="ej-h2 reveal" style="transition-delay:.1s">
+        ASÍ QUEDA EL<br>CONTENIDO <span class="accent">REAL.</span>
+      </h2>
+      <p class="ej-sub reveal" style="transition-delay:.2s">Cuatro formatos, cuatro sectores, un nivel de producción.</p>
+    </div>
+
+    <div class="ej-grid reveal" style="transition-delay:.25s">
+
+      <!-- Card 1: Vídeo de Servicio -->
+      <div class="ej-card">
+        <div class="ej-thumb">
+          <div class="ej-thumb-bg"></div>
+          <span class="ej-format">Formato 01</span>
+          <span class="ej-coming">Próximamente</span>
+          <div class="ej-play">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <span class="ej-dur">0:60</span>
+        </div>
+        <div class="ej-info">
+          <span class="ej-sector">Coach de bienestar</span>
+          <div class="ej-title">VÍDEO DE SERVICIO</div>
+          <p class="ej-desc">60 segundos que convierten visitantes en clientes. Escenas cinemáticas del servicio, voz en off profesional y CTA integrado.</p>
+          <div class="ej-chips">
+            <span class="ej-chip">Higgsfield</span>
+            <span class="ej-chip">ElevenLabs</span>
+            <span class="ej-chip">60s</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Ads en Vídeo -->
+      <div class="ej-card">
+        <div class="ej-thumb">
+          <div class="ej-thumb-bg" style="background:linear-gradient(135deg,rgba(255,106,0,0.17) 0%,rgba(4,4,4,0.65) 70%)"></div>
+          <span class="ej-format">Formato 02</span>
+          <span class="ej-coming" style="color:#FF6A00;border-color:rgba(255,106,0,0.6);background:rgba(255,106,0,0.08)">MÁS PEDIDO</span>
+          <div class="ej-play">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <span class="ej-dur">0:30</span>
+        </div>
+        <div class="ej-info">
+          <span class="ej-sector">Clínica estética</span>
+          <div class="ej-title">ADS EN VÍDEO</div>
+          <p class="ej-desc">3 variantes A/B para Meta y TikTok. Hook optimizado para los primeros 3 segundos, subtítulos animados y CTA visual integrado.</p>
+          <div class="ej-chips">
+            <span class="ej-chip">Meta Ads</span>
+            <span class="ej-chip">TikTok</span>
+            <span class="ej-chip">3 variantes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Avatar IA -->
+      <div class="ej-card">
+        <div class="ej-thumb">
+          <div class="ej-thumb-bg" style="background:linear-gradient(135deg,rgba(255,106,0,0.08) 0%,rgba(4,4,4,0.72) 70%)"></div>
+          <span class="ej-format">Formato 03</span>
+          <span class="ej-coming">Próximamente</span>
+          <div class="ej-play">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <span class="ej-dur">1:20</span>
+        </div>
+        <div class="ej-info">
+          <span class="ej-sector">Consultor de negocios</span>
+          <div class="ej-title">AVATAR IA + VOZ</div>
+          <p class="ej-desc">El fundador a cámara sin haber grabado. Avatar IA con imagen real, voz clonada con ElevenLabs, cualquier guion en cualquier idioma.</p>
+          <div class="ej-chips">
+            <span class="ej-chip">HeyGen</span>
+            <span class="ej-chip">ElevenLabs</span>
+            <span class="ej-chip">Avatar</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Reels y TikToks -->
+      <div class="ej-card">
+        <div class="ej-thumb">
+          <div class="ej-thumb-bg" style="background:linear-gradient(135deg,rgba(255,106,0,0.13) 0%,rgba(4,4,4,0.68) 70%)"></div>
+          <span class="ej-format">Formato 04</span>
+          <span class="ej-coming">Próximamente</span>
+          <div class="ej-play">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <span class="ej-dur">0:45</span>
+        </div>
+        <div class="ej-info">
+          <span class="ej-sector">Agencia de servicios</span>
+          <div class="ej-title">REELS Y TIKTOKS</div>
+          <p class="ej-desc">Pack de 4 reels listos para publicar. Estructura de retención alta, formato 9:16 nativo, subtítulos animados al estilo de tu marca.</p>
+          <div class="ej-chips">
+            <span class="ej-chip">CapCut Pro</span>
+            <span class="ej-chip">9:16</span>
+            <span class="ej-chip">Pack x4</span>
+          </div>
+        </div>
       </div>
 
     </div>
