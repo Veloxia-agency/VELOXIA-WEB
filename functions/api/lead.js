@@ -24,37 +24,6 @@ export async function onRequest(context) {
   // Honeypot — bots rellenan este campo, humanos no
   if (website) return json(200, { ok: true });
 
-  // Diagnóstico temporal (eliminar tras verificar)
-  if (nombre === '__diag__') {
-    const t  = encodeURIComponent(env.AIRTABLE_TABLE_LEADS || '');
-    const u  = `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/${t}`;
-    let fetchResult = 'not_tried';
-    try {
-      const r = await fetch(u, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${env.AIRTABLE_TOKEN}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ typecast: true, fields: { Nombre: 'diag-test', Origen: 'Forge', Estado: 'Nuevo' } }),
-      });
-      const txt = await r.text();
-      fetchResult = { status: r.status, body: txt.slice(0, 200) };
-    } catch (e) {
-      fetchResult = { threw: e.message };
-    }
-    return json(200, {
-      ok: true,
-      diag: {
-        url:        u,
-        tokenStart: (env.AIRTABLE_TOKEN || '').slice(0, 8),
-        baseLen:    (env.AIRTABLE_BASE_ID || '').length,
-        tableLen:   (env.AIRTABLE_TABLE_LEADS || '').length,
-        fetch:      fetchResult,
-      },
-    });
-  }
-
   // Validación de requeridos
   if (!nombre || !nicho || !oferta) {
     return json(400, { ok: false, error: 'Faltan campos obligatorios: nombre, nicho, oferta' });
