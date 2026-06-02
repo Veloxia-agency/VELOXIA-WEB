@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/veloxia-base.css">
+<link rel="stylesheet" href="/assets/css/aria-chat.css">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -545,6 +546,47 @@ footer {
 .footer-links a:hover { color: var(--gold); }
 .footer-copy { font-size: 11px; color: var(--faint); letter-spacing: 1.5px; }
 
+/* ─── ARIA EN VIVO ─── */
+#aria-vivo {
+  padding: 140px 40px;
+  background: var(--noir);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.av-inner {
+  max-width: 1120px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 80px; align-items: center;
+}
+.av-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(44px, 6.5vw, 90px);
+  letter-spacing: 2px; line-height: 0.9;
+  color: var(--cream); margin-top: 20px; margin-bottom: 16px;
+}
+.av-h2 .gold { color: var(--gold); }
+.av-desc {
+  font-size: 16px; color: var(--muted); line-height: 1.85;
+  font-weight: 300; margin-bottom: 36px; max-width: 440px;
+}
+.av-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-l) 100%);
+  color: #1E1810; padding: 16px 34px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px;
+  text-decoration: none;
+  transition: opacity .2s, transform .15s;
+}
+.av-cta:hover { opacity: 0.88; transform: translateY(-2px); }
+.av-cta svg { transition: transform .2s; flex-shrink: 0; }
+.av-cta:hover svg { transform: translateX(4px); }
+.av-phone-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+@media (max-width: 1000px) {
+  .av-inner { grid-template-columns: 1fr; gap: 56px; }
+  .av-phone-wrap { order: -1; }
+}
+
 /* ─── REVEAL ─── */
 .reveal { opacity: 0; transform: translateY(30px); transition: opacity .75s ease, transform .75s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -563,7 +605,7 @@ footer {
   .nav-burger { display: flex; }
 
   #hero, #para-quien, #incluye, #proceso,
-  #propuesta, #faq, #cta-final, footer { padding-left: 24px; padding-right: 24px; }
+  #aria-vivo, #propuesta, #faq, #cta-final, footer { padding-left: 24px; padding-right: 24px; }
 
   .pq-sectors { grid-template-columns: 1fr; }
   .proceso-grid { grid-template-columns: 1fr; }
@@ -849,6 +891,72 @@ footer {
   </div>
 </section>
 
+<!-- ═══ ARIA EN VIVO ═══ -->
+<section id="aria-vivo">
+  <div class="av-inner">
+
+    <div class="av-text">
+      <div class="eyebrow reveal">ARIA en vivo</div>
+      <h2 class="av-h2 reveal" style="transition-delay:.1s">
+        ASÍ RESPONDE<br>ARIA A LOS<br>LEADS DE <span class="gold">TU WEB.</span>
+      </h2>
+      <p class="av-desc reveal" style="transition-delay:.2s">
+        Studio te da la web que atrae. ARIA responde cada lead que llega antes de que llame a otro — cualifica, detecta el dolor real y agenda la llamada sin que tú intervengas.
+      </p>
+      <div class="reveal" style="transition-delay:.3s">
+        <a href="/forge" class="av-cta">
+          Genera la conversación con TU negocio
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="av-phone-wrap">
+      <div class="phone">
+        <div class="p-screen">
+          <div class="p-island"></div>
+          <div class="p-statusbar">
+            <span>9:41</span>
+            <span class="p-sb-right">
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".4"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 11.5l2-2.4a3 3 0 00-4 0l2 2.4zM3.2 6.2l1.4 1.5a5 5 0 016.8 0l1.4-1.5a7 7 0 00-9.6 0zM.6 3.5l1.4 1.5a9 9 0 0112 0l1.4-1.5a11 11 0 00-14.8 0z"/></svg>
+              <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="1" y="1" width="21" height="10" rx="3" stroke="currentColor" opacity=".5"/><rect x="3" y="3" width="15" height="6" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="1.5" height="4" rx=".75" fill="currentColor" opacity=".5"/></svg>
+            </span>
+          </div>
+          <div class="p-chead">
+            <span class="p-back"><svg width="11" height="18" viewBox="0 0 11 18" fill="none"><path d="M9 1L2 9l7 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <div class="p-avatar">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>
+              <span class="p-ring"></span>
+            </div>
+            <div class="p-who">
+              <div class="p-nm">ARIA
+                <svg class="p-verif" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1l2.6 1.9 3.2-.2 1 3 2.7 1.7-1 3 1 3-2.7 1.7-1 3-3.2-.2L12 23l-2.6-1.9-3.2.2-1-3L2.5 16.6l1-3-1-3 2.7-1.7 1-3 3.2.2z"/><path d="M8 12l3 3 5-6" stroke="#2A2118" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="p-st">Setter IA · en línea</div>
+            </div>
+            <div class="p-acts">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.6A2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.5-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg>
+            </div>
+          </div>
+          <div class="p-thread" id="studio-thread">
+            <div class="p-daystamp">hoy · responde en &lt;3 s</div>
+          </div>
+          <div class="p-inputbar">
+            <div class="p-field">Mensaje…</div>
+            <div class="p-send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-replay" onclick="replayStudioChat()">↺ Reproducir</button>
+    </div>
+
+  </div>
+</section>
+
 <!-- ═══ SIN PRECIOS ═══ -->
 <section id="propuesta">
   <div class="propuesta-inner">
@@ -943,6 +1051,7 @@ footer {
   </div>
 </footer>
 
+<script src="/assets/js/aria-chat.js"></script>
 <script>
 // Reveal on scroll
 const io = new IntersectionObserver((entries) => {
@@ -1005,6 +1114,34 @@ document.querySelectorAll('.nav-links a').forEach(a => {
     if (window.innerWidth <= 768) links.style.display = 'none';
   });
 });
+
+/* ── ARIA EN VIVO · Consultor de negocios demo ── */
+var studioConvos = [
+  { s: 'lead', t: 'Hola, encontré tu web. ¿Con quién trabajo si contrato la mentoría?' },
+  { s: 'aria', t: '¡Hola! Trabajas directamente con el equipo desde el primer día. Para orientarte bien, ¿en qué punto está tu negocio ahora — empezando a escalar o ya tienes clientes pero quieres crecer más rápido?' },
+  { s: 'lead', t: 'Tengo clientes, este año facturé unos 40K pero no consigo salir de los 3-4K al mes.' },
+  { s: 'aria', t: 'Ese techo casi siempre tiene la misma causa: el modelo no está diseñado para escalar. ¿Cómo llegas a tus clientes ahora — principalmente por referidos o tienes algún sistema de captación activo?' },
+  { s: 'lead', t: 'Todo referidos. No tengo sistema y mi web tampoco me ayuda mucho, la verdad.' },
+  { s: 'aria', t: 'Eso lo explica todo — si dependes de referidos, tu crecimiento depende de la suerte, no de un sistema. Es exactamente lo que resolvemos. ¿Tienes 20 minutos esta semana para una llamada de diagnóstico gratuita? Te digo qué está frenando el crecimiento.' }
+];
+
+var studioChatPlayed = false;
+var studioObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting && !studioChatPlayed) {
+      studioChatPlayed = true;
+      playChat('studio-thread', studioConvos);
+    }
+  });
+}, { threshold: 0.2 });
+
+var ariaVivoStudio = document.getElementById('aria-vivo');
+if (ariaVivoStudio) studioObserver.observe(ariaVivoStudio);
+
+function replayStudioChat() {
+  studioChatPlayed = true;
+  playChat('studio-thread', studioConvos);
+}
 </script>
 </body>
 </html>
