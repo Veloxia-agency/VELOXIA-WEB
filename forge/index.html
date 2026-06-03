@@ -525,6 +525,16 @@ a { text-decoration: none; color: inherit; }
   50%       { transform: translate(-50%,-50%) scale(1.18); opacity: 1;   }
 }
 
+/* ─── RGPD CONSENT ─── */
+.consent-row { margin-bottom: 18px; display: flex; align-items: flex-start; gap: 11px; }
+.consent-row input[type=checkbox] {
+  width: 16px; height: 16px; flex-shrink: 0; margin-top: 3px;
+  accent-color: var(--gold); cursor: pointer; border-radius: 0;
+}
+.consent-row label { font-size: 12px; color: var(--muted); line-height: 1.65; font-weight: 300; cursor: pointer; }
+.consent-row label a { color: var(--gold); text-decoration: underline; }
+.consent-row label a:hover { color: var(--gold-l); }
+
 /* ─── RESPONSIVE ─── */
 @media (max-width: 560px) {
   .form-wrap, .output-wrap { padding-left: 16px; padding-right: 16px; }
@@ -722,6 +732,13 @@ a { text-decoration: none; color: inherit; }
         <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off">
       </div>
 
+      <!-- RGPD Consent -->
+      <div class="consent-row">
+        <input type="checkbox" id="f-consent" name="consent">
+        <label for="f-consent">Acepto la <a href="/privacidad/" target="_blank" rel="noopener">política de privacidad</a> y el uso de mis datos para personalizar el Setter IA.</label>
+      </div>
+      <div class="field-error" id="err-consent">Debes aceptar la política de privacidad para continuar.</div>
+
       <!-- Submit -->
       <button type="submit" id="btn-submit" class="btn-submit">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -901,6 +918,12 @@ a { text-decoration: none; color: inherit; }
           <div class="sys-item-desc">Envía tu Calendly en el momento exacto y hace seguimiento si no agenda.</div>
         </div>
       </div>
+    </div>
+
+    <!-- Fallback anti-pérdida de lead (visible solo si /api/lead falla) -->
+    <div id="api-fallback" style="display:none; margin-bottom:20px; padding:16px 20px; border:1px solid rgba(255,106,0,0.4); background:rgba(255,106,0,0.06); font-size:13px; color:rgba(240,232,216,0.85); line-height:1.65;">
+      No hemos podido guardar tus datos automáticamente.
+      <a href="https://wa.me/34684376021" target="_blank" rel="noopener" style="color:#FF8533; text-decoration:underline; margin-left:4px;">Escríbenos por WhatsApp →</a>
     </div>
 
     <!-- CTA -->
@@ -1085,12 +1108,15 @@ function validateForm() {
   var nicho  = document.getElementById('f-nicho').value.trim();
   var oferta = document.getElementById('f-oferta').value.trim();
 
-  setError('err-nombre', !nombre);
-  setError('err-nicho',  !nicho);
-  setError('err-oferta', !oferta);
-  setError('err-canales', selectedChannels.length === 0);
+  var consent = document.getElementById('f-consent').checked;
 
-  if (!nombre || !nicho || !oferta || selectedChannels.length === 0) ok = false;
+  setError('err-nombre',  !nombre);
+  setError('err-nicho',   !nicho);
+  setError('err-oferta',  !oferta);
+  setError('err-canales', selectedChannels.length === 0);
+  setError('err-consent', !consent);
+
+  if (!nombre || !nicho || !oferta || selectedChannels.length === 0 || !consent) ok = false;
   return ok;
 }
 
@@ -1119,7 +1145,8 @@ function handleSubmit(e) {
     leadsAlMes:     document.getElementById('f-leads').value.trim(),
     tono:           document.getElementById('f-tono').value.trim(),
     nichoDetectado: getNicheKey(document.getElementById('f-nicho').value.trim()),
-    website:        document.getElementById('f-website').value
+    website:        document.getElementById('f-website').value,
+    consent:        true
   };
 
   showPhase('phase-processing');
@@ -1169,6 +1196,8 @@ function sendToAirtable(data) {
   })
   .catch(function(err) {
     console.warn('Forge API network error:', err.message);
+    var fb = document.getElementById('api-fallback');
+    if (fb) fb.style.display = 'block';
   });
 }
 

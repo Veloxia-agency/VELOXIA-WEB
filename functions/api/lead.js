@@ -18,11 +18,16 @@ export async function onRequest(context) {
   const {
     nombre, instagram, nicho, oferta, ticket,
     canales, leadsAlMes, tono, nichoDetectado,
-    website,
+    website, consent,
   } = body;
 
   // Honeypot — bots rellenan este campo, humanos no
   if (website) return json(200, { ok: true });
+
+  // Consentimiento RGPD obligatorio
+  if (consent !== true) {
+    return json(400, { ok: false, error: 'Se requiere consentimiento del usuario (RGPD)' });
+  }
 
   // Validación de requeridos
   if (!nombre || !nicho || !oferta) {

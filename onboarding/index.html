@@ -148,6 +148,12 @@ select option{background:var(--noir);color:var(--cream)}
 .btn-next:hover{background:var(--gold-light);transform:translateY(-1px)}
 .btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
+/* RGPD Consent */
+.consent-row{margin-bottom:20px;display:flex;align-items:flex-start;gap:11px}
+.consent-row input[type=checkbox]{width:16px;height:16px;flex-shrink:0;margin-top:3px;accent-color:var(--gold);cursor:pointer}
+.consent-row label{font-size:13px;color:var(--muted);line-height:1.65;font-weight:300;cursor:pointer}
+.consent-row label a{color:var(--gold);text-decoration:underline}
+
 /* SUCCESS */
 .success{display:none;text-align:center;padding:72px 40px;animation:fadeUp .5s ease;position:relative;z-index:1}
 .success.active{display:block}
@@ -484,6 +490,12 @@ select option{background:var(--noir);color:var(--cream)}
     <div class="cc"><span id="c_notas">0</span>/500</div>
   </div>
 
+  <div class="consent-row">
+    <input type="checkbox" id="f-consent" name="consent">
+    <label for="f-consent">Acepto la <a href="/privacidad/" target="_blank" rel="noopener">política de privacidad</a> y el tratamiento de mis datos para configurar el Setter IA.</label>
+  </div>
+  <div class="ferr" id="err-consent">Debes aceptar la política de privacidad para continuar.</div>
+
   <div class="fnav">
     <button class="btn-back" onclick="back(4)">← Anterior</button>
     <button class="btn-next" onclick="submit()" id="btn-sub">Enviar configuración ✓</button>
@@ -567,6 +579,9 @@ function validate(s){
   }
   if(s===4){
     if(!urgencia){document.getElementById('e_urg').classList.add('vis');ok=false;}
+    var consent=document.getElementById('f-consent');
+    if(!consent||!consent.checked){document.getElementById('err-consent').classList.add('vis');ok=false;}
+    else{document.getElementById('err-consent').classList.remove('vis');}
   }
   return ok;
 }

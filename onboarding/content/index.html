@@ -129,6 +129,12 @@ select option{background:var(--noir);color:var(--cream)}
 .btn-next:hover{background:#FF8533;transform:translateY(-1px)}
 .btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
+/* RGPD Consent */
+.consent-row{margin-bottom:20px;display:flex;align-items:flex-start;gap:11px}
+.consent-row input[type=checkbox]{width:16px;height:16px;flex-shrink:0;margin-top:3px;accent-color:var(--orange);cursor:pointer}
+.consent-row label{font-size:13px;color:var(--muted);line-height:1.65;font-weight:300;cursor:pointer}
+.consent-row label a{color:var(--orange);text-decoration:underline}
+
 .success{display:none;text-align:center;padding:72px 40px;animation:fadeUp .5s ease;position:relative;z-index:1}
 .success.active{display:block}
 .s-icon{width:72px;height:72px;border-radius:50%;border:1px solid var(--orange);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 36px;background:var(--orange-dim)}
@@ -397,6 +403,12 @@ select option{background:var(--noir);color:var(--cream)}
     <div class="cc"><span id="c_notas">0</span>/500</div>
   </div>
 
+  <div class="consent-row">
+    <input type="checkbox" id="f-consent" name="consent">
+    <label for="f-consent">Acepto la <a href="/privacidad/" target="_blank" rel="noopener">política de privacidad</a> y el tratamiento de mis datos para recibir la propuesta de contenido.</label>
+  </div>
+  <div class="ferr" id="err-consent">Debes aceptar la política de privacidad para continuar.</div>
+
   <div class="fnav">
     <button class="btn-back" onclick="back(3)">← Anterior</button>
     <button class="btn-next" onclick="submit()" id="btn-sub">Enviar solicitud ✓</button>
@@ -504,6 +516,11 @@ function next(s){ if(!validate(s))return; setStep(s+1); }
 function back(s){ setStep(s-1); }
 
 function submit(){
+  var consent=document.getElementById('f-consent');
+  var errConsent=document.getElementById('err-consent');
+  if(!consent||!consent.checked){errConsent.classList.add('vis');return;}
+  errConsent.classList.remove('vis');
+
   var btn=document.getElementById('btn-sub');
   btn.textContent='Enviando...'; btn.disabled=true;
 

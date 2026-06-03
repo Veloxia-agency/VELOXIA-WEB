@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aviso Legal — VELOXIA</title>
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="alternate icon" href="/assets/favicon.ico">
+<meta name="theme-color" content="#040404">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/veloxia-base.css">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--noir);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity: 0.55;
+}
+a { text-decoration: none; color: var(--gold); }
+a:hover { text-decoration: underline; }
+
+.doc-nav {
+  position: sticky; top: 0; z-index: 20;
+  border-bottom: 1px solid var(--border);
+  background: rgba(30,24,16,0.93);
+  backdrop-filter: blur(16px);
+  padding: 0 40px;
+}
+.doc-nav-inner {
+  max-width: 760px; margin: 0 auto;
+  height: 60px; display: flex; align-items: center; justify-content: space-between;
+}
+.logo { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 8px; color: var(--cream); }
+.logo .v, .logo .dot { color: var(--gold); }
+.back-link { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-weight: 500; transition: color .2s; }
+.back-link:hover { color: var(--gold); text-decoration: none; }
+
+.doc-wrap {
+  max-width: 760px; margin: 0 auto;
+  padding: 64px 40px 100px;
+  position: relative; z-index: 1;
+}
+.doc-eyebrow {
+  font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--gold); font-weight: 600; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.doc-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--gold); flex-shrink: 0; }
+.doc-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 6vw, 68px);
+  letter-spacing: 2px; line-height: 0.92;
+  color: var(--cream); margin-bottom: 12px;
+}
+.doc-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: 20px; color: var(--muted); margin-bottom: 16px;
+}
+.doc-meta {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--faint); border-top: 1px solid var(--border);
+  padding-top: 20px; margin-top: 20px; margin-bottom: 56px;
+}
+
+.doc-section { margin-bottom: 52px; }
+.doc-section:last-child { margin-bottom: 0; }
+.doc-h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 2px;
+  color: var(--gold); margin-bottom: 16px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--border);
+}
+.doc-p { font-size: 14px; color: var(--cream2); line-height: 1.85; margin-bottom: 14px; font-weight: 300; }
+.doc-p:last-child { margin-bottom: 0; }
+.doc-p strong { color: var(--cream); font-weight: 500; }
+.doc-p a { color: var(--gold); }
+.doc-placeholder {
+  display: inline-block; background: rgba(196,146,42,0.12);
+  border: 1px solid rgba(196,146,42,0.35); color: var(--gold);
+  font-size: 12px; font-weight: 600; padding: 2px 8px; letter-spacing: 0.5px;
+}
+.doc-list { list-style: none; margin-bottom: 14px; }
+.doc-list li {
+  font-size: 14px; color: var(--cream2); font-weight: 300;
+  line-height: 1.75; padding: 8px 0;
+  border-bottom: 1px solid rgba(196,146,42,0.08);
+  display: flex; gap: 12px;
+}
+.doc-list li:last-child { border-bottom: none; }
+.doc-list li::before { content: '→'; color: var(--gold); flex-shrink: 0; font-size: 12px; margin-top: 2px; }
+.doc-list li strong { color: var(--cream); font-weight: 500; }
+
+.doc-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 40px; text-align: center;
+  font-size: 11px; color: var(--faint); letter-spacing: 1.5px;
+  position: relative; z-index: 1;
+}
+
+@media (max-width: 640px) {
+  .doc-nav { padding: 0 20px; }
+  .doc-wrap { padding: 48px 24px 72px; }
+  .doc-footer { padding: 28px 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="doc-nav">
+  <div class="doc-nav-inner">
+    <a href="/" class="logo"><span class="v">V</span>ELOXIA<span class="dot">.</span></a>
+    <a href="/" class="back-link">← Volver al inicio</a>
+  </div>
+</nav>
+
+<div class="doc-wrap">
+
+  <div class="doc-eyebrow">Legal</div>
+  <h1 class="doc-title">AVISO<br>LEGAL</h1>
+  <p class="doc-subtitle">Información legal del titular del sitio web</p>
+  <div class="doc-meta">Última actualización: junio 2025 · Aplicable a veloxia.agency y sus subdominios</div>
+
+  <!-- 1. TITULAR -->
+  <div class="doc-section">
+    <h2 class="doc-h2">1. Titular del sitio web</h2>
+    <p class="doc-p">En cumplimiento de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSICE), se informa:</p>
+    <ul class="doc-list">
+      <li><strong>Denominación social:</strong> <span class="doc-placeholder">[PENDIENTE: Nombre comercial o razón social S.L.]</span></li>
+      <li><strong>NIF/CIF:</strong> <span class="doc-placeholder">[PENDIENTE: NIF o CIF]</span></li>
+      <li><strong>Domicilio social:</strong> <span class="doc-placeholder">[PENDIENTE: Dirección completa, CP, ciudad, España]</span></li>
+      <li><strong>Email de contacto:</strong> <a href="mailto:hola@veloxia.agency">hola@veloxia.agency</a></li>
+      <li><strong>Sitio web:</strong> <a href="https://veloxia.agency">veloxia.agency</a></li>
+    </ul>
+  </div>
+
+  <!-- 2. OBJETO -->
+  <div class="doc-section">
+    <h2 class="doc-h2">2. Objeto del sitio web</h2>
+    <p class="doc-p">
+      El presente sitio web tiene por objeto la presentación y comercialización de los servicios de <strong>VELOXIA</strong>, agencia especializada en sistemas digitales de presencia, captación y automatización con inteligencia artificial para negocios de servicios.
+    </p>
+    <p class="doc-p">
+      Los servicios ofertados son: desarrollo web premium (VELOXIA Studio), agentes de captación de leads con IA (VELOXIA Setter) y producción de contenido audiovisual con IA (VELOXIA Content).
+    </p>
+  </div>
+
+  <!-- 3. CONDICIONES DE USO -->
+  <div class="doc-section">
+    <h2 class="doc-h2">3. Condiciones de uso</h2>
+    <p class="doc-p">
+      El acceso y uso del sitio web atribuye la condición de usuario e implica la aceptación plena y sin reservas de las presentes condiciones. El usuario se compromete a hacer un uso adecuado de los contenidos y servicios y a no emplearlos para fines ilícitos o contrarios a la ley.
+    </p>
+    <p class="doc-p">
+      El titular se reserva el derecho a modificar, suspender o interrumpir en cualquier momento el acceso al sitio web o sus contenidos, sin previo aviso.
+    </p>
+  </div>
+
+  <!-- 4. PROPIEDAD INTELECTUAL -->
+  <div class="doc-section">
+    <h2 class="doc-h2">4. Propiedad intelectual e industrial</h2>
+    <p class="doc-p">
+      Todos los contenidos del sitio web — incluyendo textos, imágenes, código fuente, diseño gráfico, logotipos, marcas, nombres comerciales e interfaces — son propiedad de <span class="doc-placeholder">[PENDIENTE: razón social]</span> o de terceros que han autorizado su uso, y están protegidos por la normativa española e internacional de propiedad intelectual e industrial.
+    </p>
+    <p class="doc-p">
+      Queda expresamente prohibida la reproducción, distribución, comunicación pública o transformación de cualquier parte del sitio sin autorización expresa y por escrito del titular. El uso no autorizado de estos contenidos puede constituir una infracción de los derechos de propiedad intelectual o industrial.
+    </p>
+  </div>
+
+  <!-- 5. RESPONSABILIDAD -->
+  <div class="doc-section">
+    <h2 class="doc-h2">5. Responsabilidad y exención de garantías</h2>
+    <p class="doc-p">
+      El titular no garantiza la disponibilidad, continuidad ni infalibilidad del funcionamiento del sitio web, y queda exonerado de cualquier responsabilidad por daños o perjuicios derivados de interrupciones, errores técnicos, accesos no autorizados o virus informáticos que pudieran afectar al usuario.
+    </p>
+    <p class="doc-p">
+      Los contenidos e informaciones del sitio tienen carácter meramente orientativo. El titular no será responsable del uso que el usuario realice de los contenidos ni de cualquier daño derivado de dicho uso.
+    </p>
+    <p class="doc-p">
+      El sitio puede incluir enlaces a páginas de terceros. El titular no controla ni garantiza la calidad, legalidad o adecuación de dichos contenidos, y declina toda responsabilidad sobre ellos.
+    </p>
+  </div>
+
+  <!-- 6. LEY APLICABLE -->
+  <div class="doc-section">
+    <h2 class="doc-h2">6. Ley aplicable y jurisdicción</h2>
+    <p class="doc-p">
+      Las presentes condiciones se rigen e interpretan de conformidad con las leyes españolas. Para la resolución de cualquier controversia derivada del uso de este sitio web, las partes se someten, con renuncia expresa a cualquier otro fuero que pudiera corresponderles, a la jurisdicción de los Juzgados y Tribunales de <strong>Madrid</strong>, España.
+    </p>
+  </div>
+
+  <!-- 7. PRIVACIDAD -->
+  <div class="doc-section">
+    <h2 class="doc-h2">7. Privacidad y protección de datos</h2>
+    <p class="doc-p">
+      El tratamiento de datos personales de los usuarios se rige por nuestra <a href="/privacidad/">Política de Privacidad</a>, disponible en este sitio web y elaborada conforme al Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 (LOPDGDD).
+    </p>
+  </div>
+
+</div>
+
+<footer class="doc-footer">
+  © 2025 <span style="color:var(--gold)">V</span>ELOXIA<span style="color:var(--gold)">.</span> · <a href="/privacidad/" style="color:var(--faint)">Política de Privacidad</a>
+</footer>
+
+</body>
+</html>

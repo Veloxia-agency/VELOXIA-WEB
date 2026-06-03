@@ -680,6 +680,21 @@ footer {
   border: 1px solid var(--border); color: var(--faint);
   text-transform: uppercase; font-weight: 500;
 }
+.port-demo-badge {
+  position: absolute; top: 34px; right: 10px;
+  font-size: 7px; letter-spacing: 2.5px; font-weight: 700; text-transform: uppercase;
+  color: #FBF8F4; background: #2E3D33; padding: 4px 9px; z-index: 2;
+}
+.port-demo-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  font-weight: 700; color: var(--gold);
+  border-bottom: 1px solid rgba(196,146,42,0.35); padding-bottom: 1px;
+  transition: border-color .2s, opacity .2s; margin-top: 6px;
+}
+.port-demo-link:hover { border-color: var(--gold); opacity: .8; }
+.port-card-link { display: block; color: inherit; }
+.port-card-link:hover .port-card { border-color: var(--border-h); }
 
 /* ─── REVEAL ─── */
 .reveal { opacity: 0; transform: translateY(30px); transition: opacity .75s ease, transform .75s ease; }
@@ -882,44 +897,47 @@ footer {
 
     <div class="port-grid">
 
+      <a href="demos/clinica/" class="port-card-link" target="_blank" rel="noopener">
       <div class="port-card reveal">
         <div class="port-browser">
           <div class="port-bar">
             <span class="port-dot"></span><span class="port-dot"></span><span class="port-dot"></span>
-            <div class="port-url-bar"></div>
+            <div class="port-url-bar" style="background:rgba(201,184,168,0.12)"></div>
           </div>
-          <div class="port-screen">
-            <div class="port-sc-hero">
-              <div class="port-sc-line gl" style="width:70%"></div>
-              <div class="port-sc-line gl" style="width:50%"></div>
+          <div class="port-screen" style="background:linear-gradient(160deg,rgba(46,61,51,0.18) 0%,rgba(201,184,168,0.07) 55%)">
+            <div class="port-sc-hero" style="background:linear-gradient(120deg,rgba(46,61,51,0.32),rgba(201,184,168,0.08));border-bottom-color:rgba(201,184,168,0.1)">
+              <div class="port-sc-line" style="width:72%;background:rgba(251,248,244,0.22)"></div>
+              <div class="port-sc-line" style="width:52%;background:rgba(251,248,244,0.15)"></div>
               <div style="height:6px"></div>
-              <div class="port-sc-line" style="width:85%"></div>
-              <div class="port-sc-line" style="width:60%"></div>
+              <div class="port-sc-line" style="width:86%;background:rgba(201,184,168,0.12)"></div>
+              <div class="port-sc-line" style="width:62%;background:rgba(201,184,168,0.1)"></div>
               <div style="height:6px"></div>
-              <div class="port-sc-line cta"></div>
+              <div class="port-sc-line cta" style="background:rgba(251,248,244,0.3)"></div>
             </div>
             <div class="port-sc-body">
               <div class="port-sc-row">
-                <div class="port-sc-line" style="width:33%;height:50px;flex-shrink:0"></div>
-                <div class="port-sc-line" style="width:33%;height:50px;flex-shrink:0"></div>
-                <div class="port-sc-line" style="width:33%;height:50px;flex-shrink:0"></div>
+                <div class="port-sc-line" style="width:33%;height:50px;flex-shrink:0;background:rgba(201,184,168,0.1)"></div>
+                <div class="port-sc-line" style="width:33%;height:50px;flex-shrink:0;background:rgba(201,184,168,0.07)"></div>
+                <div class="port-sc-line" style="width:33%;height:50px;flex-shrink:0;background:rgba(201,184,168,0.1)"></div>
               </div>
             </div>
           </div>
-          <span class="port-coming">Próximamente</span>
+          <span class="port-demo-badge">Demo activa ↗</span>
         </div>
         <div class="port-info">
-          <span class="port-tag">Clínica Estética · Madrid</span>
-          <div class="port-name">CLÍNICA AURORA</div>
-          <p class="port-desc">Web premium con captación directa, Calendly integrado y CRM automático para gestión de leads.</p>
+          <span class="port-tag">Clínica Estética · Demo concepto</span>
+          <div class="port-name">AURA CLÍNICA</div>
+          <p class="port-desc">Landing premium con hero cinemático, scroll animado y captación completa. Marca propia, tipografía Playfair, paleta nude y verde.</p>
           <div class="port-chips">
-            <span class="port-chip">Web</span>
-            <span class="port-chip">Copy</span>
-            <span class="port-chip">WhatsApp</span>
-            <span class="port-chip">CRM</span>
+            <span class="port-chip">Landing</span>
+            <span class="port-chip">GSAP</span>
+            <span class="port-chip">Lenis</span>
+            <span class="port-chip">Formulario</span>
           </div>
+          <span class="port-demo-link">Ver demo completa →</span>
         </div>
       </div>
+      </a>
 
       <div class="port-card reveal" style="transition-delay:.1s">
         <div class="port-browser">
@@ -1273,8 +1291,8 @@ footer {
     <div class="footer-logo"><span class="v">V</span>ELOXIA<span class="dot">.</span></div>
     <div class="footer-links">
       <a href="../">Inicio</a>
-      <a href="#">Privacidad</a>
-      <a href="#">Aviso legal</a>
+      <a href="/privacidad/">Privacidad</a>
+      <a href="/aviso-legal/">Aviso legal</a>
       <a href="mailto:hola@veloxia.agency">hola@veloxia.agency</a>
       <a href="https://wa.me/34684376021">WhatsApp</a>
     </div>
