@@ -65,8 +65,8 @@ export async function onRequest(context) {
     const responseText = await airtableRes.text();
 
     if (!airtableRes.ok) {
-      console.log('Airtable error:', airtableRes.status, responseText);
-      return json(502, { ok: false, error: 'Airtable rejected the record', status: airtableRes.status });
+      console.log('Airtable error:', airtableRes.status, responseText.slice(0, 120));
+      return json(502, { ok: false, error: 'Lead service unavailable' });
     }
 
     const data = JSON.parse(responseText);
@@ -78,8 +78,12 @@ export async function onRequest(context) {
 
   } catch (err) {
     console.log('Airtable exception:', err.message);
-    return json(502, { ok: false, error: err.message });
+    return json(502, { ok: false, error: 'Lead service unavailable' });
   }
+}
+
+function escapeHtml(v) {
+  return String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 function notifyTelegram(env, lead) {
@@ -88,14 +92,15 @@ function notifyTelegram(env, lead) {
   const lines = [
     '🔥 <b>NUEVO LEAD · FORGE</b>',
     '',
-    `👤 <b>Nombre:</b> ${lead.nombre}`,
-    lead.instagram ? `📸 <b>Instagram:</b> ${lead.instagram}` : null,
-    `🎯 <b>Nicho:</b> ${lead.nicho}`,
-    `💼 <b>Oferta:</b> ${lead.oferta}`,
-    lead.ticket     ? `💶 <b>Ticket:</b> ${lead.ticket}` : null,
-    lead.canales && lead.canales.length ? `📲 <b>Canales:</b> ${lead.canales.join(' · ')}` : null,
-    lead.leadsAlMes ? `📊 <b>Leads/mes:</b> ${lead.leadsAlMes}` : null,
-    lead.tono       ? `🗣 <b>Tono:</b> ${lead.tono}` : null,
+    `👤 <b>Nombre:</b> ${escapeHtml(lead.nombre)}`,
+    lead.instagram ? `📸 <b>Instagram:</b> ${escapeHtml(lead.instagram)}` : null,
+    `🎯 <b>Nicho:</b> ${escapeHtml(lead.nicho)}`,
+    `💼 <b>Oferta:</b> ${escapeHtml(lead.oferta)}`,
+    lead.ticket     ? `💶 <b>Ticket:</b> ${escapeHtml(lead.ticket)}` : null,
+    lead.canales && lead.canales.length
+      ? `📲 <b>Canales:</b> ${lead.canales.map(escapeHtml).join(' · ')}` : null,
+    lead.leadsAlMes ? `📊 <b>Leads/mes:</b> ${escapeHtml(lead.leadsAlMes)}` : null,
+    lead.tono       ? `🗣 <b>Tono:</b> ${escapeHtml(lead.tono)}` : null,
   ].filter(Boolean).join('\n');
 
   return fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
